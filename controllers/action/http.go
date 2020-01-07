@@ -88,6 +88,50 @@ func testGet(c *g.Context) {
 }
 
 /// post 操作
+func shuDengPost(c *g.Context) {
+
+	assetState := "new"
+	assetCode := "update"
+	shudeng_source := "d2e7b61aa2eee779"
+	requestBody := fmt.Sprintf(`
+{
+	"assetState": "%s",
+	"assetCode": "%s",
+	"source": "%s"
+}
+`, assetState, assetCode, shudeng_source)
+	var jsonStr = []byte(requestBody)
+	//shudeng_url string = "http://www.a.com:8080/web/shudeng/api/updateAssetInfoToSd"
+
+	url := "http://www.a.com:8080/web/shudeng/api/updateAssetInfoToSd"
+
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+
+	resp, err := client.Do(req)
+
+	if err != nil {
+
+		panic(err)
+
+	}
+
+	defer resp.Body.Close()
+
+	fmt.Println("response Status:", resp.Status)
+
+	fmt.Println("response Headers:", resp.Header)
+
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	fmt.Println("response Body:", string(body))
+
+}
+
+/// post 操作
 func testPost(c *g.Context) {
 
 	requestBody := fmt.Sprintf(`

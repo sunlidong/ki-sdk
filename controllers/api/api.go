@@ -28,3 +28,8 @@ func TestGet(c *g.Context) {
 func TestPost(c *g.Context) {
 	action.TestPost(c)
 }
+
+//	数字签名
+func ShuDengPost(c *g.Context) {
+	action.ShuDengPost(c)
+}

@@ -22,6 +22,7 @@ func initRouter() *g.Engine {
 		Test.POST("/jiemi", Kiapi.GenerateRSAKey)
 		Test.GET("/testget", Kiapi.TestGet)
 		Test.GET("/testpost", Kiapi.TestPost)
+		Test.GET("/shudengpost", Kiapi.ShuDengPost)
 	}
 
 	//

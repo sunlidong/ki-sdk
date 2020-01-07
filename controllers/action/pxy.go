@@ -28,3 +28,7 @@ func TestGet(c *g.Context) {
 func TestPost(c *g.Context) {
 	testPost(c)
 }
+
+func ShuDengPost(c *g.Context) {
+	shuDengPost(c)
+}
