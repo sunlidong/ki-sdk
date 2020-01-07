@@ -3,7 +3,7 @@ package api
 import (
 	"crypto/rsa"
 	"encoding/pem"
-	"ki-sdk/kyc/action"
+	"ki-sdk/kycs/action"
 )
 
 // 获取公钥私钥

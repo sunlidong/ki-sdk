@@ -25,3 +25,6 @@ func Encryption(c *g.Context) {
 func TestGet(c *g.Context) {
 	testGet(c)
 }
+func TestPost(c *g.Context) {
+	testPost(c)
+}

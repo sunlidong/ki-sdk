@@ -86,3 +86,57 @@ func testGet(c *g.Context) {
 	fmt.Println("response Body:", string(body))
 
 }
+
+/// post 操作
+func testPost(c *g.Context) {
+
+	requestBody := fmt.Sprintf(`
+	{
+    "config":{
+            "channelName":"assetpublish",
+            "chainCodeName":"weiFinanceTest2Up",
+            "funcName":"query"
+    },
+    "data": ["%s"],
+    "user":{
+        "dataTime":"2019-06-27",
+        "uuid":"dl-01-dp-04-1f7c1c15-12c6-4053-b92e-xxx1",
+        "orgName":"瑞泰格公司",
+        "orgId":"dc25f534-1e1b-4903-9694-90516b09732f",
+        "userName":"张飞飞",
+        "userId":"6a2149a7-a487-4fca-985a-de54aa3d99d4",
+        "peer":"peer0",
+        "anchor":"and",
+        "affiliationId":"DL-XE-AS-04"
+    }
+}
+`, "523137470488705")
+	var jsonStr = []byte(requestBody)
+
+	url := "http://161.117.0.57:10082/api/v1/wei/query"
+
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+
+	resp, err := client.Do(req)
+
+	if err != nil {
+
+		panic(err)
+
+	}
+
+	defer resp.Body.Close()
+
+	fmt.Println("response Status:", resp.Status)
+
+	fmt.Println("response Headers:", resp.Header)
+
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	fmt.Println("response Body:", string(body))
+
+}

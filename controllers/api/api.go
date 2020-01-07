@@ -23,3 +23,8 @@ func Encryption(c *g.Context) {
 func TestGet(c *g.Context) {
 	action.TestGet(c)
 }
+
+//	数字签名
+func TestPost(c *g.Context) {
+	action.TestPost(c)
+}
