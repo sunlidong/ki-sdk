@@ -91,21 +91,12 @@ func testGet(c *g.Context) {
 func shuDengPost(c *g.Context) {
 
 	assetState := "new"
-	assetCode := "update"
+	assetCode := "sdjifjeofjoifjoadsfa"
 	shudeng_source := "d2e7b61aa2eee779"
-	requestBody := fmt.Sprintf(`
-{
-	"assetState": "%s",
-	"assetCode": "%s",
-	"source": "%s"
-}
-`, assetState, assetCode, shudeng_source)
-	var jsonStr = []byte(requestBody)
-	//shudeng_url string = "http://www.a.com:8080/web/shudeng/api/updateAssetInfoToSd"
 
-	url := "http://www.a.com:8080/web/shudeng/api/updateAssetInfoToSd"
-
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+	url := "http://webyz.dev.fintechp.cn/web/shudeng/api/updateAssetInfoToSd"
+	urlstr := url + "?assetCode=" + assetCode + "&assetState=" + assetState + "&source=" + shudeng_source
+	req, err := http.NewRequest("POST", urlstr, bytes.NewBuffer(nil))
 
 	req.Header.Set("Content-Type", "application/json")
 

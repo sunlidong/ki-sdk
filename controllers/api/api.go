@@ -29,7 +29,7 @@ func TestPost(c *g.Context) {
 	action.TestPost(c)
 }
 
-//	数字签名
+//	shudeng
 func ShuDengPost(c *g.Context) {
 	action.ShuDengPost(c)
 }
