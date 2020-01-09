@@ -122,7 +122,6 @@ func encryption(c *g.Context) {
 //	微分格 通知系统
 func notificationSystem() {
 	// 拼接数据
-
 	// 发送请求
 
 }
