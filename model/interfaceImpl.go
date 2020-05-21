@@ -2,12 +2,12 @@ package model
 
 import (
 	"fmt"
-	"ki-sdk/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
-	"ki-sdk/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/msp"
-	"ki-sdk/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt"
-	"ki-sdk/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
 
+	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
+	"github.com/hyperledger/fabric-sdk-go/pkg/client/msp"
+	"github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config"
+	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
 )
 
 // Action
