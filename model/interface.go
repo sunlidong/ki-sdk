@@ -1,7 +1,7 @@
 package model
 
 // sdk
-type App interface {
+type Apper interface {
 	Initialize()          // sdk
 	CreateresMgmtClient() // msg
 	CreateChannelCli()    // 通道
