@@ -6,6 +6,8 @@ import (
 	"ki-sdk/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/msp"
 	"ki-sdk/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt"
 	"ki-sdk/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
+
+	"github.com/hyperledger/fabric-sdk-go/pkg/core/config"
 )
 
 // Action

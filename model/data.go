@@ -43,3 +43,15 @@ type Application struct {
 	gin *gin.Context
 	SDK *SDK
 }
+
+//Init
+const (
+	ConfigFile  = "./config/org1_peer0_admin.yaml"
+	ChannelID   = "bookchannel"
+	OrgName     = "org1"
+	ChainCodeID = "bookstorechain"
+	OrgAdmin    = "Admin"
+	UserName    = "Admin"
+	Version     = "1.0"
+	OrdererID   = "orderer1.bookstore.com:7050"
+)
