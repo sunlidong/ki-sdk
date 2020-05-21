@@ -18,12 +18,14 @@ func InitSDK() error {
 	//	02.	init
 	err = SDK.Initialize()
 	if err != nil {
+		log.Println("1err:", err)
 		return err
 	}
 	log.Println("01 || 客戶端初始化成功")
 	//	03.	msg
 	err = SDK.CreateresMgmtClient()
 	if err != nil {
+		log.Println("2err:", err)
 		return err
 	}
 	log.Println("02 || 资源客戶端初始化成功")
@@ -31,6 +33,7 @@ func InitSDK() error {
 	//	04.	cli
 	err = SDK.CreateChannelCli()
 	if err != nil {
+		log.Println("3err:", err)
 		return err
 	}
 	log.Println("03 || 通道客戶端初始化成功")
@@ -38,6 +41,7 @@ func InitSDK() error {
 	//	05.	msp
 	err = SDK.CreateMspClient()
 	if err != nil {
+		log.Println("4err:", err)
 		return err
 	}
 	log.Println("04 || 证书客戶端初始化成功")
