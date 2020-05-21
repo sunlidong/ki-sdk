@@ -56,7 +56,7 @@ func initsdk() *SDK {
 		ChannelID:   ChannelID,
 		OrgAdmin:    OrgName,
 		ChainCodeID: ChainCodeID,
-		OrgName:     OrgAdmin,
+		OrgName:     OrgName,
 		UserName:    OrgAdmin,
 		Version:     Version,
 		OrdererID:   OrdererID,
