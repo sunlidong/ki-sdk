@@ -1,9 +1,7 @@
 package router
 
 import (
-   c	"ki-sdk/controller"
 	g "github.com/gin-gonic/gin"
-	"log"
 )
 
 /*
@@ -29,7 +27,6 @@ func InitRouter() *g.Engine {
 
 		wei := v1.Group("/wei")
 
-	
 		// 数据上链
 		{
 			// 上链
