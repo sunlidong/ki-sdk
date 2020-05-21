@@ -1,6 +1,8 @@
 package router
 
 import (
+	c "ki-sdk/controller"
+
 	g "github.com/gin-gonic/gin"
 )
 
@@ -30,11 +32,12 @@ func InitRouter() *g.Engine {
 		// 数据上链
 		{
 			// 上链
-			wei.POST("/up", apic.UpLoadByBox)
+			wei.POST("/up", c.UpLoad)
 
 			//  查询
-			wei.POST("/query", apic.QueryLoadByBox)
+			wei.POST("/query", c.Load)
 		}
 
-	return router
+		return router
+	}
 }

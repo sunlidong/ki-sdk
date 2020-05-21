@@ -1,4 +1,4 @@
-package action
+package model
 
 import (
 	"github.com/gin-gonic/gin"
@@ -9,7 +9,7 @@ import (
 )
 
 /**
-@ FabricSetup implementation
+@
 @ SDK结构体
 @ NO 001
 */
@@ -43,4 +43,3 @@ type Application struct {
 	gin *gin.Context
 	SDK *SDK
 }
-
