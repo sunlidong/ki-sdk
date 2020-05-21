@@ -1,20 +1,15 @@
 package main
 
-import "fmt"
-
-/**
-* Main
-* @lidong sun
-* @Time 2019年10月14日10:25:50
-*
- */
+import (
+	"fmt"
+	"ki-sdk/router"
+)
 
 func main() {
 
-	// server := r_api.InitRouter()
+	// 初始化路由
 
-	// server.Run(r_action.Port_01)
-
+	router.InitRouter()
 	fmt.Println("git test ")
 
 }

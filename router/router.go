@@ -1,10 +1,9 @@
-package action
+package router
 
 import (
-	apic "ki-sdk/controller/api"
-	"log"
-
+   c	"ki-sdk/controller"
 	g "github.com/gin-gonic/gin"
+	"log"
 )
 
 /*
@@ -28,8 +27,6 @@ func InitRouter() *g.Engine {
 		//路由组 v1  上链相关接口
 		v1 := api.Group("/v1")
 
-
-		//-------	
 		wei := v1.Group("/wei")
 
 	
