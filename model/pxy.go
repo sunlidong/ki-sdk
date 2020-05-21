@@ -4,6 +4,8 @@ import (
 	"log"
 )
 
+var App Application
+
 /**
 @ 对外 函数 || SDK 单个 实例化
 */
