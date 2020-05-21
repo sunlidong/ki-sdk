@@ -1,0 +1,240 @@
+name: "dinglian-service-network"
+version: 1.1.0
+
+client:
+  organization: org1
+  logging:
+    level: info
+  cryptoconfig:
+    path:  /root/go/src/dlchain/server/crypto-config
+  credentialStore:
+    path: /tmp/state-store
+    cryptoStore:
+      path: /tmp/msp
+  BCCSP:
+    security:
+      enabled: true
+      default:
+        provider: "SW"
+      hashAlgorithm: "SHA2"
+      softVerify: true
+      level: 256
+  tlsCerts:
+    systemCertPool: true
+    client:
+      keyfile: /root/go/src/dlchain/server/crypto-config/peerOrganizations/org1.dinglian.com/users/Admin@org1.dinglian.com/tls/client.key
+      certfile: /root/go/src/dlchain/server/crypto-config/peerOrganizations/org1.dinglian.com/users/Admin@org1.dinglian.com/tls/client.crt
+
+channels:
+  assetpublish:
+    peers:
+      peer0.org1.dinglian.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer1.org1.dinglian.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer0.org2.dinglian.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer1.org2.dinglian.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+    policies:
+      queryChannelConfig:
+        minResponses: 1
+        maxTargets: 1
+        retryOpts:
+          attempts: 5
+          initialBackoff: 500ms
+          maxBackoff: 5s
+          backoffFactor: 2.0
+
+organizations:
+  org1:
+    mspid: Org1MSP
+    cryptoPath: /root/go/src/dlchain/server/crypto-config/peerOrganizations/org1.dinglian.com/users/Admin@org1.dinglian.com/msp
+    peers:
+      - peer0.org1.dinglian.com
+      - peer1.org1.dinglian.com
+    users:
+      Admin:
+        key:
+          pem: |
+            -----BEGIN PRIVATE KEY-----
+            MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgG2AukInyu0fylqQT
+            v/DENPrFwGZ6bJpo8SEI9qh1BqShRANCAASqTXUfnnSkINm2+JVUU6NagT6EeJ4y
+            1lIf0pytUXRVXYyelGweAEd8dD76jkiAF8KOsAZ27p5c5c1o5Sk+hXQz
+            -----END PRIVATE KEY-----
+
+        cert:
+          pem: |
+            -----BEGIN CERTIFICATE-----
+            MIIDCDCCAq6gAwIBAgIUZgnAF4HmW8/61khRtdI3WE7NuYEwCgYIKoZIzj0EAwIw
+            XTELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQK
+            EwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGY2xpZW50MQ4wDAYDVQQDEwVhZG1pbjAe
+            Fw0xOTA4MjIwODMyMDBaFw0yMDA4MjEwODM3MDBaMIGZMQswCQYDVQQGEwJVUzEX
+            MBUGA1UECBMOTm9ydGggQ2Fyb2xpbmExFDASBgNVBAoTC0h5cGVybGVkZ2VyMTkw
+            DQYDVQQLEwZjbGllbnQwCgYDVQQLEwNjb20wDwYDVQQLEwhkaW5nbGlhbjALBgNV
+            BAsTBG9yZzExIDAeBgNVBAMMF0FkbWluQG9yZzEuZGluZ2xpYW4uY29tMFkwEwYH
+            KoZIzj0CAQYIKoZIzj0DAQcDQgAEqk11H550pCDZtviVVFOjWoE+hHieMtZSH9Kc
+            rVF0VV2MnpRsHgBHfHQ++o5IgBfCjrAGdu6eXOXNaOUpPoV0M6OCAQ0wggEJMA4G
+            A1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBSk8WUKYra8hD5j
+            GpSdTthl3Ps2nDAfBgNVHSMEGDAWgBQtEgZMg7N1MeXu2LGV8KAHmgjqSTAcBgNV
+            HREEFTATghFvcmcxLmRpbmdsaWFuLmNvbTCBigYIKgMEBQYHCAEEfnsiYXR0cnMi
+            OnsiaGYuQWZmaWxpYXRpb24iOiJjb20uZGluZ2xpYW4ub3JnMSIsImhmLkVucm9s
+            bG1lbnRJRCI6IkFkbWluQG9yZzEuZGluZ2xpYW4uY29tIiwiaGYuVHlwZSI6ImNs
+            aWVudCIsInJvbGUiOiJhZG1pbiJ9fTAKBggqhkjOPQQDAgNIADBFAiEAkMH5+uD+
+            lY8NF531oetkBjszXIBrVVjx5i8hMhzd004CIHOWTM+R+9lNjG+1Bmn6oKUogNT/
+            zh+S1oe86W+HWQyi
+            -----END CERTIFICATE-----
+
+
+    certificateAuthorities:
+      - ca-org1-msp.dinglian.com
+
+  org2:
+    mspid: Org2MSP
+    cryptoPath: /root/go/src/dlchain/server/crypto-config/peerOrganizations/org2.dinglian.com/users/Admin@org2.dinglian.com/msp
+    peers:
+      - peer0.org2.dinglian.com
+      - peer1.org2.dinglian.com
+
+    certificateAuthorities:
+      - ca-org2-msp.dinglian.com
+
+  order:
+    mspID: OrdererMSP
+    cryptoPath: /root/go/src/dlchain/server/crypto-config/ordererOrganizations/dinglian.com/users/Admin@dinglian.com/msp
+
+orderers:
+  orderer0.dinglian.com:
+    url: grpcs://127.0.0.1:7150
+    grpcOptions:
+      ssl-target-name-override: orderer0.dinglian.com
+      keep-alive-time: 5s
+      keep-alive-timeout: 6s
+      keep-alive-permit: false
+      fail-fast: true
+      allow-insecure: false
+    tlsCACerts:
+      path: /root/go/src/dlchain/server/crypto-config/ordererOrganizations/dinglian.com/orderers/orderer0.dinglian.com/tls/ca.crt
+
+    orderer1.dinglian.com:
+      url: grpcs://127.0.0.1:7250
+      grpcOptions:
+        ssl-target-name-override: orderer1.dinglian.com
+        keep-alive-time: 5s
+        keep-alive-timeout: 6s
+        keep-alive-permit: false
+        fail-fast: true
+        allow-insecure: false
+      tlsCACerts:
+        path: /root/go/src/dlchain/server/crypto-config/ordererOrganizations/dinglian.com/orderers/orderer1.dinglian.com/tls/ca.crt
+
+peers:
+  peer0.org1.dinglian.com:
+    url: grpcs://127.0.0.1:7051
+    grpcOptions:
+      ssl-target-name-override: peer0.org1.dinglian.com
+      allow-insecure: false
+    tlsCACerts:
+      path: /root/go/src/dlchain/server/crypto-config/peerOrganizations/org1.dinglian.com/peers/peer0.org1.dinglian.com/tls/ca.crt
+
+  peer1.org1.dinglian.com:
+    url: grpcs://127.0.0.1:8051
+    grpcOptions:
+      ssl-target-name-override: peer1.org1.dinglian.com
+      allow-insecure: false
+    tlsCACerts:
+      path: /root/go/src/dlchain/server/crypto-config/peerOrganizations/org1.dinglian.com/peers/peer1.org1.dinglian.com/tls/ca.crt
+
+  peer0.org2.dinglian.com:
+    url: grpcs://127.0.0.1:9051
+    grpcOptions:
+      ssl-target-name-override:  peer0.org2.dinglian.com
+      allow-insecure: false
+    tlsCACerts:
+      path: /root/go/src/dlchain/server/crypto-config/peerOrganizations/org2.dinglian.com/peers/peer0.org2.dinglian.com/tls/ca.crt
+
+  peer1.org2.dinglian.com:
+    url: grpcs://127.0.0.1:6051
+    grpcOptions:
+      ssl-target-name-override: peer1.org2.dinglian.com
+      allow-insecure: false
+    tlsCACerts:
+      path: /root/go/src/dlchain/server/crypto-config/peerOrganizations/org2.dinglian.com/peers/peer1.org2.dinglian.com/tls/ca.crt
+
+
+certificateAuthorities:
+  ca-org1-msp.dinglian.com:
+    url: http://127.0.0.1:8056
+    tlsCACerts:
+      path: /root/go/src/dlchain/server/crypto-config/peerOrganizations/org1.dinglian.com/users/Admin@org1.dinglian.com/msp/cacerts/localhost-8056.pem
+    registrar:
+      enrollId: admin
+      enrollSecret: adminpw
+
+  ca-org2-msp.dinglian.com:
+    url: http://127.0.0.1:9056
+    tlsCACerts:
+      path: /root/go/src/dlchain/server/crypto-config/peerOrganizations/org2.dinglian.com/users/Admin@org2.dinglian.com/msp/cacerts/localhost-9056.pem
+    registrar:
+      enrollId: admin
+      enrollSecret: adminpw
+
+entityMatchers:
+  peer:
+    - pattern: (\w*)peer0.org1.dinglian.com(\w*)
+      urlSubstitutionExp: 127.0.0.1:7051
+      eventUrlSubstitutionExp: 127.0.0.1:7051
+      sslTargetOverrideUrlSubstitutionExp: peer0.org1.dinglian.com
+      mappedHost: peer0.org1.dinglian.com
+
+    - pattern: (\w*)peer1.org1.dinglian.com(\w*)
+      urlSubstitutionExp: 127.0.0.1:8051
+      eventUrlSubstitutionExp: 127.0.0.1:8051
+      sslTargetOverrideUrlSubstitutionExp: peer1.org1.dinglian.com
+      mappedHost: peer1.org1.dinglian.com
+
+    - pattern: (\w*)peer0.org2.dinglian.com(\w*)
+      urlSubstitutionExp: 127.0.0.1:9051
+      eventUrlSubstitutionExp: 127.0.0.1:9051
+      sslTargetOverrideUrlSubstitutionExp: peer0.org2.dinglian.com
+      mappedHost: peer0.org2.dinglian.com
+
+    - pattern: (\w*)peer1.org2.dinglian.com(\w*)
+      urlSubstitutionExp: 127.0.0.1:6051
+      eventUrlSubstitutionExp: 127.0.0.1:6051
+      sslTargetOverrideUrlSubstitutionExp: peer1.org2.dinglian.com
+      mappedHost: peer1.org2.dinglian.com
+
+  orderer:
+    - pattern: (\w*)orderer0.dinglian.com(\w*)
+      urlSubstitutionExp: 127.0.0.1:7150
+      eventUrlSubstitutionExp: 127.0.0.1:7150
+      sslTargetOverrideUrlSubstitutionExp: orderer0.dinglian.com
+      mappedHost: orderer0.dinglian.com
+
+    - pattern: (\w*)orderer1.dinglian.com(\w*)
+      urlSubstitutionExp: 127.0.0.1:7250
+      eventUrlSubstitutionExp: 127.0.0.1:7250
+      sslTargetOverrideUrlSubstitutionExp: orderer1.dinglian.com
+      mappedHost: orderer1.dinglian.com
+
+  certificateAuthority:
+    - pattern: (\w+)ca-org1-msp.dinglian.com(\w+)
+      urlSubstitutionExp:
+      mappedHost: ca-org1-msp.dinglian.com
+
+    - pattern: (\w+)ca-org2-msp.dinglian.com(\w+)
+      urlSubstitutionExp:
+      mappedHost: ca-org2-msp.dinglian.com
