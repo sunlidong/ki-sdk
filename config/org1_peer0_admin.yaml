@@ -13,7 +13,7 @@ client:
 
   organization: Org1
   cryptoconfig:
-    path: ./crypto-config
+    path: /mnt/d/gopath/src/ki-sdk/crypto-config/
   credentialStore:
     # [Optional]. Used by user store. Not needed if all credentials are embedded in configuration
     # and enrollments are performed elswhere.
@@ -41,9 +41,9 @@ client:
     # [Optional]. Client key and cert for TLS handshake with peers and orderers
     client:
       key:
-        path: ../crypto-config/peerOrganizations/org1.bookstore.com/users/Admin@org1.bookstore.com/tls/client.key
+        path: /mnt/d/gopath/src/ki-sdk/crypto-config/peerOrganizations/org1.bookstore.com/users/Admin@org1.bookstore.com/tls/client.key
       cert:
-        path: ../crypto-config/peerOrganizations/org1.bookstore.com/users/Admin@org1.bookstore.com/tls/client.crt
+        path: /mnt/d/gopath/src/ki-sdk/crypto-config/peerOrganizations/org1.bookstore.com/users/Admin@org1.bookstore.com/tls/client.crt
 
 channels:
 
@@ -209,7 +209,7 @@ organizations:
     mspid: Org1MSP
     # D:\Git\ki-sdk\crypto-config\peerOrganizations\org1.bookstore.com\users\Admin@org1.bookstore.com
     # This org's MSP store (absolute path or relative to client.cryptoconfig)
-    cryptoPath:  peerOrganizations/org1.bookstore.com/users/Admin@org1.bookstore.com/msp
+    cryptoPath:  /mnt/d/gopath/src/ki-sdk/crypto-config/peerOrganizations/org1.bookstore.com/users/Admin@org1.bookstore.com/msp
 
     peers:
       - peer0.org1.bookstore.com
@@ -219,7 +219,7 @@ organizations:
     mspid: Org2MSP
 
     # This org's MSP store (absolute path or relative to client.cryptoconfig)
-    cryptoPath:  peerOrganizations/org2.bookstore.com/users/Admin@org2.bookstore.com/msp
+    cryptoPath:   /mnt/d/gopath/src/ki-sdk/crypto-config/peerOrganizations/org2.bookstore.com/users/Admin@org2.bookstore.com/msp
 
     peers:
       - peer0.org2.bookstore.com
@@ -232,7 +232,7 @@ organizations:
       mspID: OrdererMSP
 
       # Needed to load users crypto keys and certs for this org (absolute path or relative to global crypto path, DEV mode)
-      cryptoPath: ordererOrganizations/bookstore.com/users/{username}@bookstore.com/msp
+      cryptoPath:  /mnt/d/gopath/src/ki-sdk/crypto-config/ordererOrganizations/bookstore.com/users/Admin@bookstore.com/msp
 
 orderers:
   orderer1.bookstore.com:
@@ -255,7 +255,7 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path D:\Git\ki-sdk\crypto-config
-      path: ../crypto-config/ordererOrganizations/bookstore.com/tlsca/tlsca.bookstore.com-cert.pem
+      path: /mnt/d/gopath/src/ki-sdk/crypto-config/ordererOrganizations/bookstore.com/tlsca/tlsca.bookstore.com-cert.pem
   orderer2.bookstore.com:
     # [Optional] Default: Infer from hostname
     url: orderer2.bookstore.com:8050
@@ -276,7 +276,7 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path D:\Git\ki-sdk\crypto-config
-      path: ../crypto-config/ordererOrganizations/bookstore.com/tlsca/tlsca.bookstore.com-cert.pem
+      path: /mnt/d/gopath/src/ki-sdk/crypto-config/ordererOrganizations/bookstore.com/tlsca/tlsca.bookstore.com-cert.pem
   orderer3.bookstore.com:
     # [Optional] Default: Infer from hostname
     url: orderer3.bookstore.com:9050
@@ -297,7 +297,7 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path D:\Git\ki-sdk\crypto-config
-      path: ../crypto-config/ordererOrganizations/bookstore.com/tlsca/tlsca.bookstore.com-cert.pem
+      path: /mnt/d/gopath/src/ki-sdk/crypto-config/ordererOrganizations/bookstore.com/tlsca/tlsca.bookstore.com-cert.pem
   orderer4.bookstore.com:
     # [Optional] Default: Infer from hostname
     url: orderer4.bookstore.com:10050
@@ -318,7 +318,7 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path D:\Git\ki-sdk\crypto-config
-      path: ../crypto-config/ordererOrganizations/bookstore.com/tlsca/tlsca.bookstore.com-cert.pem
+      path: /mnt/d/gopath/src/ki-sdk/crypto-config/ordererOrganizations/bookstore.com/tlsca/tlsca.bookstore.com-cert.pem
   orderer5.bookstore.com:
     # [Optional] Default: Infer from hostname
     url: orderer5.bookstore.com:11050
@@ -339,7 +339,7 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path D:\Git\ki-sdk\crypto-config
-      path: ../crypto-config/ordererOrganizations/bookstore.com/tlsca/tlsca.bookstore.com-cert.pem
+      path: /mnt/d/gopath/src/ki-sdk/crypto-config/ordererOrganizations/bookstore.com/tlsca/tlsca.bookstore.com-cert.pem
 
 peers:
   peer0.org1.bookstore.com:
@@ -361,7 +361,7 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ../crypto-config/peerOrganizations/org1.bookstore.com/tlsca/peerOrganizations/org1.bookstore.com/tlsca/tlsca.org1.bookstore.com-cert.pem
+      path: /mnt/d/gopath/src/ki-sdk/crypto-config/peerOrganizations/org1.bookstore.com/tlsca/peerOrganizations/org1.bookstore.com/tlsca/tlsca.org1.bookstore.com-cert.pem
 
   peer1.org1.bookstore.com:
     # this URL is used to send endorsement and query requests
@@ -381,7 +381,7 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ../crypto-config/peerOrganizations/org1.bookstore.com/tlsca/tlsca.org1.bookstore.com-cert.pem
+      path: /mnt/d/gopath/src/ki-sdk/crypto-config/peerOrganizations/org1.bookstore.com/tlsca/tlsca.org1.bookstore.com-cert.pem
 
   peer0.org2.bookstore.com:
     url: peer0.org2.bookstore.com:9051
@@ -398,7 +398,7 @@ peers:
       allow-insecure: false
 
     tlsCACerts:
-      path: ../crypto-config/peerOrganizations/org2.bookstore.com/tlsca/tlsca.org2.bookstore.com-cert.pem
+      path: /mnt/d/gopath/src/ki-sdk/crypto-config/peerOrganizations/org2.bookstore.com/tlsca/tlsca.org2.bookstore.com-cert.pem
   
   peer1.org2.bookstore.com:
     url: peer0.org2.bookstore.com:10051
@@ -415,4 +415,4 @@ peers:
       allow-insecure: false
 
     tlsCACerts:
-      path: ../crypto-config/peerOrganizations/org2.bookstore.com/tlsca/tlsca.org2.bookstore.com-cert.pem
+      path: /mnt/d/gopath/src/ki-sdk/crypto-config/peerOrganizations/org2.bookstore.com/tlsca/tlsca.org2.bookstore.com-cert.pem
