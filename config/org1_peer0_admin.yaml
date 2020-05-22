@@ -207,39 +207,10 @@ channels:
 organizations:
   Org1:
     mspid: Org1MSP
-    # D:\Git\ki-sdk\crypto-config\peerOrganizations\org1.bookstore.com\users\Admin@org1.bookstore.com
-    # This org's MSP store (absolute path or relative to client.cryptoconfig)
-    cryptoPath:  /mnt/d/gopath/src/ki-sdk/crypto-config/peerOrganizations/org1.bookstore.com/users/Admin@org1.bookstore.com/msp
-
+    cryptoPath: /mnt/d/gopath/src/ki-sdk/crypto-config/peerOrganizations/org1.bookstore.com/users/Admin@org1.bookstore.com/msp
     peers:
       - peer0.org1.bookstore.com
       - peer1.org1.bookstore.com
-    users:
-      Admin:
-        key:
-          pem: |
-		      	-----BEGIN PRIVATE KEY-----
-			      MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg4kFiNSxOBlyYe00x
-			      OJvqA4zm6W+QmnpjK5Dz7mI1egShRANCAARtT/emljUCPVSpZ2wSYFvHRigshd4a
-			      Qp5FhczsDiAvUOSDkOojWmw3wyilw4jmH4M4Nc9XoqcAZPMLg7mhoQmR
-			      -----END PRIVATE KEY-----
-
-        cert:
-          pem: |
-			      -----BEGIN CERTIFICATE-----
-			      MIICMDCCAdagAwIBAgIQX9XzskkMgP+aVfNL5VGwXzAKBggqhkjOPQQDAjB3MQsw
-			      CQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy
-			      YW5jaXNjbzEbMBkGA1UEChMSb3JnMS5ib29rc3RvcmUuY29tMR4wHAYDVQQDExVj
-			      YS5vcmcxLmJvb2tzdG9yZS5jb20wHhcNMjAwNTIwMDgyMTAwWhcNMzAwNTE4MDgy
-			      MTAwWjBuMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UE
-			      BxMNU2FuIEZyYW5jaXNjbzEPMA0GA1UECxMGY2xpZW50MSEwHwYDVQQDDBhBZG1p
-			      bkBvcmcxLmJvb2tzdG9yZS5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAARt
-			      T/emljUCPVSpZ2wSYFvHRigshd4aQp5FhczsDiAvUOSDkOojWmw3wyilw4jmH4M4
-			      Nc9XoqcAZPMLg7mhoQmRo00wSzAOBgNVHQ8BAf8EBAMCB4AwDAYDVR0TAQH/BAIw
-			      ADArBgNVHSMEJDAigCDPPcMwRIyHSN7DETbCGylEAmD/F94UQTZs0TyObnzYLzAK
-			      BggqhkjOPQQDAgNIADBFAiEAtyW0PxbUwQqcLiSjVT0JfllF/iYPaUNgWY988afT
-			      1FgCIB0CsaDau/YZN+Uf47aO89uym6MfsuArFmDWmZlWgFsn
-			      -----END CERTIFICATE----- 
 
   Org2:
     mspid: Org2MSP
