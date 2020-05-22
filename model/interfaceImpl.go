@@ -8,6 +8,7 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config"
+	packager "github.com/hyperledger/fabric-sdk-go/pkg/fab/ccpackager/gopackager"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
 	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/common/cauthdsl"
 	"github.com/pkg/errors"
@@ -240,7 +241,7 @@ func (swp *SDK) InstantiateChaincode(targetPeer string) error {
 	// TODO init
 	ccInitArgs := [][]byte{[]byte("init"), []byte(" ")}
 
-	request := swp.InstantiateCCRequest{
+	request := resmgmt.InstantiateCCRequest{
 		Name:    s.ChainCodeID,
 		Path:    s.ChaincodeGoPath,
 		Version: s.ChainCodeVersion,

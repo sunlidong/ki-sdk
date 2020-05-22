@@ -14,24 +14,24 @@ import (
 @ NO 001
 */
 type SDK struct {
-	OrdererID       string
-	ChaincodeGoPath string
-	GoPath          string
-	Version         string
-	ConfigFile      string //sdk配置文件所在路径
-	ChannelID       string //应用通道名称
-	ChannelConfig   string //应用通道交易配置文件所在路径
-	OrgAdmin        string // 组织管理员名称
-	OrgName         string //组织名称
-	Initialized     bool   //是否初始化
-	Orgmsp          []string
-	Args            string
-	UserName        string
-	ChainCodeID     string
-	MspClient       *msp.Client
-	SDK             *fabsdk.FabricSDK //SDK实例
-	Client          *channel.Client   //cli
-	Resmgmt         *resmgmt.Client   //admian
+	OrdererID        string
+	ChaincodeGoPath  string
+	GoPath           string
+	ChainCodeVersion string
+	ConfigFile       string //sdk配置文件所在路径
+	ChannelID        string //应用通道名称
+	ChannelConfig    string //应用通道交易配置文件所在路径
+	OrgAdmin         string // 组织管理员名称
+	OrgName          string //组织名称
+	Initialized      bool   //是否初始化
+	Orgmsp           []string
+	Args             string
+	UserName         string
+	ChainCodeID      string
+	MspClient        *msp.Client
+	SDK              *fabsdk.FabricSDK //SDK实例
+	Client           *channel.Client   //cli
+	Resmgmt          *resmgmt.Client   //admian
 }
 
 /**
