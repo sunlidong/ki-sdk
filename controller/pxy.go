@@ -134,7 +134,7 @@ func ArgsSplicing(arg []string) (res [][]byte, err error) {
 func GinBack(c *g.Context,data interface,status string){
 
 	c.JSON(http.StatusOK,
-		gin.H{
+		g.H{
 			"status": status,
 			"data":   data,
 		})
@@ -144,7 +144,7 @@ func GinBack(c *g.Context,data interface,status string){
 
 
 //	gin 
-func queryInstalledChaincode(c *g.Context)(result make(map[string][]string, err error) {
+func queryInstalledChaincode(c *g.Context)(result map[string][]string, err error) {
 
 	log.Println("查询peer节点已经安装的链码---------------------------------func ")
 	
