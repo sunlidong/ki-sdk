@@ -11,11 +11,11 @@ import (
 
 	m "ki-sdk/model"
 
-	"github.com/gin-gonic/gin"
+	g "github.com/gin-gonic/gin"
 )
 
 // 数据上链
-func UpLoad(c *gin.Context) {
+func UpLoad(c *g.Context) {
 	//
 	// 数据上链
 	res, err := upLoad(c)
@@ -39,7 +39,7 @@ func UpLoad(c *gin.Context) {
 }
 
 // 数据上链
-func upLoad(c *gin.Context) (result string, err error) {
+func upLoad(c *g.Context) (result string, err error) {
 
 	fmt.Println("数据上链操作")
 
@@ -62,14 +62,14 @@ func upLoad(c *gin.Context) (result string, err error) {
 }
 
 //gin// 数据查询
-func Load(c *gin.Context) {
+func Load(c *g.Context) {
 
 	fmt.Println("数据查询操作")
 }
 
 //
 // 序列化 数据
-func Serialize(c *gin.Context) (data *ChainDb, err error) {
+func Serialize(c *g.Context) (data *ChainDb, err error) {
 
 	if err := c.ShouldBindJSON(&data); err != nil {
 		return data, err
@@ -124,4 +124,53 @@ func ArgsSplicing(arg []string) (res [][]byte, err error) {
 	} else {
 		return nil, errors.New("arg is <= 0")
 	}
+}
+
+
+
+
+
+//  return the
+func GinBack(data interface,status string){
+
+	c.JSON(http.StatusOK,
+		gin.H{
+			"status": status,
+			"data":   data,
+		})
+	return
+
+}
+
+
+
+//	gin 
+func queryInstalledChaincode(c *g.Context)(result make(map[string][]string, err error) {
+
+	log.Println("查询peer节点已经安装的链码---------------------------------func ")
+	
+	 data :=PeerInstallChaincode{}
+	  smap:=make(map[string][]string)
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		return "", err
+	}
+
+	//  调用 model 查询  peer 节点  
+	if len(data)>0{
+		for k,v :=range data{
+		res,err2:=	m.App.SDK.GetInstalledChaincode(v)
+		if err2!=nil{
+			log.Println("调用 model 查询  peer 节点:",err)  
+		}else{
+			smap[v] = res
+		}
+		}
+	}else{
+		return  "",errors.New("data len is 0")
+	}
+	
+	return smap, nil
+
+
 }
