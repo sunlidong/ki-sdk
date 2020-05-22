@@ -221,7 +221,7 @@ func (swp *SDK) InstantiateChaincode(targetPeer string) error {
 	if err != nil {
 		return err
 	}
-	newCC = swp.ChainCodeID + .ChainCodeVersion
+	newCC = swp.ChainCodeID + swp.ChainCodeVersion
 	for _, v := range list {
 		if newCC == v {
 			fmt.Println("实例化失败，名为：" + newCC + " 的chaincode已经实例化在节点" + targetPeer)
@@ -241,19 +241,19 @@ func (swp *SDK) InstantiateChaincode(targetPeer string) error {
 	ccInitArgs := [][]byte{[]byte("init"), []byte(" ")}
 
 	request := swp.InstantiateCCRequest{
-		Name: s.ChainCodeID,
-		Path: s.ChaincodeGoPath, 
+		Name:    s.ChainCodeID,
+		Path:    s.ChaincodeGoPath,
 		Version: s.ChainCodeVersion,
-		Args: ccInitArgs, 
-		Policy: ccPolicy,
-		}
+		Args:    ccInitArgs,
+		Policy:  ccPolicy,
+	}
 
 	// opts := requestOptions{Targets: peers}
 	resp, err := resmgmt.InstantiateCC(
 		swp.ChannelID,
-		request /*,resmgmt.WithOrdererEndpoint("orderer0.antifake.com") */,
+		request, /*,resmgmt.WithOrdererEndpoint("orderer0.antifake.com") */
 		resmgmt.WithTargetEndpoints(targetPeer),
-		)
+	)
 	if err != nil || resp.TransactionID == "" {
 		return errors.Errorf("实例化失败，名为%s的chaincode实例化到节点%s上失败，错误为：%s", newCC, targetPeer, err)
 	}
@@ -298,25 +298,25 @@ func (swp *SDK) UpgradeChaincode(targetPeer string) error {
 			"eastMSP",
 			"BoanMSP",
 			"NorthMSP",
-			})
+		})
 
-			// TODO 
+	// TODO
 	ccInitArgs := [][]byte{[]byte("init"), []byte(" ")}
-	
+
 	ccUpgradeRequest := resmgmt.UpgradeCCRequest{
-		Name: swp.ChainCodeID,
-		Path: swp.ChaincodeGoPath,
+		Name:    swp.ChainCodeID,
+		Path:    swp.ChaincodeGoPath,
 		Version: swp.ChainCodeVersion,
-		Args: ccInitArgs,
-		Policy: ccPolicy,
-		}
+		Args:    ccInitArgs,
+		Policy:  ccPolicy,
+	}
 
 	resp, err := swp.Resmgmt.UpgradeCC(
 		swp.ChannelID,
 		ccUpgradeRequest,
 		resmgmt.WithTargetEndpoints(targetPeer),
-		)
-		
+	)
+
 	if err != nil || resp.TransactionID == "" {
 		return errors.Errorf("升级chaincode失败，名为%s的chaincode升级到节点%s上失败，错误为：%s", newCC, targetPeer, err)
 	}
