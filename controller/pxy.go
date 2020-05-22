@@ -9,6 +9,8 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
 
+	m "ki-sdk/model"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -50,10 +52,10 @@ func upLoad(c *gin.Context) (result string, err error) {
 	//
 	log.Println("序列化成功：", data)
 	//数据上链
-	result, err := uploadByChaincode(data.ChannelName, data.ChainCodeName, data.FunctionName, data.Data)
+	result, err1 := uploadByChaincode(data.ChannelName, data.ChainCodeName, data.FunctionName, data.Data)
 	// 调用上链
 	if err != nil {
-		log.Println("数据上链", err)
+		log.Println("数据上链", err1)
 	}
 
 	return result, err
@@ -94,7 +96,7 @@ func uploadByChaincode(channelName string, chaincodeName string, funcName string
 	}
 
 	// 上链
-	response, err := App.SDK.client.Execute(request,
+	response, err := m.App.SDK.client.Execute(request,
 		channel.WithRetry(retry.DefaultChannelOpts),
 		channel.WithTargetEndpoints(peerlist...),
 	)
@@ -112,7 +114,7 @@ func uploadByChaincode(channelName string, chaincodeName string, funcName string
 }
 
 // 参数拼接
-func argsSplicing(arg []string) (res [][]byte, err error) {
+func ArgsSplicing(arg []string) (res [][]byte, err error) {
 	//
 	if len(arg) > 0 {
 		for k, _ := range arg {
