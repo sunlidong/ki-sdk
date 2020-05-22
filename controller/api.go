@@ -17,6 +17,6 @@ func QueryInstalledChaincode(c *gin.Context) {
 	} else {
 		s = "succes"
 	}
-	GinBack(res, s)
+	GinBack(c, res, s)
 	return
 }

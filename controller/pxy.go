@@ -131,7 +131,7 @@ func ArgsSplicing(arg []string) (res [][]byte, err error) {
 
 
 //  return the
-func GinBack(data interface,status string){
+func GinBack(c *g.Context,data interface,status string){
 
 	c.JSON(http.StatusOK,
 		gin.H{
