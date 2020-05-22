@@ -48,7 +48,7 @@ type Application struct {
 const (
 	ConfigFile  = "./config/org1_peer0_admin.yaml"
 	ChannelID   = "bookchannel"
-	OrgName     = "org1"
+	OrgName     = "Org1"
 	ChainCodeID = "bookstorechain"
 	OrgAdmin    = "Admin"
 	UserName    = "Admin"

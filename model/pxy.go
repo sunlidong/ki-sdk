@@ -54,10 +54,10 @@ func initsdk() *SDK {
 	fSetUp := SDK{
 		ConfigFile:  ConfigFile,
 		ChannelID:   ChannelID,
-		OrgAdmin:    OrgName,
+		OrgAdmin:    OrgAdmin,
 		ChainCodeID: ChainCodeID,
 		OrgName:     OrgName,
-		UserName:    OrgAdmin,
+		UserName:    UserName,
 		Version:     Version,
 		OrdererID:   OrdererID,
 	}
