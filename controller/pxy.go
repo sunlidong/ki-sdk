@@ -147,12 +147,12 @@ func queryInstalledChaincode(c *g.Context) (result map[string][]string, err erro
 	smap := make(map[string][]string)
 
 	if err := c.ShouldBindJSON(&data); err != nil {
-		return "", err
+		return nil, err
 	}
 
 	//  调用 model 查询  peer 节点
-	if len(data) > 0 {
-		for k, v := range data {
+	if len(data.ChannelName) > 0 {
+		for k, v := range data.ChannelName {
 			res, err2 := m.App.SDK.GetInstalledChaincode(v)
 			if err2 != nil {
 				log.Println("调用 model 查询  peer 节点:", err)
@@ -161,7 +161,7 @@ func queryInstalledChaincode(c *g.Context) (result map[string][]string, err erro
 			}
 		}
 	} else {
-		return "", errors.New("data len is 0")
+		return nil, errors.New("data len is 0")
 	}
 
 	return smap, nil
