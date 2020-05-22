@@ -52,7 +52,7 @@ func upLoad(c *gin.Context) (result string, err error) {
 	//
 	log.Println("序列化成功：", data)
 	//数据上链
-	result, err1 := uploadByChaincode(data.ChannelName, data.ChainCodeName, data.FunctionName, data.Data)
+	result, err1 := UploadByChaincode(data.ChannelName, data.ChainCodeName, data.FunctionName, data.Data)
 	// 调用上链
 	if err != nil {
 		log.Println("数据上链", err1)
@@ -78,7 +78,7 @@ func Serialize(c *gin.Context) (data *ChainDb, err error) {
 }
 
 // 数据上链
-func uploadByChaincode(channelName string, chaincodeName string, funcName string, args []string) (result string, err error) {
+func UploadByChaincode(channelName string, chaincodeName string, funcName string, args []string) (result string, err error) {
 	//
 
 	var peerlist []string
