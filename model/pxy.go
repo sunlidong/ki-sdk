@@ -52,14 +52,14 @@ func InitSDK() error {
 func initsdk() *SDK {
 	// 01. 声明sdk结构体对象
 	fSetUp := SDK{
-		ConfigFile:  ConfigFile,
-		ChannelID:   ChannelID,
-		OrgAdmin:    OrgAdmin,
-		ChainCodeID: ChainCodeID,
-		OrgName:     OrgName,
-		UserName:    UserName,
-		Version:     Version,
-		OrdererID:   OrdererID,
+		ConfigFile:       ConfigFile,
+		ChannelID:        ChannelID,
+		OrgAdmin:         OrgAdmin,
+		ChainCodeID:      ChainCodeID,
+		OrgName:          OrgName,
+		UserName:         UserName,
+		ChainCodeVersion: Version,
+		OrdererID:        OrdererID,
 	}
 
 	App = Application{

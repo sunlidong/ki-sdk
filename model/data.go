@@ -28,6 +28,7 @@ type SDK struct {
 	ChaincodePath    string //
 	Args             string
 	UserName         string
+	Version          starting
 	ChainCodeID      string
 	MspClient        *msp.Client
 	SDK              *fabsdk.FabricSDK //SDK实例
