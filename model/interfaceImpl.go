@@ -242,9 +242,9 @@ func (swp SDK) InstantiateChaincode(targetPeer string) error {
 	ccInitArgs := [][]byte{[]byte("init"), []byte(" ")}
 
 	request := resmgmt.InstantiateCCRequest{
-		Name:    swpChainCodeID,
-		Path:    swpChaincodeGoPath,
-		Version: swpChainCodeVersion,
+		Name:    swp.ChainCodeID,
+		Path:    swp.ChaincodeGoPath,
+		Version: swp.ChainCodeVersion,
 		Args:    ccInitArgs,
 		Policy:  ccPolicy,
 	}
@@ -281,7 +281,7 @@ func (swp SDK) UpgradeChaincode(targetPeer string) error {
 		return nil
 	}
 	// 查询已经实例化的CC
-	list, err = swp.GetInstantiatedChaincode(s.ChannelID, targetPeer)
+	list, err = swp.GetInstantiatedChaincode(swp.ChannelID, targetPeer)
 	if err != nil {
 		return err
 	}

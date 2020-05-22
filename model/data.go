@@ -25,6 +25,7 @@ type SDK struct {
 	OrgName          string //组织名称
 	Initialized      bool   //是否初始化
 	Orgmsp           []string
+	ChaincodePath    string //
 	Args             string
 	UserName         string
 	ChainCodeID      string
