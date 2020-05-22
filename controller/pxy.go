@@ -137,8 +137,8 @@ func GinBack(c *g.Context,data interface,status string){
 		gin.H{
 			"status": status,
 			"data":   data,
-		},
-	)
+		})
+		return
 }
 
 
