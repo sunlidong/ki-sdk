@@ -167,3 +167,33 @@ func queryInstalledChaincode(c *g.Context) (result map[string][]string, err erro
 	return smap, nil
 
 }
+
+//	gin
+func queryInstantiatedChaincode(c *g.Context) (result map[string][]string, err error) {
+
+	log.Println("查询peer节点已经安装实例化的链码---------------------------------func ")
+
+	data := PeerInstalledChaincode{}
+	smap := make(map[string][]string)
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		return nil, err
+	}
+
+	//  调用 model 查询  peer 节点
+	if len(data.PeerName) > 0 {
+		for _, v := range data.PeerName {
+			res, err2 := m.App.SDK.GetInstantiatedChaincode(data.ChannelName, v)
+			if err2 != nil {
+				log.Println("调用 model 查询  peer 节点:", err)
+			} else {
+				smap[v] += res
+			}
+		}
+	} else {
+		return nil, errors.New("data len is 0")
+	}
+
+	return smap, nil
+
+}
