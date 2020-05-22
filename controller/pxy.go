@@ -187,7 +187,7 @@ func queryInstantiatedChaincode(c *g.Context) (result map[string][]string, err e
 			if err2 != nil {
 				log.Println("调用 model 查询  peer 节点:", err)
 			} else {
-				smap[v] += res
+				smap[string(k)+v] = res
 			}
 		}
 	} else {
