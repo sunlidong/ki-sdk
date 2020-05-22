@@ -96,7 +96,7 @@ func UploadByChaincode(channelName string, chaincodeName string, funcName string
 	}
 
 	// 上链
-	response, err := m.App.SDK.client.Execute(request,
+	response, err := m.App.SDK.Client.Execute(request,
 		channel.WithRetry(retry.DefaultChannelOpts),
 		channel.WithTargetEndpoints(peerlist...),
 	)
