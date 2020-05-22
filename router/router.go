@@ -42,6 +42,7 @@ func InitRouter() *g.Engine {
 		// channel -----------------------------  列表
 		{
 			cha.POST("/queryInstalledChaincode", c.QueryInstalledChaincode)
+			cha.POST("/queryInstantiatedChaincode", c.QueryInstantiatedChaincode)
 		}
 
 		return router
