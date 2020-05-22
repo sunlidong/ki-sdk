@@ -30,8 +30,8 @@ type SDK struct {
 	ChainCodeID     string
 	MspClient       *msp.Client
 	SDK             *fabsdk.FabricSDK //SDK实例
-	client          *channel.Client   //cli
-	resmgmt         *resmgmt.Client   //admian
+	Client          *channel.Client   //cli
+	Resmgmt         *resmgmt.Client   //admian
 }
 
 /**

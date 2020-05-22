@@ -44,7 +44,7 @@ func (setup *SDK) CreateresMgmtClient() error {
 		return fmt.Errorf("创建资源管理客户端失败:%v", err)
 	}
 	// 04. 参数转换至结构体对象 setup
-	setup.resmgmt = resMgmtClient
+	setup.Resmgmt = resMgmtClient
 	// 05. 返回
 	return nil
 }
@@ -69,7 +69,7 @@ func (setup *SDK) CreateChannelCli() error {
 	}
 
 	// 04. 参数转换至结构体对象 setup
-	setup.client = channelCli
+	setup.Client = channelCli
 	// 05. 返回
 	return nil
 }
