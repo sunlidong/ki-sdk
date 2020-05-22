@@ -57,7 +57,7 @@ func (swp *SDK) CreateresMgmtClient() error {
 @ 初始化 channel cli
 @
 */
-func (swp *SDK) CreateChannelCli() error {
+func (swp SDK) CreateChannelCli() error {
 
 	// 01. 封装数据Channle cli
 	clientContext := swp.SDK.ChannelContext(
@@ -82,7 +82,7 @@ func (swp *SDK) CreateChannelCli() error {
 @ 初始化 msp cli
 @
 */
-func (swp *SDK) CreateMspClient() error {
+func (swp SDK) CreateMspClient() error {
 
 	// 01. 创建资源管理客户端上下文
 	clientCTX := swp.SDK.Context(
@@ -107,7 +107,7 @@ func (swp *SDK) CreateMspClient() error {
 }
 
 //查询peer已经安装的chaincode
-func (swp *SDK) GetInstalledChaincode(targetPeer string) ([]string, error) {
+func (swp SDK) GetInstalledChaincode(targetPeer string) ([]string, error) {
 
 	// 查询已经安装的CC
 	ccInstalledRes, err := swp.Resmgmt.QueryInstalledChaincodes(resmgmt.WithTargetEndpoints(targetPeer))
@@ -128,7 +128,7 @@ func (swp *SDK) GetInstalledChaincode(targetPeer string) ([]string, error) {
 }
 
 //查询peer已经实例化的chaincode
-func (swp *SDK) GetInstantiatedChaincode(channelID, targetPeer string) ([]string, error) {
+func (swp SDK) GetInstantiatedChaincode(channelID, targetPeer string) ([]string, error) {
 
 	// 查询已经实例化的CC
 	ccInstantiatedRes, err := swp.Resmgmt.QueryInstantiatedChaincodes(channelID, resmgmt.WithTargetEndpoints(targetPeer))
@@ -148,7 +148,7 @@ func (swp *SDK) GetInstantiatedChaincode(channelID, targetPeer string) ([]string
 }
 
 // 向指定peer上安装chaincode
-func (swp *SDK) InstallChaincode(targetPeer string) error {
+func (swp SDK) InstallChaincode(targetPeer string) error {
 
 	// 查询已经安装的CC
 	list, err := swp.GetInstalledChaincode(targetPeer)
@@ -197,7 +197,7 @@ func (swp *SDK) InstallChaincode(targetPeer string) error {
 }
 
 // 实例化chaincode
-func (swp *SDK) InstantiateChaincode(targetPeer string) error {
+func (swp SDK) InstantiateChaincode(targetPeer string) error {
 
 	// 查询已经安装的CC
 	list, err := swp.GetInstalledChaincode(targetPeer)
@@ -263,7 +263,7 @@ func (swp *SDK) InstantiateChaincode(targetPeer string) error {
 }
 
 // 升级chaincode
-func (swp *SDK) UpgradeChaincode(targetPeer string) error {
+func (swp SDK) UpgradeChaincode(targetPeer string) error {
 	// 查询已经安装的CC
 	list, err := swp.GetInstalledChaincode(targetPeer)
 	if err != nil {
