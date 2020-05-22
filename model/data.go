@@ -23,6 +23,7 @@ type SDK struct {
 	ChannelConfig    string //应用通道交易配置文件所在路径
 	OrgAdmin         string // 组织管理员名称
 	OrgName          string //组织名称
+	ChaincodeGoPath  string //
 	Initialized      bool   //是否初始化
 	Orgmsp           []string
 	Args             string

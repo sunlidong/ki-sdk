@@ -218,7 +218,7 @@ func (swp *SDK) InstantiateChaincode(targetPeer string) error {
 		return nil
 	}
 	// 查询已经实例化的CC
-	list, err = swp.GetInstantiatedChaincode(s.ChannelID, targetPeer)
+	list, err = swp.GetInstantiatedChaincode(swp.ChannelID, targetPeer)
 	if err != nil {
 		return err
 	}
@@ -242,15 +242,15 @@ func (swp *SDK) InstantiateChaincode(targetPeer string) error {
 	ccInitArgs := [][]byte{[]byte("init"), []byte(" ")}
 
 	request := resmgmt.InstantiateCCRequest{
-		Name:    s.ChainCodeID,
-		Path:    s.ChaincodeGoPath,
-		Version: s.ChainCodeVersion,
+		Name:    swpChainCodeID,
+		Path:    swpChaincodeGoPath,
+		Version: swpChainCodeVersion,
 		Args:    ccInitArgs,
 		Policy:  ccPolicy,
 	}
 
 	// opts := requestOptions{Targets: peers}
-	resp, err := resmgmt.InstantiateCC(
+	resp, err := swp.Resmgmt.InstantiateCC(
 		swp.ChannelID,
 		request, /*,resmgmt.WithOrdererEndpoint("orderer0.antifake.com") */
 		resmgmt.WithTargetEndpoints(targetPeer),
