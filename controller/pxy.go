@@ -152,7 +152,7 @@ func queryInstalledChaincode(c *g.Context) (result map[string][]string, err erro
 
 	//  调用 model 查询  peer 节点
 	if len(data.PeerName) > 0 {
-		for k, v := range data.PeerName {
+		for _, v := range data.PeerName {
 			res, err2 := m.App.SDK.GetInstalledChaincode(v)
 			if err2 != nil {
 				log.Println("调用 model 查询  peer 节点:", err)
