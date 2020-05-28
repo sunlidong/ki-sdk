@@ -96,6 +96,7 @@ func e2eTest(t *testing.T, sdk *fabsdk.FabricSDK) {
 	if err != nil {
 		t.Fatalf("Failed to create new channel client: %s", err)
 	}
+	log.Println("client", client)
 
 	// existingValue := queryCC(t, client)
 	// ccEvent := moveFunds(t, client)
