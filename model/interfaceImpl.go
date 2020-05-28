@@ -10,7 +10,6 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config"
 	packager "github.com/hyperledger/fabric-sdk-go/pkg/fab/ccpackager/gopackager"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
-	"github.com/hyperledger/fabric/common/cauthdsl"
 	"github.com/pkg/errors"
 )
 
@@ -196,131 +195,131 @@ func (swp SDK) InstallChaincode(targetPeer string) error {
 	return nil
 }
 
-// 实例化chaincode
-func (swp SDK) InstantiateChaincode(targetPeer string) error {
+// // 实例化chaincode
+// func (swp SDK) InstantiateChaincode(targetPeer string) error {
 
-	// 查询已经安装的CC
-	list, err := swp.GetInstalledChaincode(targetPeer)
-	if err != nil {
-		return err
-	}
+// 	// 查询已经安装的CC
+// 	list, err := swp.GetInstalledChaincode(targetPeer)
+// 	if err != nil {
+// 		return err
+// 	}
 
-	installed := false
+// 	installed := false
 
-	newCC := swp.ChainCodeID + swp.ChainCodeVersion
-	for _, v := range list {
-		if newCC == v {
-			installed = true
-		}
-	}
-	if !installed {
-		fmt.Println("实例化失败，名为：" + newCC + " 的chaincode还没有安装在节点" + targetPeer)
-		return nil
-	}
-	// 查询已经实例化的CC
-	list, err = swp.GetInstantiatedChaincode(swp.ChannelID, targetPeer)
-	if err != nil {
-		return err
-	}
-	newCC = swp.ChainCodeID + swp.ChainCodeVersion
-	for _, v := range list {
-		if newCC == v {
-			fmt.Println("实例化失败，名为：" + newCC + " 的chaincode已经实例化在节点" + targetPeer)
-			return nil
-		}
-	}
+// 	newCC := swp.ChainCodeID + swp.ChainCodeVersion
+// 	for _, v := range list {
+// 		if newCC == v {
+// 			installed = true
+// 		}
+// 	}
+// 	if !installed {
+// 		fmt.Println("实例化失败，名为：" + newCC + " 的chaincode还没有安装在节点" + targetPeer)
+// 		return nil
+// 	}
+// 	// 查询已经实例化的CC
+// 	list, err = swp.GetInstantiatedChaincode(swp.ChannelID, targetPeer)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	newCC = swp.ChainCodeID + swp.ChainCodeVersion
+// 	for _, v := range list {
+// 		if newCC == v {
+// 			fmt.Println("实例化失败，名为：" + newCC + " 的chaincode已经实例化在节点" + targetPeer)
+// 			return nil
+// 		}
+// 	}
 
-	// 这里的参数名是msp名称 不是域名  TODO
-	ccPolicy := cauthdsl.SignedByAnyMember(
-		[]string{
-			"eastMSP",
-			"BoanMSP",
-			"NorthMSP",
-		})
+// 	// 这里的参数名是msp名称 不是域名  TODO
+// 	ccPolicy := cauthdsl.SignedByAnyMember(
+// 		[]string{
+// 			"eastMSP",
+// 			"BoanMSP",
+// 			"NorthMSP",
+// 		})
 
-	// TODO init
-	ccInitArgs := [][]byte{[]byte("init"), []byte(" ")}
+// 	// TODO init
+// 	ccInitArgs := [][]byte{[]byte("init"), []byte(" ")}
 
-	request := resmgmt.InstantiateCCRequest{
-		Name:    swp.ChainCodeID,
-		Path:    swp.ChaincodeGoPath,
-		Version: swp.ChainCodeVersion,
-		Args:    ccInitArgs,
-		Policy:  ccPolicy,
-	}
+// 	request := resmgmt.InstantiateCCRequest{
+// 		Name:    swp.ChainCodeID,
+// 		Path:    swp.ChaincodeGoPath,
+// 		Version: swp.ChainCodeVersion,
+// 		Args:    ccInitArgs,
+// 		Policy:  ccPolicy,
+// 	}
 
-	// opts := requestOptions{Targets: peers}
-	resp, err := swp.Resmgmt.InstantiateCC(
-		swp.ChannelID,
-		request, /*,resmgmt.WithOrdererEndpoint("orderer0.antifake.com") */
-		resmgmt.WithTargetEndpoints(targetPeer),
-	)
-	if err != nil || resp.TransactionID == "" {
-		return errors.Errorf("实例化失败，名为%s的chaincode实例化到节点%s上失败，错误为：%s", newCC, targetPeer, err)
-	}
-	fmt.Printf("实例化成功，实例化名为%s的chaincode成功到节点%s上成功\n", newCC, targetPeer)
-	return nil
-}
+// 	// opts := requestOptions{Targets: peers}
+// 	resp, err := swp.Resmgmt.InstantiateCC(
+// 		swp.ChannelID,
+// 		request, /*,resmgmt.WithOrdererEndpoint("orderer0.antifake.com") */
+// 		resmgmt.WithTargetEndpoints(targetPeer),
+// 	)
+// 	if err != nil || resp.TransactionID == "" {
+// 		return errors.Errorf("实例化失败，名为%s的chaincode实例化到节点%s上失败，错误为：%s", newCC, targetPeer, err)
+// 	}
+// 	fmt.Printf("实例化成功，实例化名为%s的chaincode成功到节点%s上成功\n", newCC, targetPeer)
+// 	return nil
+// }
 
-// 升级chaincode
-func (swp SDK) UpgradeChaincode(targetPeer string) error {
-	// 查询已经安装的CC
-	list, err := swp.GetInstalledChaincode(targetPeer)
-	if err != nil {
-		return err
-	}
-	installed := false
-	newCC := swp.ChainCodeID + swp.ChainCodeVersion
-	for _, v := range list {
-		if newCC == v {
-			installed = true
-		}
-	}
-	if !installed {
-		fmt.Println("升级chaincode失败，名为：" + newCC + " 的chaincode还没有安装在节点" + targetPeer)
-		return nil
-	}
-	// 查询已经实例化的CC
-	list, err = swp.GetInstantiatedChaincode(swp.ChannelID, targetPeer)
-	if err != nil {
-		return err
-	}
-	newCC = swp.ChainCodeID + swp.ChainCodeVersion
-	for _, v := range list {
-		if newCC == v {
-			fmt.Println("升级chaincode失败，名为：" + newCC + " 的chaincode已经实例化在节点" + targetPeer)
-			return nil
-		}
-	}
+// // 升级chaincode
+// func (swp SDK) UpgradeChaincode(targetPeer string) error {
+// 	// 查询已经安装的CC
+// 	list, err := swp.GetInstalledChaincode(targetPeer)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	installed := false
+// 	newCC := swp.ChainCodeID + swp.ChainCodeVersion
+// 	for _, v := range list {
+// 		if newCC == v {
+// 			installed = true
+// 		}
+// 	}
+// 	if !installed {
+// 		fmt.Println("升级chaincode失败，名为：" + newCC + " 的chaincode还没有安装在节点" + targetPeer)
+// 		return nil
+// 	}
+// 	// 查询已经实例化的CC
+// 	list, err = swp.GetInstantiatedChaincode(swp.ChannelID, targetPeer)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	newCC = swp.ChainCodeID + swp.ChainCodeVersion
+// 	for _, v := range list {
+// 		if newCC == v {
+// 			fmt.Println("升级chaincode失败，名为：" + newCC + " 的chaincode已经实例化在节点" + targetPeer)
+// 			return nil
+// 		}
+// 	}
 
-	// 这里的参数名是msp名称 不是域名
-	ccPolicy := cauthdsl.SignedByAnyMember(
-		[]string{
-			"eastMSP",
-			"BoanMSP",
-			"NorthMSP",
-		})
+// 	// 这里的参数名是msp名称 不是域名
+// 	ccPolicy := cauthdsl.SignedByAnyMember(
+// 		[]string{
+// 			"eastMSP",
+// 			"BoanMSP",
+// 			"NorthMSP",
+// 		})
 
-	// TODO
-	ccInitArgs := [][]byte{[]byte("init"), []byte(" ")}
+// 	// TODO
+// 	ccInitArgs := [][]byte{[]byte("init"), []byte(" ")}
 
-	ccUpgradeRequest := resmgmt.UpgradeCCRequest{
-		Name:    swp.ChainCodeID,
-		Path:    swp.ChaincodeGoPath,
-		Version: swp.ChainCodeVersion,
-		Args:    ccInitArgs,
-		Policy:  ccPolicy,
-	}
+// 	ccUpgradeRequest := resmgmt.UpgradeCCRequest{
+// 		Name:    swp.ChainCodeID,
+// 		Path:    swp.ChaincodeGoPath,
+// 		Version: swp.ChainCodeVersion,
+// 		Args:    ccInitArgs,
+// 		Policy:  ccPolicy,
+// 	}
 
-	resp, err := swp.Resmgmt.UpgradeCC(
-		swp.ChannelID,
-		ccUpgradeRequest,
-		resmgmt.WithTargetEndpoints(targetPeer),
-	)
+// 	resp, err := swp.Resmgmt.UpgradeCC(
+// 		swp.ChannelID,
+// 		ccUpgradeRequest,
+// 		resmgmt.WithTargetEndpoints(targetPeer),
+// 	)
 
-	if err != nil || resp.TransactionID == "" {
-		return errors.Errorf("升级chaincode失败，名为%s的chaincode升级到节点%s上失败，错误为：%s", newCC, targetPeer, err)
-	}
-	fmt.Printf("升级chaincode成功，实例化名为%s的chaincode成功到节点%s上成功\n", newCC, targetPeer)
-	return nil
-}
+// 	if err != nil || resp.TransactionID == "" {
+// 		return errors.Errorf("升级chaincode失败，名为%s的chaincode升级到节点%s上失败，错误为：%s", newCC, targetPeer, err)
+// 	}
+// 	fmt.Printf("升级chaincode成功，实例化名为%s的chaincode成功到节点%s上成功\n", newCC, targetPeer)
+// 	return nil
+// }
