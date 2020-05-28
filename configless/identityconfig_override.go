@@ -4,7 +4,6 @@ Copyright SecureKey Technologies Inc. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 
-
 package configless
 
 import (
@@ -24,29 +23,29 @@ import (
 var (
 
 	// creating instances of each interface to be referenced in the integration tests:
-	clientImpl              = &exampleClient{}
-	caConfigImpl            = &exampleCaConfig{}
-	caServerCertsImpl       = &exampleCaServerCerts{}
-	caClientKeyImpl         = &exampleCaClientKey{}
-	caClientCertImpl        = &exampleCaClientCert{}
-	caKeyStorePathImpl      = &exampleCaKeyStorePath{}
-	credentialStorePathImpl = &exampleCredentialStorePath{}
+	ClientImpl              = &ExampleClient{}
+	CaConfigImpl            = &ExampleCaConfig{}
+	CaServerCertsImpl       = &ExampleCaServerCerts{}
+	CaClientKeyImpl         = &ExampleCaClientKey{}
+	CaClientCertImpl        = &ExampleCaClientCert{}
+	CaKeyStorePathImpl      = &ExampleCaKeyStorePath{}
+	CredentialStorePathImpl = &ExampleCaKeyStorePath{}
 
-	identityConfigImpls = []interface{}{
-		clientImpl,
-		caConfigImpl,
-		caServerCertsImpl,
-		caClientKeyImpl,
-		caClientCertImpl,
-		caKeyStorePathImpl,
-		credentialStorePathImpl,
+	IdentityConfigImpls = []interface{}{
+		ClientImpl,
+		CaConfigImpl,
+		CaServerCertsImpl,
+		CaClientKeyImpl,
+		CaClientCertImpl,
+		CaKeyStorePathImpl,
+		CredentialStorePathImpl,
 	}
 )
 
-type exampleClient struct {
+type ExampleClient struct {
 }
 
-func (m *exampleClient) Client() *msp.ClientConfig {
+func (m *ExampleClient) Client() *msp.ClientConfig {
 
 	return &msp.ClientConfig{
 		Organization:    strings.ToLower(client.Organization),
@@ -58,9 +57,9 @@ func (m *exampleClient) Client() *msp.ClientConfig {
 	}
 }
 
-type exampleCaConfig struct{}
+type ExampleCaConfig struct{}
 
-func (m *exampleCaConfig) CAConfig(org string) (*msp.CAConfig, bool) {
+func (m *ExampleCaConfig) CAConfig(org string) (*msp.CAConfig, bool) {
 	return getCAConfig(&networkConfig, org)
 }
 
@@ -141,9 +140,9 @@ func getCAConfig(networkConfig *fab.NetworkConfig, org string) (*msp.CAConfig, b
 	return mspCAConfig, true
 }
 
-type exampleCaServerCerts struct{}
+type ExampleCaServerCerts struct{}
 
-func (m *exampleCaServerCerts) CAServerCerts(org string) ([][]byte, bool) {
+func (m *ExampleCaServerCerts) CAServerCerts(org string) ([][]byte, bool) {
 	caConfig, ok := getCAConfig(&networkConfig, org)
 	if !ok {
 		return nil, false
@@ -152,9 +151,9 @@ func (m *exampleCaServerCerts) CAServerCerts(org string) ([][]byte, bool) {
 	return caConfig.TLSCAServerCerts, true
 }
 
-type exampleCaClientKey struct{}
+type ExampleCaClientKey struct{}
 
-func (m *exampleCaClientKey) CAClientKey(org string) ([]byte, bool) {
+func (m *ExampleCaClientKey) CAClientKey(org string) ([]byte, bool) {
 	caConfig, ok := getCAConfig(&networkConfig, org)
 	if !ok {
 		return nil, false
@@ -163,9 +162,9 @@ func (m *exampleCaClientKey) CAClientKey(org string) ([]byte, bool) {
 	return caConfig.TLSCAClientKey, true
 }
 
-type exampleCaClientCert struct{}
+type ExampleCaClientCert struct{}
 
-func (m *exampleCaClientCert) CAClientCert(org string) ([]byte, bool) {
+func (m *ExampleCaClientCert) CAClientCert(org string) ([]byte, bool) {
 	caConfig, ok := getCAConfig(&networkConfig, org)
 	if !ok {
 		return nil, false
@@ -174,9 +173,9 @@ func (m *exampleCaClientCert) CAClientCert(org string) ([]byte, bool) {
 	return caConfig.TLSCAClientCert, true
 }
 
-type exampleCaKeyStorePath struct{}
+type ExampleCaKeyStorePath struct{}
 
-func (m *exampleCaKeyStorePath) CAKeyStorePath() string {
+func (m *ExampleCaKeyStorePath) CAKeyStorePath() string {
 	return "/tmp/msp"
 }
 
