@@ -73,14 +73,14 @@ func SetupAndRuning(createChannel bool, configOpt core.ConfigProvider, sdkOpts .
 	// 	//If it is a local test then add entity mapping to config backend to parse URLs
 	// 	configOpt = configless.AddLocalEntityMapping(configOpt)
 	// }
-	configOpt = configless.AddLocalEntityMapping(configOpt)
+	configOpt := configless.AddLocalEntityMapping(configOpt)
 
 	sdk, err := fabsdk.New(configOpt, sdkOpts...)
 	if err != nil {
 		log.Printf("Failed to create new SDK: %s", err)
 	}
 	defer sdk.Close()
-	log.Println("init------------------------------------")
+	log.Println("init------------------------------------", sdk)
 
 	// if createChannel {
 	// 	createChannelAndCC(t, sdk)
