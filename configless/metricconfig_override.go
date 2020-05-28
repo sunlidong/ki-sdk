@@ -36,7 +36,7 @@ var (
 	}
 )
 
-type exampleOperation struct{}
+type ExampleOperation struct{}
 
 //OperationCfg overrides MetricsConfig's OperationConfig function which returns the operations system config
 func (m *ExampleOperation) OperationCfg() cfg.OperationConfig {
