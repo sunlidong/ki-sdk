@@ -12,61 +12,61 @@ package configless
 
 var (
 	// creating instances of each interface to be referenced in the integration tests:
-	isSecurityEnabledImpl       = &exampleIsSecurityEnabled{}
-	securityAlgorithmImpl       = &exampleSecurityAlgorithm{}
-	securityLevelImpl           = &exampleSecurityLevel{}
-	securityProviderImpl        = &exampleSecurityProvider{}
-	softVerifyImpl              = &exampleSoftVerify{}
-	securityProviderLibPathImpl = &exampleSecurityProviderLibPath{}
-	securityProviderPinImpl     = &exampleSecurityProviderPin{}
-	securityProviderLabelImpl   = &exampleSecurityProviderLabel{}
-	exampleKeyStorePathImpl     = &exampleKeyStorePath{}
-	cryptoConfigImpls           = []interface{}{
-		isSecurityEnabledImpl,
-		securityAlgorithmImpl,
-		securityLevelImpl,
-		securityProviderImpl,
-		softVerifyImpl,
-		securityProviderLibPathImpl,
-		securityProviderPinImpl,
-		securityProviderLabelImpl,
-		exampleKeyStorePathImpl,
+	IsSecurityEnabledImpl       = &ExampleIsSecurityEnabled{}
+	SecurityAlgorithmImpl       = &ExampleSecurityAlgorithm{}
+	SecurityLevelImpl           = &ExampleSecurityLevel{}
+	SecurityProviderImpl        = &ExampleSecurityProvider{}
+	SoftVerifyImpl              = &ExampleSoftVerify{}
+	SecurityProviderLibPathImpl = &ExampleSecurityProviderLibPath{}
+	SecurityProviderPinImpl     = &ExampleSecurityProviderPin{}
+	SecurityProviderLabelImpl   = &ExampleSecurityProviderLabel{}
+	ExampleKeyStorePathImpl     = &exampleKeyStorePath{}
+	CryptoConfigImpls           = []interface{}{
+		IsSecurityEnabledImpl,
+		SecurityAlgorithmImpl,
+		SecurityLevelImpl,
+		SecurityProviderImpl,
+		SoftVerifyImpl,
+		SecurityProviderLibPathImpl,
+		SecurityProviderPinImpl,
+		SecurityProviderLabelImpl,
+		ExampleKeyStorePathImpl,
 	}
 )
 
-type exampleIsSecurityEnabled struct{}
+type ExampleIsSecurityEnabled struct{}
 
-func (m *exampleIsSecurityEnabled) IsSecurityEnabled() bool {
+func (m *ExampleIsSecurityEnabled) IsSecurityEnabled() bool {
 	return true
 }
 
-type exampleSecurityAlgorithm struct{}
+type ExampleSecurityAlgorithm struct{}
 
-func (m *exampleSecurityAlgorithm) SecurityAlgorithm() string {
+func (m *ExampleSecurityAlgorithm) SecurityAlgorithm() string {
 	return "SHA2"
 }
 
-type exampleSecurityLevel struct{}
+type ExampleSecurityLevel struct{}
 
-func (m *exampleSecurityLevel) SecurityLevel() int {
+func (m *ExampleSecurityLevel) SecurityLevel() int {
 	return 256
 }
 
-type exampleSecurityProvider struct{}
+type ExampleSecurityProvider struct{}
 
-func (m *exampleSecurityProvider) SecurityProvider() string {
+func (m *ExampleSecurityProvider) SecurityProvider() string {
 	return "sw"
 }
 
-type exampleSoftVerify struct{}
+type ExampleSoftVerify struct{}
 
-func (m *exampleSoftVerify) SoftVerify() bool {
+func (m *ExampleSoftVerify) SoftVerify() bool {
 	return true
 }
 
-type exampleSecurityProviderLibPath struct{}
+type ExampleSecurityProviderLibPath struct{}
 
-func (m *exampleSecurityProviderLibPath) SecurityProviderLibPath() string {
+func (m *ExampleSecurityProviderLibPath) SecurityProviderLibPath() string {
 	return ""
 	// below is an example implementation with real libraries path pulled from /test/fixtures/config/config_e2e_pkcs11.yaml
 	// It is not used in this e2e configless test since it uses config_e2e.yaml
@@ -83,15 +83,15 @@ func (m *exampleSecurityProviderLibPath) SecurityProviderLibPath() string {
 	return lib*/
 }
 
-type exampleSecurityProviderPin struct{}
+type ExampleSecurityProviderPin struct{}
 
-func (m *exampleSecurityProviderPin) SecurityProviderPin() string {
+func (m *ExampleSecurityProviderPin) SecurityProviderPin() string {
 	return ""
 }
 
-type exampleSecurityProviderLabel struct{}
+type ExampleSecurityProviderLabel struct{}
 
-func (m *exampleSecurityProviderLabel) SecurityProviderLabel() string {
+func (m *ExampleSecurityProviderLabel) SecurityProviderLabel() string {
 	return ""
 }
 

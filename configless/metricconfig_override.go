@@ -14,7 +14,7 @@ import "github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/metrics/cfg"
 // the example implementation functions in this file can be overridden to load configs in any way that suits the client application needs
 
 var (
-	operationConfig = cfg.OperationConfig{
+	OperationConfig = cfg.OperationConfig{
 		ListenAddress:      "127.0.0.1:8080",
 		TLSEnabled:         false,
 		TLSCertFile:        "",
