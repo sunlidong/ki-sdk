@@ -77,7 +77,7 @@ func SetupAndRuning(createChannel bool, configOpt core.ConfigProvider, sdkOpts .
 
 	sdk, err := fabsdk.New(configOpt, sdkOpts...)
 	if err != nil {
-		log.Printf("Failed to create new SDK: %s", err)
+		log.Printf("----------------------------Failed to create new SDK: %s", err)
 	}
 	defer sdk.Close()
 	log.Println("init------------------------------------", sdk)
