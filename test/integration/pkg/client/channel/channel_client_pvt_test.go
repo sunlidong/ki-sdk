@@ -19,6 +19,7 @@ import (
 	pb "github.com/hyperledger/fabric-protos-go/peer"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/status"
+	"github.com/hyperledger/fabric/common/cauthdsl"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/multi"
 	"github.com/stretchr/testify/assert"
@@ -27,10 +28,10 @@ import (
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
-	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/common/cauthdsl"
+
+	"ki-sdk/test/integration"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
-	"ki-sdk/test/integration"
 )
 
 // TestPrivateDataPutAndGet tests put and get for private data

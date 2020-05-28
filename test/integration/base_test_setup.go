@@ -27,7 +27,7 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
 	"github.com/hyperledger/fabric-sdk-go/pkg/util/test"
 	"ki-sdk/test/metadata"
-	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/common/cauthdsl"
+	"github.com/hyperledger/fabric/common/cauthdsl"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
 )

@@ -46,7 +46,7 @@ import (
 	msp2 "github.com/hyperledger/fabric-sdk-go/pkg/common/providers/msp"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/resource"
-	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/common/cauthdsl"
+	"github.com/hyperledger/fabric/common/cauthdsl"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
