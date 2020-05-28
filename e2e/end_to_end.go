@@ -14,13 +14,9 @@ import (
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
-	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/msp"
-	"github.com/stretchr/testify/require"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt"
-
-	mspclient "github.com/hyperledger/fabric-sdk-go/pkg/client/msp"
 
 	"ki-sdk/configless"
 
@@ -40,8 +36,8 @@ var (
 )
 
 // Run enables testing an end-to-end scenario against the supplied SDK options
-func Run(t *testing.T, configOpt core.ConfigProvider, sdkOpts ...fabsdk.Option) {
-	setupAndRun(t, true, configOpt, e2eTest, sdkOpts...)
+func Run(configOpt core.ConfigProvider, sdkOpts ...fabsdk.Option) {
+	setupAndRun(true, configOpt, e2eTest, sdkOpts...)
 }
 
 // RunWithoutSetup will execute the same way as Run but without creating a new channel and registering a new CC
@@ -62,7 +58,7 @@ func setupAndRun(createChannel bool, configOpt core.ConfigProvider, sdkOpts ...f
 
 	sdk, err := fabsdk.New(configOpt, sdkOpts...)
 	if err != nil {
-		t.Fatalf("Failed to create new SDK: %s", err)
+		log.Printf("Failed to create new SDK: %s", err)
 	}
 	defer sdk.Close()
 	log.Println("init------------------------------------")
@@ -82,7 +78,7 @@ func SetupAndRuning(createChannel bool, configOpt core.ConfigProvider, sdkOpts .
 
 	sdk, err := fabsdk.New(configOpt, sdkOpts...)
 	if err != nil {
-		t.Fatalf("Failed to create new SDK: %s", err)
+		log.Printf("Failed to create new SDK: %s", err)
 	}
 	defer sdk.Close()
 	log.Println("init------------------------------------")
@@ -102,7 +98,7 @@ func e2eTest(t *testing.T, sdk *fabsdk.FabricSDK) {
 		t.Fatalf("Failed to create new channel client: %s", err)
 	}
 
-	existingValue := queryCC(t, client)
+	// existingValue := queryCC(t, client)
 	ccEvent := moveFunds(t, client)
 
 	// Verify move funds transaction result on the same peer where the event came from.
@@ -121,7 +117,7 @@ func createChannelAndCC(t *testing.T, sdk *fabsdk.FabricSDK) {
 	}
 
 	// Create channel
-	createChannel(t, sdk, resMgmtClient)
+	// createChannel(t, sdk, resMgmtClient)
 
 	//prepare context
 	adminContext := sdk.Context(fabsdk.WithUser(orgAdmin), fabsdk.WithOrg(orgName))
@@ -153,7 +149,7 @@ func moveFunds(t *testing.T, client *channel.Client) *fab.CCEvent {
 	defer client.UnregisterChaincodeEvent(reg)
 
 	// Move funds
-	executeCC(t, client)
+	// executeCC(t, client)
 
 	var ccEvent *fab.CCEvent
 	select {
@@ -168,7 +164,7 @@ func moveFunds(t *testing.T, client *channel.Client) *fab.CCEvent {
 
 func verifyFundsIsMoved(t *testing.T, client *channel.Client, value []byte, ccEvent *fab.CCEvent) {
 
-	newValue := queryCC(t, client, ccEvent.SourceURL)
+	// newValue := queryCC(t, client, ccEvent.SourceURL)
 	valueInt, err := strconv.Atoi(string(value))
 	if err != nil {
 		t.Fatal(err.Error())
@@ -182,24 +178,24 @@ func verifyFundsIsMoved(t *testing.T, client *channel.Client, value []byte, ccEv
 	}
 }
 
-func executeCC(t *testing.T, client *channel.Client) {
-	_, err := client.Execute(channel.Request{ChaincodeID: ccID, Fcn: "invoke", Args: configless.ExampleCCDefaultTxArgs()},
-		channel.WithRetry(retry.DefaultChannelOpts))
-	if err != nil {
-		t.Fatalf("Failed to move funds: %s", err)
-	}
-}
+// func executeCC(t *testing.T, client *channel.Client) {
+// 	_, err := client.Execute(channel.Request{ChaincodeID: ccID, Fcn: "invoke", Args: configless.ExampleCCDefaultTxArgs()},
+// 		channel.WithRetry(retry.DefaultChannelOpts))
+// 	if err != nil {
+// 		t.Fatalf("Failed to move funds: %s", err)
+// 	}
+// }
 
-func queryCC(t *testing.T, client *channel.Client, targetEndpoints ...string) []byte {
-	response, err := client.Query(channel.Request{ChaincodeID: ccID, Fcn: "invoke", Args: configless.ExampleCCDefaultQueryArgs()},
-		channel.WithRetry(retry.DefaultChannelOpts),
-		channel.WithTargetEndpoints(targetEndpoints...),
-	)
-	if err != nil {
-		t.Fatalf("Failed to query funds: %s", err)
-	}
-	return response.Payload
-}
+// func queryCC(t *testing.T, client *channel.Client, targetEndpoints ...string) []byte {
+// 	response, err := client.Query(channel.Request{ChaincodeID: ccID, Fcn: "invoke", Args: configless.ExampleCCDefaultQueryArgs()},
+// 		channel.WithRetry(retry.DefaultChannelOpts),
+// 		channel.WithTargetEndpoints(targetEndpoints...),
+// 	)
+// 	if err != nil {
+// 		t.Fatalf("Failed to query funds: %s", err)
+// 	}
+// 	return response.Payload
+// }
 
 // func createCC(t *testing.T, orgResMgmt *resmgmt.Client) {
 // 	ccPkg, err := packager.NewCCPackage("github.com/example_cc", GetDeployPath())
@@ -224,19 +220,19 @@ func queryCC(t *testing.T, client *channel.Client, targetEndpoints ...string) []
 // 	require.NotEmpty(t, resp, "transaction response should be populated")
 // }
 
-func createChannel(t *testing.T, sdk *fabsdk.FabricSDK, resMgmtClient *resmgmt.Client) {
-	mspClient, err := mspclient.New(sdk.Context(), mspclient.WithOrg(orgName))
-	if err != nil {
-		t.Fatal(err)
-	}
-	adminIdentity, err := mspClient.GetSigningIdentity(orgAdmin)
-	if err != nil {
-		t.Fatal(err)
-	}
-	req := resmgmt.SaveChannelRequest{ChannelID: channelID,
-		ChannelConfigPath: configless.GetChannelConfigTxPath(channelID + ".tx"),
-		SigningIdentities: []msp.SigningIdentity{adminIdentity}}
-	txID, err := resMgmtClient.SaveChannel(req, resmgmt.WithRetry(retry.DefaultResMgmtOpts), resmgmt.WithOrdererEndpoint("orderer.example.com"))
-	require.Nil(t, err, "error should be nil")
-	require.NotEmpty(t, txID, "transaction ID should be populated")
-}
+// func createChannel(t *testing.T, sdk *fabsdk.FabricSDK, resMgmtClient *resmgmt.Client) {
+// 	mspClient, err := mspclient.New(sdk.Context(), mspclient.WithOrg(orgName))
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+// 	adminIdentity, err := mspClient.GetSigningIdentity(orgAdmin)
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+// 	req := resmgmt.SaveChannelRequest{ChannelID: channelID,
+// 		ChannelConfigPath: configless.GetChannelConfigTxPath(channelID + ".tx"),
+// 		SigningIdentities: []msp.SigningIdentity{adminIdentity}}
+// 	txID, err := resMgmtClient.SaveChannel(req, resmgmt.WithRetry(retry.DefaultResMgmtOpts), resmgmt.WithOrdererEndpoint("orderer.example.com"))
+// 	require.Nil(t, err, "error should be nil")
+// 	require.NotEmpty(t, txID, "transaction ID should be populated")
+// }
