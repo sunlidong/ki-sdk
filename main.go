@@ -13,7 +13,7 @@ func main() {
 	// App
 	m.InitSDK()
  
-		e2e.RunWithoutSetup( nil,
+		e2e.SetupAndRuning( nil,
 			fabsdk.WithEndpointConfig(configless.endpointConfigImpls...),
 			fabsdk.WithCryptoSuiteConfig(configless.cryptoConfigImpls...),
 			fabsdk.WithIdentityConfig(configless.identityConfigImpls...),
