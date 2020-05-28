@@ -20,7 +20,7 @@ var (
 	SecurityProviderLibPathImpl = &ExampleSecurityProviderLibPath{}
 	SecurityProviderPinImpl     = &ExampleSecurityProviderPin{}
 	SecurityProviderLabelImpl   = &ExampleSecurityProviderLabel{}
-	ExampleKeyStorePathImpl     = &exampleKeyStorePath{}
+	ExampleKeyStorePathImpl     = &ExampleKeyStorePath{}
 	CryptoConfigImpls           = []interface{}{
 		IsSecurityEnabledImpl,
 		SecurityAlgorithmImpl,
@@ -95,8 +95,8 @@ func (m *ExampleSecurityProviderLabel) SecurityProviderLabel() string {
 	return ""
 }
 
-type exampleKeyStorePath struct{}
+type ExampleKeyStorePath struct{}
 
-func (m *exampleKeyStorePath) KeyStorePath() string {
+func (m *ExampleKeyStorePath) KeyStorePath() string {
 	return "/tmp/msp/keystore"
 }

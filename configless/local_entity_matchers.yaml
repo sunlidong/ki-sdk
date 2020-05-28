@@ -13,82 +13,94 @@
  # so that properties can be mapped. Regex can be used for this purpose
 # UrlSubstitutionExp can be empty which means the same network hostname will be used
 # UrlSubstitutionExp can be given same as mapped peer url, so that mapped peer url can be used
-# UrlSubstitutionExp can have golang regex matchers like ${1}.example.${2}:${3} for pattern
- # like peer0.org1.example.com:1234 which converts peer0.org1.example.com to peer0.org1.example.com:1234
+# UrlSubstitutionExp can have golang regex matchers like ${1}.bookstore.${2}:${3} for pattern
+ # like peer0.org1.bookstore.com:1234 which converts peer0.org1.bookstore.com to peer0.org1.bookstore.com:1234
 # sslTargetOverrideUrlSubstitutionExp follow in the same lines as
  # SubstitutionExp for the fields gprcOptions.ssl-target-name-override respectively
 # In any case mappedHost's config will be used, so mapped host cannot be empty, if entityMatchers are used
 entityMatchers:
   peer:
-    - pattern: peer0.org1.example.(\w+)
+    - pattern: peer0.org1.bookstore.(\w+)
       urlSubstitutionExp: localhost:7051
-      sslTargetOverrideUrlSubstitutionExp: peer0.org1.example.com
-      mappedHost: peer0.org1.example.com
+      sslTargetOverrideUrlSubstitutionExp: peer0.org1.bookstore.com
+      mappedHost: peer0.org1.bookstore.com
 
-    - pattern: peer1.org1.example.(\w+)
+    - pattern: peer1.org1.bookstore.(\w+)
       urlSubstitutionExp: localhost:7151
-      sslTargetOverrideUrlSubstitutionExp: peer1.org1.example.com
-      mappedHost: peer1.org1.example.com
+      sslTargetOverrideUrlSubstitutionExp: peer1.org1.bookstore.com
+      mappedHost: peer1.org1.bookstore.com
 
-    - pattern: peer0.org2.example.(\w+)
+    - pattern: peer0.org2.bookstore.(\w+)
       urlSubstitutionExp: localhost:8051
-      sslTargetOverrideUrlSubstitutionExp: peer0.org2.example.com
-      mappedHost: peer0.org2.example.com
+      sslTargetOverrideUrlSubstitutionExp: peer0.org2.bookstore.com
+      mappedHost: peer0.org2.bookstore.com
 
-    - pattern: peer1.org2.example.(\w+)
+    - pattern: peer1.org2.bookstore.(\w+)
       urlSubstitutionExp: localhost:9051
-      sslTargetOverrideUrlSubstitutionExp: peer1.org2.example.com
-      mappedHost: peer1.org2.example.com
+      sslTargetOverrideUrlSubstitutionExp: peer1.org2.bookstore.com
+      mappedHost: peer1.org2.bookstore.com
 
-    - pattern: (\w+).org1.example.(\w+):(\d+)
+    - pattern: (\w+).org1.bookstore.(\w+):(\d+)
       urlSubstitutionExp: localhost:${2}
-      sslTargetOverrideUrlSubstitutionExp: ${1}.org1.example.com
-      mappedHost: ${1}.org1.example.com
+      sslTargetOverrideUrlSubstitutionExp: ${1}.org1.bookstore.com
+      mappedHost: ${1}.org1.bookstore.com
 
-    - pattern: (\w+).org2.example.(\w+):(\d+)
+    - pattern: (\w+).org2.bookstore.(\w+):(\d+)
       urlSubstitutionExp: localhost:${2}
-      sslTargetOverrideUrlSubstitutionExp: ${1}.org2.example.com
-      mappedHost: ${1}.org2.example.com
+      sslTargetOverrideUrlSubstitutionExp: ${1}.org2.bookstore.com
+      mappedHost: ${1}.org2.bookstore.com
 
     - pattern: (\w+):7051
       urlSubstitutionExp: localhost:7051
-      sslTargetOverrideUrlSubstitutionExp: peer0.org1.example.com
-      mappedHost: peer0.org1.example.com
+      sslTargetOverrideUrlSubstitutionExp: peer0.org1.bookstore.com
+      mappedHost: peer0.org1.bookstore.com
 
     - pattern: (\w+):7151
       urlSubstitutionExp: localhost:7151
-      sslTargetOverrideUrlSubstitutionExp: peer1.org1.example.com
-      mappedHost: peer1.org1.example.com
+      sslTargetOverrideUrlSubstitutionExp: peer1.org1.bookstore.com
+      mappedHost: peer1.org1.bookstore.com
 
     - pattern: (\w+):8051
       urlSubstitutionExp: localhost:8051
-      sslTargetOverrideUrlSubstitutionExp: peer0.org2.example.com
-      mappedHost: peer0.org2.example.com
+      sslTargetOverrideUrlSubstitutionExp: peer0.org2.bookstore.com
+      mappedHost: peer0.org2.bookstore.com
 
     - pattern: (\w+):9051
       urlSubstitutionExp: localhost:9051
-      sslTargetOverrideUrlSubstitutionExp: peer1.org2.example.com
-      mappedHost: peer1.org2.example.com
+      sslTargetOverrideUrlSubstitutionExp: peer1.org2.bookstore.com
+      mappedHost: peer1.org2.bookstore.com
 
   orderer:
 
-    - pattern: (\w+).example.(\w+)
+    - pattern: (\w+).bookstore.(\w+)
       urlSubstitutionExp: localhost:7050
-      sslTargetOverrideUrlSubstitutionExp: orderer.example.com
-      mappedHost: orderer.example.com
+      sslTargetOverrideUrlSubstitutionExp: orderer1.bookstore.com
+      mappedHost: orderer1.bookstore.com
 
-    - pattern: (\w+).example.(\w+):(\d+)
-      urlSubstitutionExp: localhost:7050
-      sslTargetOverrideUrlSubstitutionExp: orderer.example.com
-      mappedHost: orderer.example.com
+    - pattern: (\w+).bookstore.(\w+):(\d+)
+      urlSubstitutionExp: localhost:8050
+      sslTargetOverrideUrlSubstitutionExp: orderer2.bookstore.com
+      mappedHost: orderer2.bookstore.com
+    - pattern: (\w+).bookstore.(\w+):(\d+)
+      urlSubstitutionExp: localhost:9050
+      sslTargetOverrideUrlSubstitutionExp: orderer3.bookstore.com
+      mappedHost: orderer3.bookstore.com
+    - pattern: (\w+).bookstore.(\w+):(\d+)
+      urlSubstitutionExp: localhost:10050
+      sslTargetOverrideUrlSubstitutionExp: orderer4.bookstore.com
+      mappedHost: orderer4.bookstore.com
+    - pattern: (\w+).bookstore.(\w+):(\d+)
+      urlSubstitutionExp: localhost:11050
+      sslTargetOverrideUrlSubstitutionExp: orderer5.bookstore.com
+      mappedHost: orderer5.bookstore.com
 
   certificateAuthority:
-    - pattern: (\w+).org1.example.(\w+)
+    - pattern: (\w+).org1.bookstore.(\w+)
       urlSubstitutionExp: https://localhost:7054
-      sslTargetOverrideUrlSubstitutionExp: ca.org1.example.com
-      mappedHost: ca.org1.example.com
+      sslTargetOverrideUrlSubstitutionExp: ca.org1.bookstore.com
+      mappedHost: ca.org1.bookstore.com
 
-    - pattern: (\w+).org2.example.(\w+)
+    - pattern: (\w+).org2.bookstore.(\w+)
       urlSubstitutionExp: https://localhost:8054
-      sslTargetOverrideUrlSubstitutionExp: ca.org2.example.com
-      mappedHost: ca.org2.example.com
+      sslTargetOverrideUrlSubstitutionExp: ca.org2.bookstore.com
+      mappedHost: ca.org2.bookstore.com

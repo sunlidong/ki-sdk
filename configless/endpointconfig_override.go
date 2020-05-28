@@ -120,7 +120,7 @@ var (
 			},
 		},
 	}
-	orgsConfig = map[string]fab.OrganizationConfig{
+	OrgsConfig = map[string]fab.OrganizationConfig{
 		"org1": {
 			MSPID:      "Org1MSP",
 			CryptoPath: "peerOrganizations/org1.bookstore.com/users/{username}@org1.bookstore.com/msp",
@@ -343,29 +343,29 @@ var (
 		},
 	}
 
-	networkConfig = fab.NetworkConfig{
+	NetworkConfig = fab.NetworkConfig{
 		Channels:      channelsConfig,
-		Organizations: orgsConfig,
-		Orderers:      newOrderersConfig(),
-		Peers:         newPeersConfig(),
+		Organizations: OrgsConfig,
+		Orderers:      NewOrderersConfig(),
+		Peers:         NewPeersConfig(),
 		// EntityMatchers are not used in this implementation
 		//EntityMatchers: entityMatchers,
 	}
 
 	// creating instances of each interface to be referenced in the integration tests:
 	TimeoutImpl          = &ExampleTimeout{}
-	OrderersConfigImpl   = newOrderersConfigImpl()
+	OrderersConfigImpl   = NewOrderersConfigImpl()
 	OrdererConfigImpl    = &ExampleOrdererConfig{}
-	PeersConfigImpl      = newPeersConfigImpl()
-	PeerConfigImpl       = &examplePeerConfig{}
-	NetworkConfigImpl    = &exampleNetworkConfig{}
-	NetworkPeersImpl     = &exampleNetworkPeers{}
-	ChannelConfigImpl    = &exampleChannelConfig{}
-	ChannelPeersImpl     = &exampleChannelPeers{}
-	ChannelOrderersImpl  = &exampleChannelOrderers{}
-	TlsCACertPoolImpl    = newTLSCACertPool(false)
-	TlsClientCertsImpl   = &exampleTLSClientCerts{}
-	CryptoConfigPathImpl = &exampleCryptoConfigPath{}
+	PeersConfigImpl      = NewPeersConfigImpl()
+	PeerConfigImpl       = &ExamplePeerConfig{}
+	NetworkConfigImpl    = &ExampleNetworkConfig{}
+	NetworkPeersImpl     = &ExampleNetworkPeers{}
+	ChannelConfigImpl    = &ExampleChannelConfig{}
+	ChannelPeersImpl     = &ExampleChannelPeers{}
+	ChannelOrderersImpl  = &ExampleChannelOrderers{}
+	TlsCACertPoolImpl    = NewTLSCACertPool(false)
+	TlsClientCertsImpl   = &ExampleTLSClientCerts{}
+	CryptoConfigPathImpl = &ExampleCryptoConfigPath{}
 	EndpointConfigImpls  = []interface{}{
 		TimeoutImpl,
 		OrderersConfigImpl,
@@ -385,7 +385,7 @@ var (
 
 type ExampleTimeout struct{}
 
-var defaultTypes = map[fab.TimeoutType]time.Duration{
+var DefaultTypes = map[fab.TimeoutType]time.Duration{
 	fab.PeerConnection:           time.Second * 10,
 	fab.PeerResponse:             time.Minute * 3,
 	fab.DiscoveryGreylistExpiry:  time.Second * 10,
@@ -409,7 +409,7 @@ var defaultTypes = map[fab.TimeoutType]time.Duration{
 
 //Timeout overrides EndpointConfig's Timeout function which returns the timeout for the given timeoutType in the arg
 func (m *ExampleTimeout) Timeout(tType fab.TimeoutType) time.Duration {
-	t, ok := defaultTypes[tType]
+	t, ok := DefaultTypes[tType]
 	if !ok {
 		return time.Second * 30 // general default if type is not found
 	}
@@ -419,7 +419,7 @@ func (m *ExampleTimeout) Timeout(tType fab.TimeoutType) time.Duration {
 //PeerMSPID  returns the mspID for the given org name in the arg
 func PeerMSPID(name string) (string, bool) {
 	// Find organisation/msp that peer belongs to
-	for _, org := range orgsConfig {
+	for _, org := range OrgsConfig {
 		for i := 0; i < len(org.Peers); i++ {
 			if strings.EqualFold(org.Peers[i], name) {
 				// peer belongs to this org add org msp
@@ -458,13 +458,13 @@ func newCAsConfig() map[string]caConfig {
 	return c
 }
 
-func newPeersConfig() map[string]fab.PeerConfig {
+func NewPeersConfig() map[string]fab.PeerConfig {
 	p := verifyIsLocalPeersURLs(peersConfig)
 	peersConfig = p
 	return p
 }
 
-func newOrderersConfig() map[string]fab.OrdererConfig {
+func NewOrderersConfig() map[string]fab.OrdererConfig {
 	o := verifyIsLocalOrderersURLs(OrderersConfig)
 	OrderersConfig = o
 	return o
@@ -487,21 +487,21 @@ func verifyIsLocalOrderersURLs(oConfig map[string]fab.OrdererConfig) map[string]
 	return newConfig
 }
 
-//newOrderersConfigImpl will create a new exampleOrderersConfig instance with proper ordrerer URLs (local vs normal) tests
+//NewOrderersConfigImpl will create a new ExampleOrderersConfig instance with proper ordrerer URLs (local vs normal) tests
 // local tests use localhost urls, while the remaining tests use default values as set in OrderersConfig var
-func newOrderersConfigImpl() *exampleOrderersConfig {
+func NewOrderersConfigImpl() *ExampleOrderersConfig {
 	oConfig := verifyIsLocalOrderersURLs(OrderersConfig)
 	OrderersConfig = oConfig
-	o := &exampleOrderersConfig{}
+	o := &ExampleOrderersConfig{}
 	return o
 }
 
-type exampleOrderersConfig struct {
+type ExampleOrderersConfig struct {
 	isSystemCertPool bool
 }
 
 //OrderersConfig overrides EndpointConfig's OrderersConfig function which returns the ordererConfigs list
-func (m *exampleOrderersConfig) OrderersConfig() []fab.OrdererConfig {
+func (m *ExampleOrderersConfig) OrderersConfig() []fab.OrdererConfig {
 	orderers := []fab.OrdererConfig{}
 
 	for _, orderer := range OrderersConfig {
@@ -519,10 +519,10 @@ type ExampleOrdererConfig struct{}
 
 //OrdererConfig overrides EndpointConfig's OrdererConfig function which returns the ordererConfig instance for the name/URL arg
 func (m *ExampleOrdererConfig) OrdererConfig(ordererNameOrURL string) (*fab.OrdererConfig, bool, bool) {
-	orderer, ok := networkConfig.Orderers[strings.ToLower(ordererNameOrURL)]
+	orderer, ok := NetworkConfig.Orderers[strings.ToLower(ordererNameOrURL)]
 	if !ok {
 		// EntityMatchers are not used in this implementation, below is an example of how to use them if needed, see default implementation for live example
-		//matchingOrdererConfig := m.tryMatchingOrdererConfig(networkConfig, strings.ToLower(ordererNameOrURL))
+		//matchingOrdererConfig := m.tryMatchingOrdererConfig(NetworkConfig, strings.ToLower(ordererNameOrURL))
 		//if matchingOrdererConfig == nil {
 		//	return nil, errors.WithStack(status.New(status.ClientStatus, status.NoMatchingOrdererEntity.ToInt32(), "no matching orderer config found", nil))
 		//}
@@ -533,7 +533,7 @@ func (m *ExampleOrdererConfig) OrdererConfig(ordererNameOrURL string) (*fab.Orde
 	return &orderer, true, false
 }
 
-type examplePeersConfig struct {
+type ExamplePeersConfig struct {
 	isSystemCertPool bool
 }
 
@@ -554,25 +554,25 @@ func verifyIsLocalPeersURLs(pConfig map[string]fab.PeerConfig) map[string]fab.Pe
 	return newConfigs
 }
 
-//newPeersConfigImpl will create a new examplePeersConfig instance with proper peers URLs (local vs normal) tests
+//NewPeersConfigImpl will create a new ExamplePeersConfig instance with proper peers URLs (local vs normal) tests
 // local tests use localhost urls, while the remaining tests use default values as set in peersConfig var
-func newPeersConfigImpl() *examplePeersConfig {
+func NewPeersConfigImpl() *ExamplePeersConfig {
 	pConfig := verifyIsLocalPeersURLs(peersConfig)
 	peersConfig = pConfig
-	p := &examplePeersConfig{}
+	p := &ExamplePeersConfig{}
 	return p
 }
 
 //PeersConfig overrides EndpointConfig's PeersConfig function which returns the peersConfig list
-func (m *examplePeersConfig) PeersConfig(org string) ([]fab.PeerConfig, bool) {
-	orgPeers := orgsConfig[strings.ToLower(org)].Peers
+func (m *ExamplePeersConfig) PeersConfig(org string) ([]fab.PeerConfig, bool) {
+	orgPeers := OrgsConfig[strings.ToLower(org)].Peers
 	peers := []fab.PeerConfig{}
 
 	for _, peerName := range orgPeers {
-		p := networkConfig.Peers[strings.ToLower(peerName)]
+		p := NetworkConfig.Peers[strings.ToLower(peerName)]
 		if err := m.verifyPeerConfig(p, peerName, endpoint.IsTLSEnabled(p.URL)); err != nil {
 			// EntityMatchers are not used in this implementation, below is an example of how to use them if needed
-			//matchingPeerConfig := m.tryMatchingPeerConfig(networkConfig, peerName)
+			//matchingPeerConfig := m.tryMatchingPeerConfig(NetworkConfig, peerName)
 			//if matchingPeerConfig == nil {
 			//	continue
 			//}
@@ -585,7 +585,7 @@ func (m *examplePeersConfig) PeersConfig(org string) ([]fab.PeerConfig, bool) {
 	return peers, true
 }
 
-func (m *examplePeersConfig) verifyPeerConfig(p fab.PeerConfig, peerName string, tlsEnabled bool) error {
+func (m *ExamplePeersConfig) verifyPeerConfig(p fab.PeerConfig, peerName string, tlsEnabled bool) error {
 	if p.URL == "" {
 		return errors.Errorf("URL does not exist or empty for peer %s", peerName)
 	}
@@ -595,10 +595,10 @@ func (m *examplePeersConfig) verifyPeerConfig(p fab.PeerConfig, peerName string,
 	return nil
 }
 
-type examplePeerConfig struct{}
+type ExamplePeerConfig struct{}
 
 // PeerConfig overrides EndpointConfig's PeerConfig function which returns the peerConfig instance for the name/URL arg
-func (m *examplePeerConfig) PeerConfig(nameOrURL string) (*fab.PeerConfig, bool) {
+func (m *ExamplePeerConfig) PeerConfig(nameOrURL string) (*fab.PeerConfig, bool) {
 	pcfg, ok := peersConfig[nameOrURL]
 	if ok {
 		return &pcfg, true
@@ -619,23 +619,23 @@ func (m *examplePeerConfig) PeerConfig(nameOrURL string) (*fab.PeerConfig, bool)
 	return nil, false
 }
 
-type exampleNetworkConfig struct{}
+type ExampleNetworkConfig struct{}
 
 // NetworkConfig overrides EndpointConfig's NetworkConfig function which returns the full network Config instance
-func (m *exampleNetworkConfig) NetworkConfig() *fab.NetworkConfig {
-	return &networkConfig
+func (m *ExampleNetworkConfig) NetworkConfig() *fab.NetworkConfig {
+	return &NetworkConfig
 }
 
-type exampleNetworkPeers struct {
+type ExampleNetworkPeers struct {
 	isSystemCertPool bool
 }
 
 //NetworkPeers overrides EndpointConfig's NetworkPeers function which returns the networkPeers list
-func (m *exampleNetworkPeers) NetworkPeers() []fab.NetworkPeer {
+func (m *ExampleNetworkPeers) NetworkPeers() []fab.NetworkPeer {
 	netPeers := []fab.NetworkPeer{}
 	// referencing another interface to call PeerMSPID to match config yaml content
 
-	for name, p := range networkConfig.Peers {
+	for name, p := range NetworkConfig.Peers {
 
 		if err := m.verifyPeerConfig(p, name, endpoint.IsTLSEnabled(p.URL)); err != nil {
 			return nil
@@ -653,7 +653,7 @@ func (m *exampleNetworkPeers) NetworkPeers() []fab.NetworkPeer {
 	return netPeers
 }
 
-func (m *exampleNetworkPeers) verifyPeerConfig(p fab.PeerConfig, peerName string, tlsEnabled bool) error {
+func (m *ExampleNetworkPeers) verifyPeerConfig(p fab.PeerConfig, peerName string, tlsEnabled bool) error {
 	if p.URL == "" {
 		return errors.Errorf("URL does not exist or empty for peer %s", peerName)
 	}
@@ -663,10 +663,10 @@ func (m *exampleNetworkPeers) verifyPeerConfig(p fab.PeerConfig, peerName string
 	return nil
 }
 
-type exampleChannelConfig struct{}
+type ExampleChannelConfig struct{}
 
 // ChannelConfig overrides EndpointConfig's ChannelConfig function which returns the channelConfig instance for the channel name arg
-func (m *exampleChannelConfig) ChannelConfig(channelName string) *fab.ChannelEndpointConfig {
+func (m *ExampleChannelConfig) ChannelConfig(channelName string) *fab.ChannelEndpointConfig {
 	ch, ok := channelsConfig[strings.ToLower(channelName)]
 	if !ok {
 		// EntityMatchers are not used in this implementation, below is an example of how to use them if needed
@@ -681,12 +681,12 @@ func (m *exampleChannelConfig) ChannelConfig(channelName string) *fab.ChannelEnd
 	return &ch
 }
 
-type exampleChannelPeers struct {
+type ExampleChannelPeers struct {
 	isSystemCertPool bool
 }
 
 // ChannelPeers overrides EndpointConfig's ChannelPeers function which returns the list of peers for the channel name arg
-func (m *exampleChannelPeers) ChannelPeers(channelName string) []fab.ChannelPeer {
+func (m *ExampleChannelPeers) ChannelPeers(channelName string) []fab.ChannelPeer {
 	peers := []fab.ChannelPeer{}
 
 	chConfig, ok := channelsConfig[strings.ToLower(channelName)]
@@ -708,7 +708,7 @@ func (m *exampleChannelPeers) ChannelPeers(channelName string) []fab.ChannelPeer
 		p, ok := peersConfig[strings.ToLower(peerName)]
 		if !ok {
 			// EntityMatchers are not used in this implementation, below is an example of how to use them if needed
-			//matchingPeerConfig := m.tryMatchingPeerConfig(networkConfig, strings.ToLower(peerName))
+			//matchingPeerConfig := m.tryMatchingPeerConfig(NetworkConfig, strings.ToLower(peerName))
 			//if matchingPeerConfig == nil {
 			//	continue
 			//}
@@ -736,7 +736,7 @@ func (m *exampleChannelPeers) ChannelPeers(channelName string) []fab.ChannelPeer
 
 }
 
-func (m *exampleChannelPeers) verifyPeerConfig(p fab.PeerConfig, peerName string, tlsEnabled bool) error {
+func (m *ExampleChannelPeers) verifyPeerConfig(p fab.PeerConfig, peerName string, tlsEnabled bool) error {
 	if p.URL == "" {
 		return errors.Errorf("URL does not exist or empty for peer %s", peerName)
 	}
@@ -746,12 +746,12 @@ func (m *exampleChannelPeers) verifyPeerConfig(p fab.PeerConfig, peerName string
 	return nil
 }
 
-type exampleChannelOrderers struct{}
+type ExampleChannelOrderers struct{}
 
 // ChannelOrderers overrides EndpointConfig's ChannelOrderers function which returns the list of orderers for the channel name arg
-func (m *exampleChannelOrderers) ChannelOrderers(channelName string) []fab.OrdererConfig {
+func (m *ExampleChannelOrderers) ChannelOrderers(channelName string) []fab.OrdererConfig {
 	// referencing other interfaces to call ChannelConfig and OrdererConfig to match config yaml content
-	chCfg := &exampleChannelConfig{}
+	chCfg := &ExampleChannelConfig{}
 	oCfg := &ExampleOrdererConfig{}
 
 	orderers := []fab.OrdererConfig{}
@@ -772,8 +772,8 @@ func (m *exampleChannelOrderers) ChannelOrderers(channelName string) []fab.Order
 // 	tlsCertPool commtls.CertPool
 // }
 
-// //newTLSCACertPool will create a new exampleTLSCACertPool instance with useSystemCertPool bool flag
-// func newTLSCACertPool(useSystemCertPool bool) *exampleTLSCACertPool {
+// //NewTLSCACertPool will create a new exampleTLSCACertPool instance with useSystemCertPool bool flag
+// func NewTLSCACertPool(useSystemCertPool bool) *exampleTLSCACertPool {
 // 	m := &exampleTLSCACertPool{}
 // 	// var err error
 // 	// m.tlsCertPool, err = commtls.NewCertPool(useSystemCertPool)
@@ -782,8 +782,8 @@ func (m *exampleChannelOrderers) ChannelOrderers(channelName string) []fab.Order
 // 	// }
 // 	return m
 // }
-//newTLSCACertPool will create a new exampleTLSCACertPool instance with useSystemCertPool bool flag
-func newTLSCACertPool(useSystemCertPool bool) interface{} {
+//NewTLSCACertPool will create a new exampleTLSCACertPool instance with useSystemCertPool bool flag
+func NewTLSCACertPool(useSystemCertPool bool) interface{} {
 
 	return nil
 }
@@ -793,12 +793,12 @@ func newTLSCACertPool(useSystemCertPool bool) interface{} {
 // 	return m.tlsCertPool
 // }
 
-type exampleTLSClientCerts struct {
+type ExampleTLSClientCerts struct {
 	RWLock sync.RWMutex
 }
 
 // TLSClientCerts overrides EndpointConfig's TLSClientCerts function which will return the list of configured client certs
-func (m *exampleTLSClientCerts) TLSClientCerts() []tls.Certificate {
+func (m *ExampleTLSClientCerts) TLSClientCerts() []tls.Certificate {
 	var clientCerts tls.Certificate
 	cb := client.TLSCerts.Client.Cert.Bytes()
 
@@ -830,7 +830,7 @@ func (m *exampleTLSClientCerts) TLSClientCerts() []tls.Certificate {
 
 	return []tls.Certificate{clientCerts}
 }
-func (m *exampleTLSClientCerts) loadPrivateKeyFromConfig(clientConfig *clientConfig, clientCerts tls.Certificate, cb []byte) ([]tls.Certificate, error) {
+func (m *ExampleTLSClientCerts) loadPrivateKeyFromConfig(clientConfig *clientConfig, clientCerts tls.Certificate, cb []byte) ([]tls.Certificate, error) {
 
 	kb := clientConfig.TLSCerts.Client.Key.Bytes()
 
@@ -843,9 +843,9 @@ func (m *exampleTLSClientCerts) loadPrivateKeyFromConfig(clientConfig *clientCon
 	return []tls.Certificate{clientCerts}, nil
 }
 
-type exampleCryptoConfigPath struct{}
+type ExampleCryptoConfigPath struct{}
 
-func (m *exampleCryptoConfigPath) CryptoConfigPath() string {
+func (m *ExampleCryptoConfigPath) CryptoConfigPath() string {
 	return client.CryptoConfig.Path
 }
 
