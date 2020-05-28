@@ -28,24 +28,24 @@ var (
 		Statsd:   cfg.Statsd{},
 	}
 
-	opConfigImpl          = &exampleOperation{}
-	metricCfgImpl         = &exampleMetric{}
-	operationsConfigImpls = []interface{}{
-		opConfigImpl,
-		metricCfgImpl,
+	OpConfigImpl          = &ExampleOperation{}
+	MetricCfgImpl         = &ExampleMetric{}
+	OperationsConfigImpls = []interface{}{
+		OpConfigImpl,
+		MetricCfgImpl,
 	}
 )
 
 type exampleOperation struct{}
 
 //OperationCfg overrides MetricsConfig's OperationConfig function which returns the operations system config
-func (m *exampleOperation) OperationCfg() cfg.OperationConfig {
-	return operationConfig
+func (m *ExampleOperation) OperationCfg() cfg.OperationConfig {
+	return OperationConfig
 }
 
-type exampleMetric struct{}
+type ExampleMetric struct{}
 
 //MetricCfg overrides MetricsConfig's MetricConfig function which returns the metrics specific config
-func (m *exampleMetric) MetricCfg() cfg.MetricConfig {
+func (m *ExampleMetric) MetricCfg() cfg.MetricConfig {
 	return metricConfig
 }
