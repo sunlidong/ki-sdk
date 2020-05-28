@@ -60,7 +60,7 @@ func (m *ExampleClient) Client() *msp.ClientConfig {
 type ExampleCaConfig struct{}
 
 func (m *ExampleCaConfig) CAConfig(org string) (*msp.CAConfig, bool) {
-	return getCAConfig(&networkConfig, org)
+	return getCAConfig(&NetworkConfig, org)
 }
 
 func getMSPCAConfig(caConfig *caConfig) (*msp.CAConfig, error) {
@@ -110,13 +110,13 @@ func getServerCerts(caConfig *caConfig) ([][]byte, error) {
 	return serverCerts, nil
 }
 
-// the below function is used in multiple implementations, this is fine because networkConfig is the same for all of them
-func getCAConfig(networkConfig *fab.NetworkConfig, org string) (*msp.CAConfig, bool) {
-	if len(networkConfig.Organizations[strings.ToLower(org)].CertificateAuthorities) == 0 {
+// the below function is used in multiple implementations, this is fine because NetworkConfig is the same for all of them
+func getCAConfig(NetworkConfig *fab.NetworkConfig, org string) (*msp.CAConfig, bool) {
+	if len(NetworkConfig.Organizations[strings.ToLower(org)].CertificateAuthorities) == 0 {
 		return nil, false
 	}
 	//for now, we're only loading the first Cert Authority by default. TODO add logic to support passing the Cert Authority ID needed by the client.
-	caID := networkConfig.Organizations[strings.ToLower(org)].CertificateAuthorities[0]
+	caID := NetworkConfig.Organizations[strings.ToLower(org)].CertificateAuthorities[0]
 
 	if caID == "" {
 		return nil, false
@@ -126,7 +126,7 @@ func getCAConfig(networkConfig *fab.NetworkConfig, org string) (*msp.CAConfig, b
 	caConfig, ok := caConfigs[strings.ToLower(caID)]
 	if !ok {
 		// EntityMatchers are not supported in this implementation. If needed, uncomment the below lines
-		//caConfig, mappedHost := m.tryMatchingCAConfig(networkConfig, strings.ToLower(certAuthorityName))
+		//caConfig, mappedHost := m.tryMatchingCAConfig(NetworkConfig, strings.ToLower(certAuthorityName))
 		//if mappedHost == "" {
 		return nil, false
 		//}
@@ -143,7 +143,7 @@ func getCAConfig(networkConfig *fab.NetworkConfig, org string) (*msp.CAConfig, b
 type ExampleCaServerCerts struct{}
 
 func (m *ExampleCaServerCerts) CAServerCerts(org string) ([][]byte, bool) {
-	caConfig, ok := getCAConfig(&networkConfig, org)
+	caConfig, ok := getCAConfig(&NetworkConfig, org)
 	if !ok {
 		return nil, false
 	}
@@ -154,7 +154,7 @@ func (m *ExampleCaServerCerts) CAServerCerts(org string) ([][]byte, bool) {
 type ExampleCaClientKey struct{}
 
 func (m *ExampleCaClientKey) CAClientKey(org string) ([]byte, bool) {
-	caConfig, ok := getCAConfig(&networkConfig, org)
+	caConfig, ok := getCAConfig(&NetworkConfig, org)
 	if !ok {
 		return nil, false
 	}
@@ -165,7 +165,7 @@ func (m *ExampleCaClientKey) CAClientKey(org string) ([]byte, bool) {
 type ExampleCaClientCert struct{}
 
 func (m *ExampleCaClientCert) CAClientCert(org string) ([]byte, bool) {
-	caConfig, ok := getCAConfig(&networkConfig, org)
+	caConfig, ok := getCAConfig(&NetworkConfig, org)
 	if !ok {
 		return nil, false
 	}
