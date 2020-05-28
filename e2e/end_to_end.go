@@ -21,6 +21,8 @@ import (
 
 	mspclient "github.com/hyperledger/fabric-sdk-go/pkg/client/msp"
 
+	"ki-sdk/configless"
+
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/core"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
 )
@@ -52,9 +54,9 @@ type testSDKFunc func(t *testing.T, sdk *fabsdk.FabricSDK)
 // the createChannel flag will be used to either create a channel and the example CC or not(ie run the tests with existing ch and CC)
 func setupAndRun(t *testing.T, createChannel bool, configOpt core.ConfigProvider, test testSDKFunc, sdkOpts ...fabsdk.Option) {
 
-	if IsLocal() {
+	if configless.IsLocal() {
 		//If it is a local test then add entity mapping to config backend to parse URLs
-		configOpt = AddLocalEntityMapping(configOpt)
+		configOpt = configless.AddLocalEntityMapping(configOpt)
 	}
 
 	sdk, err := fabsdk.New(configOpt, sdkOpts...)
@@ -63,16 +65,10 @@ func setupAndRun(t *testing.T, createChannel bool, configOpt core.ConfigProvider
 	}
 	defer sdk.Close()
 
-	// Delete all private keys from the crypto suite store
-	// and users from the user store at the end
-	CleanupUserData(t, sdk)
-	defer CleanupUserData(t, sdk)
-
 	if createChannel {
 		createChannelAndCC(t, sdk)
 	}
 
-	test(t, sdk)
 }
 
 func e2eTest(t *testing.T, sdk *fabsdk.FabricSDK) {
@@ -165,7 +161,7 @@ func verifyFundsIsMoved(t *testing.T, client *channel.Client, value []byte, ccEv
 }
 
 func executeCC(t *testing.T, client *channel.Client) {
-	_, err := client.Execute(channel.Request{ChaincodeID: ccID, Fcn: "invoke", Args: ExampleCCDefaultTxArgs()},
+	_, err := client.Execute(channel.Request{ChaincodeID: ccID, Fcn: "invoke", Args: configless.ExampleCCDefaultTxArgs()},
 		channel.WithRetry(retry.DefaultChannelOpts))
 	if err != nil {
 		t.Fatalf("Failed to move funds: %s", err)
@@ -173,7 +169,7 @@ func executeCC(t *testing.T, client *channel.Client) {
 }
 
 func queryCC(t *testing.T, client *channel.Client, targetEndpoints ...string) []byte {
-	response, err := client.Query(channel.Request{ChaincodeID: ccID, Fcn: "invoke", Args: ExampleCCDefaultQueryArgs()},
+	response, err := client.Query(channel.Request{ChaincodeID: ccID, Fcn: "invoke", Args: configless.ExampleCCDefaultQueryArgs()},
 		channel.WithRetry(retry.DefaultChannelOpts),
 		channel.WithTargetEndpoints(targetEndpoints...),
 	)
@@ -216,7 +212,7 @@ func createChannel(t *testing.T, sdk *fabsdk.FabricSDK, resMgmtClient *resmgmt.C
 		t.Fatal(err)
 	}
 	req := resmgmt.SaveChannelRequest{ChannelID: channelID,
-		ChannelConfigPath: GetChannelConfigTxPath(channelID + ".tx"),
+		ChannelConfigPath: configless.GetChannelConfigTxPath(channelID + ".tx"),
 		SigningIdentities: []msp.SigningIdentity{adminIdentity}}
 	txID, err := resMgmtClient.SaveChannel(req, resmgmt.WithRetry(retry.DefaultResMgmtOpts), resmgmt.WithOrdererEndpoint("orderer.example.com"))
 	require.Nil(t, err, "error should be nil")
