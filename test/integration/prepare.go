@@ -8,7 +8,6 @@ package integration
 
 import (
 	"fmt"
-	"path/filepath"
 	"time"
 
 	"ki-sdk/test/metadata"
@@ -20,7 +19,6 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/status"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab"
 	packager "github.com/hyperledger/fabric-sdk-go/pkg/fab/ccpackager/gopackager"
-	"github.com/hyperledger/fabric-sdk-go/pkg/fab/ccpackager/nodepackager"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/comm"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
 	"github.com/pkg/errors"
@@ -169,21 +167,6 @@ func InstallExamplePvtChaincode(orgs []*OrgContext, ccID string) error {
 	return nil
 }
 
-// InstallExampleNodeChaincode installs the example node chaincode to all peers in the given orgs
-func InstallExampleNodeChaincode(orgs []*OrgContext, ccID string) error {
-	ccPkg, err := nodepackager.NewCCPackage(filepath.Join(GetNodeDeployPath(), exampleNodeCCPath))
-	if err != nil {
-		return errors.WithMessage(err, "creating chaincode package failed")
-	}
-
-	err = InstallChaincodeWithOrgContexts(orgs, ccPkg, exampleNodeCCPath, ccID, exampleNodeCCVersion)
-	if err != nil {
-		return errors.WithMessage(err, "installing example chaincode failed")
-	}
-
-	return nil
-}
-
 // InstantiateExampleChaincode instantiates the example CC on the given channel
 func InstantiateExampleChaincode(orgs []*OrgContext, channelID, ccID, ccPolicy string, collConfigs ...*pb.CollectionConfig) error {
 	_, err := InstantiateChaincode(orgs[0].ResMgmt, channelID, ccID, exampleCCPath, exampleCCVersion, ccPolicy, ExampleCCInitArgs(), collConfigs...)
@@ -222,23 +205,6 @@ func UpgradeExamplePvtChaincode(orgs []*OrgContext, channelID, ccID, ccPolicy st
 
 	// now upgrade cc
 	_, err = UpgradeChaincode(orgs[0].ResMgmt, channelID, ccID, examplePvtCCPath, exampleUpgdPvtCCVer, ccPolicy, ExampleCCInitArgs(), collConfigs...)
-	return err
-}
-
-// UpgradeExampleNodeChaincode upgrades the instantiated example java CC on the given channel
-func UpgradeExampleNodeChaincode(orgs []*OrgContext, channelID, ccID, ccPolicy string, collConfigs ...*pb.CollectionConfig) error {
-	ccPkg, err := nodepackager.NewCCPackage(filepath.Join(GetJavaDeployPath(), exampleNodeCCPath))
-	if err != nil {
-		return errors.WithMessage(err, "creating chaincode package failed")
-	}
-
-	err = InstallChaincodeWithOrgContexts(orgs, ccPkg, exampleNodeCCPath, ccID, exampleUpgdNodeCCVer)
-	if err != nil {
-		return errors.WithMessage(err, "installing example chaincode failed")
-	}
-
-	// now upgrade cc
-	_, err = UpgradeNodeChaincode(orgs[0].ResMgmt, channelID, ccID, exampleNodeCCPath, exampleUpgdNodeCCVer, ccPolicy, ExampleCCInitArgs(), collConfigs...)
 	return err
 }
 
