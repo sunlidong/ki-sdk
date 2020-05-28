@@ -54,9 +54,8 @@ github.com/hyperledger/fabric-amcl v0.0.0-20200424173818-327c9e2cf77a h1:JAKZdGu
 github.com/hyperledger/fabric-amcl v0.0.0-20200424173818-327c9e2cf77a/go.mod h1:X+DIyUsaTmalOpmpQfIvFZjKHQedrURQ5t4YqquX7lE=
 github.com/hyperledger/fabric-lib-go v1.0.0 h1:UL1w7c9LvHZUSkIvHTDGklxFv2kTeva1QI2emOVc324=
 github.com/hyperledger/fabric-lib-go v1.0.0/go.mod h1:H362nMlunurmHwkYqR5uHL2UDWbQdbfz74n8kbCFsqc=
+github.com/hyperledger/fabric-protos-go v0.0.0-20190821180310-6b6ac9042dfd h1:z0IbaMd4Ry2Cmmxujzy4UDgCUsT/0dOqqoGtOcvDw9Q=
 github.com/hyperledger/fabric-protos-go v0.0.0-20190821180310-6b6ac9042dfd/go.mod h1:xVYTjK4DtZRBxZ2D9aE4y6AbLaPwue2o/criQyQbVD0=
-github.com/hyperledger/fabric-protos-go v0.0.0-20200506201313-25f6564b9ac4 h1:75hBp86WljV3uQ7Q/wbO5w8ahfLAzxH7jfT5kVy2n6g=
-github.com/hyperledger/fabric-protos-go v0.0.0-20200506201313-25f6564b9ac4/go.mod h1:xVYTjK4DtZRBxZ2D9aE4y6AbLaPwue2o/criQyQbVD0=
 github.com/hyperledger/fabric-sdk-go v1.0.0-beta1 h1:id5BJE6TZu/SaGQahns6sO2o+n5fwps7GrWGCJJnAY8=
 github.com/hyperledger/fabric-sdk-go v1.0.0-beta1/go.mod h1:i8yJ9t8i1fGe7opUcq6uESxhruMJNXlc+Rx9ooBZsYg=
 github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric v0.0.0-20190822125948-d2b42602e52e h1:xVhcr3hNlAtnVO+2OlEQEL+5ZiQbGfKFi+KeYBeMKWo=
