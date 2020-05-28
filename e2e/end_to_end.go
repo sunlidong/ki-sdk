@@ -98,7 +98,7 @@ func e2eTest(t *testing.T, sdk *fabsdk.FabricSDK) {
 	}
 
 	// existingValue := queryCC(t, client)
-	ccEvent := moveFunds(t, client)
+	// ccEvent := moveFunds(t, client)
 
 	// Verify move funds transaction result on the same peer where the event came from.
 	// verifyFundsIsMoved(t, client, existingValue, ccEvent)
@@ -106,11 +106,11 @@ func e2eTest(t *testing.T, sdk *fabsdk.FabricSDK) {
 
 func createChannelAndCC(t *testing.T, sdk *fabsdk.FabricSDK) {
 	//clientContext allows creation of transactions using the supplied identity as the credential.
-	clientContext := sdk.Context(fabsdk.WithUser(orgAdmin), fabsdk.WithOrg(ordererOrgName))
+	// clientContext := sdk.Context(fabsdk.WithUser(orgAdmin), fabsdk.WithOrg(ordererOrgName))
 
 	// Resource management client is responsible for managing channels (create/update channel)
 	// Supply user that has privileges to create channel (in this case orderer admin)
-	resMgmtClient, err := resmgmt.New(clientContext)
+	// resMgmtClient, err := resmgmt.New(clientContext)
 	if err != nil {
 		t.Fatalf("Failed to create channel management client: %s", err)
 	}
