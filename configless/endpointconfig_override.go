@@ -142,7 +142,7 @@ var (
 		},
 	}
 
-	orderersConfig = map[string]fab.OrdererConfig{
+	OrderersConfig = map[string]fab.OrdererConfig{
 		"orderer.example.com": {
 			URL: "orderer.example.com:7050",
 			GRPCOptions: map[string]interface{}{
@@ -256,37 +256,37 @@ var (
 	}
 
 	// creating instances of each interface to be referenced in the integration tests:
-	timeoutImpl          = &exampleTimeout{}
-	orderersConfigImpl   = newOrderersConfigImpl()
-	ordererConfigImpl    = &exampleOrdererConfig{}
-	peersConfigImpl      = newPeersConfigImpl()
-	peerConfigImpl       = &examplePeerConfig{}
-	networkConfigImpl    = &exampleNetworkConfig{}
-	networkPeersImpl     = &exampleNetworkPeers{}
-	channelConfigImpl    = &exampleChannelConfig{}
-	channelPeersImpl     = &exampleChannelPeers{}
-	channelOrderersImpl  = &exampleChannelOrderers{}
-	tlsCACertPoolImpl    = newTLSCACertPool(false)
-	tlsClientCertsImpl   = &exampleTLSClientCerts{}
-	cryptoConfigPathImpl = &exampleCryptoConfigPath{}
-	endpointConfigImpls  = []interface{}{
-		timeoutImpl,
-		orderersConfigImpl,
-		ordererConfigImpl,
-		peersConfigImpl,
-		peerConfigImpl,
-		networkConfigImpl,
-		networkPeersImpl,
-		channelConfigImpl,
-		channelPeersImpl,
-		channelOrderersImpl,
-		tlsCACertPoolImpl,
-		tlsClientCertsImpl,
-		cryptoConfigPathImpl,
+	TimeoutImpl          = &ExampleTimeout{}
+	OrderersConfigImpl   = newOrderersConfigImpl()
+	OrdererConfigImpl    = &ExampleOrdererConfig{}
+	PeersConfigImpl      = newPeersConfigImpl()
+	PeerConfigImpl       = &examplePeerConfig{}
+	NetworkConfigImpl    = &exampleNetworkConfig{}
+	NetworkPeersImpl     = &exampleNetworkPeers{}
+	ChannelConfigImpl    = &exampleChannelConfig{}
+	ChannelPeersImpl     = &exampleChannelPeers{}
+	ChannelOrderersImpl  = &exampleChannelOrderers{}
+	TlsCACertPoolImpl    = newTLSCACertPool(false)
+	TlsClientCertsImpl   = &exampleTLSClientCerts{}
+	CryptoConfigPathImpl = &exampleCryptoConfigPath{}
+	EndpointConfigImpls  = []interface{}{
+		TimeoutImpl,
+		OrderersConfigImpl,
+		OrdererConfigImpl,
+		PeersConfigImpl,
+		PeerConfigImpl,
+		NetworkConfigImpl,
+		NetworkPeersImpl,
+		ChannelConfigImpl,
+		ChannelPeersImpl,
+		ChannelOrderersImpl,
+		TlsCACertPoolImpl,
+		TlsClientCertsImpl,
+		CryptoConfigPathImpl,
 	}
 )
 
-type exampleTimeout struct{}
+type ExampleTimeout struct{}
 
 var defaultTypes = map[fab.TimeoutType]time.Duration{
 	fab.PeerConnection:           time.Second * 10,
@@ -311,7 +311,7 @@ var defaultTypes = map[fab.TimeoutType]time.Duration{
 }
 
 //Timeout overrides EndpointConfig's Timeout function which returns the timeout for the given timeoutType in the arg
-func (m *exampleTimeout) Timeout(tType fab.TimeoutType) time.Duration {
+func (m *ExampleTimeout) Timeout(tType fab.TimeoutType) time.Duration {
 	t, ok := defaultTypes[tType]
 	if !ok {
 		return time.Second * 30 // general default if type is not found
@@ -368,8 +368,8 @@ func newPeersConfig() map[string]fab.PeerConfig {
 }
 
 func newOrderersConfig() map[string]fab.OrdererConfig {
-	o := verifyIsLocalOrderersURLs(orderersConfig)
-	orderersConfig = o
+	o := verifyIsLocalOrderersURLs(OrderersConfig)
+	OrderersConfig = o
 	return o
 }
 
@@ -391,10 +391,10 @@ func verifyIsLocalOrderersURLs(oConfig map[string]fab.OrdererConfig) map[string]
 }
 
 //newOrderersConfigImpl will create a new exampleOrderersConfig instance with proper ordrerer URLs (local vs normal) tests
-// local tests use localhost urls, while the remaining tests use default values as set in orderersConfig var
+// local tests use localhost urls, while the remaining tests use default values as set in OrderersConfig var
 func newOrderersConfigImpl() *exampleOrderersConfig {
-	oConfig := verifyIsLocalOrderersURLs(orderersConfig)
-	orderersConfig = oConfig
+	oConfig := verifyIsLocalOrderersURLs(OrderersConfig)
+	OrderersConfig = oConfig
 	o := &exampleOrderersConfig{}
 	return o
 }
@@ -407,7 +407,7 @@ type exampleOrderersConfig struct {
 func (m *exampleOrderersConfig) OrderersConfig() []fab.OrdererConfig {
 	orderers := []fab.OrdererConfig{}
 
-	for _, orderer := range orderersConfig {
+	for _, orderer := range OrderersConfig {
 
 		if orderer.TLSCACert == nil && !m.isSystemCertPool {
 			return nil
@@ -418,10 +418,10 @@ func (m *exampleOrderersConfig) OrderersConfig() []fab.OrdererConfig {
 	return orderers
 }
 
-type exampleOrdererConfig struct{}
+type ExampleOrdererConfig struct{}
 
 //OrdererConfig overrides EndpointConfig's OrdererConfig function which returns the ordererConfig instance for the name/URL arg
-func (m *exampleOrdererConfig) OrdererConfig(ordererNameOrURL string) (*fab.OrdererConfig, bool, bool) {
+func (m *ExampleOrdererConfig) OrdererConfig(ordererNameOrURL string) (*fab.OrdererConfig, bool, bool) {
 	orderer, ok := networkConfig.Orderers[strings.ToLower(ordererNameOrURL)]
 	if !ok {
 		// EntityMatchers are not used in this implementation, below is an example of how to use them if needed, see default implementation for live example
@@ -655,7 +655,7 @@ type exampleChannelOrderers struct{}
 func (m *exampleChannelOrderers) ChannelOrderers(channelName string) []fab.OrdererConfig {
 	// referencing other interfaces to call ChannelConfig and OrdererConfig to match config yaml content
 	chCfg := &exampleChannelConfig{}
-	oCfg := &exampleOrdererConfig{}
+	oCfg := &ExampleOrdererConfig{}
 
 	orderers := []fab.OrdererConfig{}
 	channel := chCfg.ChannelConfig(channelName)

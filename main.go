@@ -14,10 +14,10 @@ func main() {
 	m.InitSDK()
  
 		e2e.SetupAndRuning( nil,
-			fabsdk.WithEndpointConfig(configless.endpointConfigImpls...),
-			fabsdk.WithCryptoSuiteConfig(configless.cryptoConfigImpls...),
-			fabsdk.WithIdentityConfig(configless.identityConfigImpls...),
-			fabsdk.WithMetricsConfig(configless.operationsConfigImpls...),
+			fabsdk.WithEndpointConfig(configless.EndpointConfigImpls...),
+			fabsdk.WithCryptoSuiteConfig(configless.CryptoConfigImpls...),
+			fabsdk.WithIdentityConfig(configless.IdentityConfigImpls...),
+			fabsdk.WithMetricsConfig(configless.OperationsConfigImpls...),
 		)
 	}
 
