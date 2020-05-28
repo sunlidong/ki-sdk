@@ -22,7 +22,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/events/deliverclient/seek"
-	"github.com/hyperledger/fabric-sdk-go/test/integration"
+	"ki-sdk/test/integration"
 	pb "github.com/hyperledger/fabric-protos-go/peer"
 )
 

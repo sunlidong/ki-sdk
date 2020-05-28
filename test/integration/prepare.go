@@ -22,7 +22,7 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/ccpackager/nodepackager"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/comm"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
-	"github.com/hyperledger/fabric-sdk-go/test/metadata"
+	"ki-sdk/test/metadata"
 	"github.com/pkg/errors"
 )
 

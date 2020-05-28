@@ -9,8 +9,8 @@ import (
 	"testing"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
-	"github.com/hyperledger/fabric-sdk-go/test/integration"
-	"github.com/hyperledger/fabric-sdk-go/test/integration/util/runner"
+	"ki-sdk/test/integration"
+	"ki-sdk/test/integration/util/runner"
 )
 
 var mainSDK *fabsdk.FabricSDK

@@ -12,7 +12,7 @@ import (
 	"testing"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
-	"github.com/hyperledger/fabric-sdk-go/test/integration"
+	"ki-sdk/test/integration"
 )
 
 const (

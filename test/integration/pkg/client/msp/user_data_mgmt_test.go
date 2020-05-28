@@ -21,7 +21,7 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
 	mspimpl "github.com/hyperledger/fabric-sdk-go/pkg/msp"
-	"github.com/hyperledger/fabric-sdk-go/test/integration"
+	"ki-sdk/test/integration"
 )
 
 // TestWithCustomStores demonstrates the usage of custom key and cert stores

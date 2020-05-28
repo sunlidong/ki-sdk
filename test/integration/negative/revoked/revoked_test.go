@@ -25,7 +25,7 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt"
 	packager "github.com/hyperledger/fabric-sdk-go/pkg/fab/ccpackager/gopackager"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
-	"github.com/hyperledger/fabric-sdk-go/test/integration"
+	"ki-sdk/test/integration"
 
 	"io/ioutil"
 
