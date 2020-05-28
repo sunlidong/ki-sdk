@@ -3,7 +3,7 @@ package main
 import (
 	m "ki-sdk/model"
 	r "ki-sdk/router"
-	"ki-sdk/test/integration/e2e/configless"
+	"ki-sdk/test/integration"
 	"log"
 )
 
