@@ -20,7 +20,7 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/msp"
-	commtls "github.com/hyperledger/fabric-sdk-go/pkg/core/config/comm/tls"
+	"github.com/hyperledger/fabric-sdk-go/pkg/core/config/comm/tls"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config/cryptoutil"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config/endpoint"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/cryptosuite"
@@ -673,14 +673,14 @@ func (m *exampleChannelOrderers) ChannelOrderers(channelName string) []fab.Order
 }
 
 type exampleTLSCACertPool struct {
-	tlsCertPool commtls.CertPool
+	tlsCertPool tls.CertPool
 }
 
 //newTLSCACertPool will create a new exampleTLSCACertPool instance with useSystemCertPool bool flag
 func newTLSCACertPool(useSystemCertPool bool) *exampleTLSCACertPool {
 	m := &exampleTLSCACertPool{}
 	var err error
-	m.tlsCertPool, err = commtls.NewCertPool(useSystemCertPool)
+	m.tlsCertPool, err = tls.NewCertPool(useSystemCertPool)
 	if err != nil {
 		panic(err)
 	}
@@ -688,7 +688,7 @@ func newTLSCACertPool(useSystemCertPool bool) *exampleTLSCACertPool {
 }
 
 // TLSCACertPool overrides EndpointConfig's TLSCACertPool function which will add the list of cert args to the cert pool and return it
-func (m *exampleTLSCACertPool) TLSCACertPool() commtls.CertPool {
+func (m *exampleTLSCACertPool) TLSCACertPool() tls.CertPool {
 	return m.tlsCertPool
 }
 
