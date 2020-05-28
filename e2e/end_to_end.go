@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package e2e
 
 import (
+	"log"
 	"strconv"
 	"testing"
 	"time"
@@ -44,15 +45,15 @@ func Run(t *testing.T, configOpt core.ConfigProvider, sdkOpts ...fabsdk.Option) 
 }
 
 // RunWithoutSetup will execute the same way as Run but without creating a new channel and registering a new CC
-func RunWithoutSetup(t *testing.T, configOpt core.ConfigProvider, sdkOpts ...fabsdk.Option) {
-	setupAndRun(t, false, configOpt, e2eTest, sdkOpts...)
+func RunWithoutSetup(configOpt core.ConfigProvider, sdkOpts ...fabsdk.Option) {
+	setupAndRun(false, configOpt, sdkOpts...)
 }
 
 type testSDKFunc func(t *testing.T, sdk *fabsdk.FabricSDK)
 
 // setupAndRun enables testing an end-to-end scenario against the supplied SDK options
 // the createChannel flag will be used to either create a channel and the example CC or not(ie run the tests with existing ch and CC)
-func setupAndRun(t *testing.T, createChannel bool, configOpt core.ConfigProvider, test testSDKFunc, sdkOpts ...fabsdk.Option) {
+func setupAndRun(createChannel bool, configOpt core.ConfigProvider, sdkOpts ...fabsdk.Option) {
 
 	if configless.IsLocal() {
 		//If it is a local test then add entity mapping to config backend to parse URLs
@@ -64,10 +65,11 @@ func setupAndRun(t *testing.T, createChannel bool, configOpt core.ConfigProvider
 		t.Fatalf("Failed to create new SDK: %s", err)
 	}
 	defer sdk.Close()
+	log.Println("init------------------------------------")
 
-	if createChannel {
-		createChannelAndCC(t, sdk)
-	}
+	// if createChannel {
+	// 	createChannelAndCC(t, sdk)
+	// }
 
 }
 
