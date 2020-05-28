@@ -11,6 +11,8 @@ import (
 	"path/filepath"
 	"time"
 
+	"ki-sdk/test/metadata"
+
 	pb "github.com/hyperledger/fabric-protos-go/peer"
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt"
@@ -18,11 +20,9 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/status"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab"
 	packager "github.com/hyperledger/fabric-sdk-go/pkg/fab/ccpackager/gopackager"
-	javapackager "github.com/hyperledger/fabric-sdk-go/pkg/fab/ccpackager/javapackager"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/ccpackager/nodepackager"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fab/comm"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
-	"ki-sdk/test/metadata"
 	"github.com/pkg/errors"
 )
 
@@ -169,21 +169,6 @@ func InstallExamplePvtChaincode(orgs []*OrgContext, ccID string) error {
 	return nil
 }
 
-// InstallExampleJavaChaincode installs the example java chaincode to all peers in the given orgs
-func InstallExampleJavaChaincode(orgs []*OrgContext, ccID string) error {
-	ccPkg, err := javapackager.NewCCPackage(filepath.Join(GetJavaDeployPath(), exampleJavaCCPath))
-	if err != nil {
-		return errors.WithMessage(err, "creating chaincode package failed")
-	}
-
-	err = InstallChaincodeWithOrgContexts(orgs, ccPkg, exampleJavaCCPath, ccID, exampleJavaCCVersion)
-	if err != nil {
-		return errors.WithMessage(err, "installing example chaincode failed")
-	}
-
-	return nil
-}
-
 // InstallExampleNodeChaincode installs the example node chaincode to all peers in the given orgs
 func InstallExampleNodeChaincode(orgs []*OrgContext, ccID string) error {
 	ccPkg, err := nodepackager.NewCCPackage(filepath.Join(GetNodeDeployPath(), exampleNodeCCPath))
@@ -237,23 +222,6 @@ func UpgradeExamplePvtChaincode(orgs []*OrgContext, channelID, ccID, ccPolicy st
 
 	// now upgrade cc
 	_, err = UpgradeChaincode(orgs[0].ResMgmt, channelID, ccID, examplePvtCCPath, exampleUpgdPvtCCVer, ccPolicy, ExampleCCInitArgs(), collConfigs...)
-	return err
-}
-
-// UpgradeExampleJavaChaincode upgrades the instantiated example java CC on the given channel
-func UpgradeExampleJavaChaincode(orgs []*OrgContext, channelID, ccID, ccPolicy string, collConfigs ...*pb.CollectionConfig) error {
-	ccPkg, err := javapackager.NewCCPackage(filepath.Join(GetJavaDeployPath(), exampleJavaCCPath))
-	if err != nil {
-		return errors.WithMessage(err, "creating chaincode package failed")
-	}
-
-	err = InstallChaincodeWithOrgContexts(orgs, ccPkg, exampleJavaCCPath, ccID, exampleUpgdJavaCCVer)
-	if err != nil {
-		return errors.WithMessage(err, "installing example chaincode failed")
-	}
-
-	// now upgrade cc
-	_, err = UpgradeJavaChaincode(orgs[0].ResMgmt, channelID, ccID, exampleJavaCCPath, exampleUpgdJavaCCVer, ccPolicy, ExampleCCInitArgs(), collConfigs...)
 	return err
 }
 
