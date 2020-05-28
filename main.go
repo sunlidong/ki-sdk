@@ -13,7 +13,7 @@ func main() {
 	m.InitSDK()
 
 	//
-	configless.E2EBlockInit()
+	integration.E2EBlockInit()
 
 	// 初始化路由
 	egg := r.InitRouter()
