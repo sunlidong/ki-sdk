@@ -111,9 +111,9 @@ func createChannelAndCC(t *testing.T, sdk *fabsdk.FabricSDK) {
 	// Resource management client is responsible for managing channels (create/update channel)
 	// Supply user that has privileges to create channel (in this case orderer admin)
 	// resMgmtClient, err := resmgmt.New(clientContext)
-	if err != nil {
-		t.Fatalf("Failed to create channel management client: %s", err)
-	}
+	// if err != nil {
+	// 	t.Fatalf("Failed to create channel management client: %s", err)
+	// }
 
 	// Create channel
 	// createChannel(t, sdk, resMgmtClient)
