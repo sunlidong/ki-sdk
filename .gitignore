@@ -14,4 +14,5 @@ server/data
 new/
 *.pem
 vendor/
+crypto-config/
 
