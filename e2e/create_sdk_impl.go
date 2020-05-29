@@ -74,8 +74,6 @@ func (swp *Application) CreateMspClient() error {
 		return fmt.Errorf("创建msp管理客户端为空:%v", c)
 	}
 
-	swp.MspClient = c
-
 	return nil
 }
 
