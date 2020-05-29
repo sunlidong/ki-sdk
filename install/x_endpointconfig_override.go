@@ -68,21 +68,47 @@ type caConfig struct {
 var (
 	localhostRep = "localhost:"
 	dnsMatchRegX = ".*:"
+	TLS_PATH     = "/mnt/d/gopath/src/ki-kyc/crypto-config/peerOrganizations/org1.bookstore.com/users/User1@org1.bookstore.com/tls/"
+	ORDREER_PAHT = "/mnt/d/gopath/src/ki-kyc/crypto-config/"
 	client       = clientConfig{
 		Organization:    "org1",
 		Logging:         api.LoggingType{Level: "info"},
-		CryptoConfig:    msp.CCType{Path: pathvar.Subst("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}")},
+		CryptoConfig:    msp.CCType{Path: pathvar.Subst("/mnt/d/gopath/src/ki-kyc/crypto-config/")},
 		CredentialStore: msp.CredentialStoreType{Path: "/tmp/msp"},
 		TLSCerts: endpoint.MutualTLSConfig{Client: endpoint.TLSKeyPair{
-			Key:  newTLSConfig("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.key"),
-			Cert: newTLSConfig("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.crt")}},
+			Key:  newTLSConfig(TLS_PATH + "client.key"),
+			Cert: newTLSConfig(TLS_PATH + "client.crt")}},
 	}
 
 	channelsConfig = map[string]fab.ChannelEndpointConfig{
-		"mychannel": {
-			Orderers: []string{"orderer.example.com"},
+		"bookchannel": {
+			Orderers: []string{
+				"orderer1.bookstore.com",
+				"orderer2.bookstore.com",
+				"orderer3.bookstore.com",
+				"orderer4.bookstore.com",
+				"orderer5.bookstore.com",
+			},
 			Peers: map[string]fab.PeerChannelConfig{
-				"peer0.org1.example.com": {
+				"peer0.org1.bookstore.com": {
+					EndorsingPeer:  true,
+					ChaincodeQuery: true,
+					LedgerQuery:    true,
+					EventSource:    true,
+				},
+				"peer1.org1.bookstore.com": {
+					EndorsingPeer:  true,
+					ChaincodeQuery: true,
+					LedgerQuery:    true,
+					EventSource:    true,
+				},
+				"peer0.org2.bookstore.com": {
+					EndorsingPeer:  true,
+					ChaincodeQuery: true,
+					LedgerQuery:    true,
+					EventSource:    true,
+				},
+				"peer1.org2.bookstore.com": {
 					EndorsingPeer:  true,
 					ChaincodeQuery: true,
 					LedgerQuery:    true,
@@ -109,94 +135,141 @@ var (
 				},
 			},
 		},
-		"orgchannel": {
-			Orderers: []string{"orderer.example.com"},
-			Peers: map[string]fab.PeerChannelConfig{
-				"peer0.org1.example.com": {
-					EndorsingPeer:  true,
-					ChaincodeQuery: true,
-					LedgerQuery:    true,
-					EventSource:    true,
-				},
-				"peer0.org2.example.com": {
-					EndorsingPeer:  true,
-					ChaincodeQuery: true,
-					LedgerQuery:    true,
-					EventSource:    true,
-				},
-			},
-			Policies: fab.ChannelPolicies{
-				QueryChannelConfig: fab.QueryChannelConfigPolicy{
-					MinResponses: 1,
-					MaxTargets:   1,
-					RetryOpts: retry.Opts{
-						Attempts:       5,
-						InitialBackoff: 500 * time.Millisecond,
-						MaxBackoff:     5 * time.Second,
-						BackoffFactor:  2.0,
-					},
-				},
-			},
-		},
 	}
-	orgsConfig = map[string]fab.OrganizationConfig{
+	OrgsConfig = map[string]fab.OrganizationConfig{
 		"org1": {
-			MSPID:                  "Org1MSP",
-			CryptoPath:             "peerOrganizations/org1.example.com/users/{username}@org1.example.com/msp",
-			Peers:                  []string{"peer0.org1.example.com"},
-			CertificateAuthorities: []string{"ca.org1.example.com"},
+			MSPID:      "Org1MSP",
+			CryptoPath: "peerOrganizations/org1.bookstore.com/users/{username}@org1.bookstore.com/msp",
+			Peers: []string{
+				"peer0.org1.bookstore.com",
+				"peer1.org1.bookstore.com",
+			},
 		},
 		"org2": {
-			MSPID:                  "Org2MSP",
-			CryptoPath:             "peerOrganizations/org1.example.com/users/{username}@org2.example.com/msp",
-			Peers:                  []string{"peer0.org2.example.com"},
-			CertificateAuthorities: []string{"ca.org2.example.com"},
+			MSPID:      "Org2MSP",
+			CryptoPath: "peerOrganizations/org2.bookstore.com/users/{username}@org2.bookstore.com/msp",
+			Peers: []string{
+				"peer0.org2.bookstore.com",
+				"peer1.org2.bookstore.com",
+			},
 		},
 		"ordererorg": {
 			MSPID:      "OrdererMSP",
-			CryptoPath: "ordererOrganizations/example.com/users/{username}@example.com/msp",
+			CryptoPath: "ordererOrganizations/bookstore.com/users/{username}@bookstore.com/msp",
 		},
 	}
 
-	orderersConfig = map[string]fab.OrdererConfig{
-		"orderer.example.com": {
-			URL: "orderer.example.com:7050",
+	OrderersConfig = map[string]fab.OrdererConfig{
+		"orderer1.bookstore.com": {
+			URL: "orderer1.bookstore.com:7050",
 			GRPCOptions: map[string]interface{}{
-				"ssl-target-name-override": "orderer.example.com",
+				"ssl-target-name-override": "orderer1.bookstore.com",
 				"keep-alive-time":          0 * time.Second,
 				"keep-alive-timeout":       20 * time.Second,
 				"keep-alive-permit":        false,
 				"fail-fast":                false,
 				"allow-insecure":           false,
 			},
-			TLSCACert: tlsCertByBytes("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem"),
+			TLSCACert: tlsCertByBytes(ORDREER_PAHT + "ordererOrganizations/bookstore.com/tlsca/tlsca.bookstore.com-cert.pem"),
+		},
+		"orderer2.bookstore.com": {
+			URL: "orderer2.bookstore.com:8050",
+			GRPCOptions: map[string]interface{}{
+				"ssl-target-name-override": "orderer2.bookstore.com",
+				"keep-alive-time":          0 * time.Second,
+				"keep-alive-timeout":       20 * time.Second,
+				"keep-alive-permit":        false,
+				"fail-fast":                false,
+				"allow-insecure":           false,
+			},
+			TLSCACert: tlsCertByBytes(ORDREER_PAHT + "ordererOrganizations/bookstore.com/tlsca/tlsca.bookstore.com-cert.pem"),
+		},
+		"orderer3.bookstore.com": {
+			URL: "orderer3.bookstore.com:9050",
+			GRPCOptions: map[string]interface{}{
+				"ssl-target-name-override": "orderer3.bookstore.com",
+				"keep-alive-time":          0 * time.Second,
+				"keep-alive-timeout":       20 * time.Second,
+				"keep-alive-permit":        false,
+				"fail-fast":                false,
+				"allow-insecure":           false,
+			},
+			TLSCACert: tlsCertByBytes(ORDREER_PAHT + "ordererOrganizations/bookstore.com/tlsca/tlsca.bookstore.com-cert.pem"),
+		},
+		"orderer4.bookstore.com": {
+			URL: "orderer4.bookstore.com:10050",
+			GRPCOptions: map[string]interface{}{
+				"ssl-target-name-override": "orderer4.bookstore.com",
+				"keep-alive-time":          0 * time.Second,
+				"keep-alive-timeout":       20 * time.Second,
+				"keep-alive-permit":        false,
+				"fail-fast":                false,
+				"allow-insecure":           false,
+			},
+			TLSCACert: tlsCertByBytes(ORDREER_PAHT + "ordererOrganizations/bookstore.com/tlsca/tlsca.bookstore.com-cert.pem"),
+		},
+		"orderer5.bookstore.com": {
+			URL: "orderer5.bookstore.com:11050",
+			GRPCOptions: map[string]interface{}{
+				"ssl-target-name-override": "orderer5.bookstore.com",
+				"keep-alive-time":          0 * time.Second,
+				"keep-alive-timeout":       20 * time.Second,
+				"keep-alive-permit":        false,
+				"fail-fast":                false,
+				"allow-insecure":           false,
+			},
+			TLSCACert: tlsCertByBytes(ORDREER_PAHT + "ordererOrganizations/bookstore.com/tlsca/tlsca.bookstore.com-cert.pem"),
 		},
 	}
 
 	peersConfig = map[string]fab.PeerConfig{
-		"peer0.org1.example.com": {
-			URL: "peer0.org1.example.com:7051",
+		"peer0.org1.bookstore.com": {
+			URL: "peer0.org1.bookstore.com:7051",
 			GRPCOptions: map[string]interface{}{
-				"ssl-target-name-override": "peer0.org1.example.com",
+				"ssl-target-name-override": "peer0.org1.bookstore.com",
 				"keep-alive-time":          0 * time.Second,
 				"keep-alive-timeout":       20 * time.Second,
 				"keep-alive-permit":        false,
 				"fail-fast":                false,
 				"allow-insecure":           false,
 			},
-			TLSCACert: tlsCertByBytes("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem"),
+			TLSCACert: tlsCertByBytes(ORDREER_PAHT + "peerOrganizations/org1.bookstore.com/tlsca/tlsca.org1.bookstore.com-cert.pem"),
 		},
-		"peer0.org2.example.com": {
-			URL: "peer0.org2.example.com:8051",
+		"peer1.org1.bookstore.com": {
+			URL: "peer1.org2.bookstore.com:8051",
 			GRPCOptions: map[string]interface{}{
-				"ssl-target-name-override": "peer0.org2.example.com",
+				"ssl-target-name-override": "peer1.org2.bookstore.com",
 				"keep-alive-time":          0 * time.Second,
 				"keep-alive-timeout":       20 * time.Second,
 				"keep-alive-permit":        false,
 				"fail-fast":                false,
 				"allow-insecure":           false,
 			},
-			TLSCACert: tlsCertByBytes("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem"),
+			TLSCACert: tlsCertByBytes(ORDREER_PAHT + "peerOrganizations/org1.bookstore.com/tlsca/tlsca.org1.bookstore.com-cert.pem"),
+		},
+		"peer0.org2.bookstore.com": {
+			URL: "peer0.org2.bookstore.com:9051",
+			GRPCOptions: map[string]interface{}{
+				"ssl-target-name-override": "peer0.org2.bookstore.com",
+				"keep-alive-time":          0 * time.Second,
+				"keep-alive-timeout":       20 * time.Second,
+				"keep-alive-permit":        false,
+				"fail-fast":                false,
+				"allow-insecure":           false,
+			},
+			TLSCACert: tlsCertByBytes(ORDREER_PAHT + "peerOrganizations/org2.bookstore.com/tlsca/tlsca.org1.bookstore.com-cert.pem"),
+		},
+		"peer1.org2.bookstore.com": {
+			URL: "peer1.org2.bookstore.com:10051",
+			GRPCOptions: map[string]interface{}{
+				"ssl-target-name-override": "peer1.org2.bookstore.com",
+				"keep-alive-time":          0 * time.Second,
+				"keep-alive-timeout":       20 * time.Second,
+				"keep-alive-permit":        false,
+				"fail-fast":                false,
+				"allow-insecure":           false,
+			},
+			TLSCACert: tlsCertByBytes(ORDREER_PAHT + "peerOrganizations/org2.bookstore.com/tlsca/tlsca.org2.bookstore.com-cert.pem"),
 		},
 	}
 
@@ -204,101 +277,125 @@ var (
 		"localhost:7051": {
 			URL: "localhost:7051",
 			GRPCOptions: map[string]interface{}{
-				"ssl-target-name-override": "peer0.org1.example.com",
+				"ssl-target-name-override": "peer0.org1.bookstore.com",
 				"keep-alive-time":          0 * time.Second,
 				"keep-alive-timeout":       20 * time.Second,
 				"keep-alive-permit":        false,
 				"fail-fast":                false,
 				"allow-insecure":           false,
 			},
-			TLSCACert: tlsCertByBytes("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem"),
+			TLSCACert: tlsCertByBytes(ORDREER_PAHT + "peerOrganizations/org1.bookstore.com/tlsca/tlsca.org1.bookstore.com-cert.pem"),
 		},
 		"localhost:8051": {
 			URL: "localhost:8051",
 			GRPCOptions: map[string]interface{}{
-				"ssl-target-name-override": "peer0.org2.example.com",
+				"ssl-target-name-override": "peer1.org1.bookstore.com",
 				"keep-alive-time":          0 * time.Second,
 				"keep-alive-timeout":       20 * time.Second,
 				"keep-alive-permit":        false,
 				"fail-fast":                false,
 				"allow-insecure":           false,
 			},
-			TLSCACert: tlsCertByBytes("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem"),
+			TLSCACert: tlsCertByBytes(ORDREER_PAHT + "peerOrganizations/org1.bookstore.com/tlsca/tlsca.org1.bookstore.com-cert.pem"),
+		},
+		"localhost:9051": {
+			URL: "localhost:9051",
+			GRPCOptions: map[string]interface{}{
+				"ssl-target-name-override": "peer0.org2.bookstore.com",
+				"keep-alive-time":          0 * time.Second,
+				"keep-alive-timeout":       20 * time.Second,
+				"keep-alive-permit":        false,
+				"fail-fast":                false,
+				"allow-insecure":           false,
+			},
+			TLSCACert: tlsCertByBytes(ORDREER_PAHT + "peerOrganizations/org2.bookstore.com/tlsca/tlsca.org2.bookstore.com-cert.pem"),
+		},
+		"localhost:10051": {
+			URL: "localhost:10051",
+			GRPCOptions: map[string]interface{}{
+				"ssl-target-name-override": "peer1.org2.bookstore.com",
+				"keep-alive-time":          0 * time.Second,
+				"keep-alive-timeout":       20 * time.Second,
+				"keep-alive-permit":        false,
+				"fail-fast":                false,
+				"allow-insecure":           false,
+			},
+			TLSCACert: tlsCertByBytes(ORDREER_PAHT + "peerOrganizations/org2.bookstore.com/tlsca/tlsca.org2.bookstore.com-cert.pem"),
 		},
 	}
 
 	caConfigObj = map[string]caConfig{
-		"ca.org1.example.com": {
-			ID:  "ca.org1.example.com",
-			URL: "https://ca.org1.example.com:7054",
+		"ca.org1.bookstore.com": {
+			ID:  "ca.org1.bookstore.com",
+			URL: "https://ca.org1.bookstore.com:7054",
 			TLSCACerts: endpoint.MutualTLSConfig{
-				Path: pathvar.Subst("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem"),
+				Path: pathvar.Subst("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.bookstore.com/tlsca/tlsca.org1.bookstore.com-cert.pem"),
 				Client: endpoint.TLSKeyPair{
-					Key:  newTLSConfig("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.key"),
-					Cert: newTLSConfig("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.crt"),
+					Key:  newTLSConfig(TLS_PATH + "client.key"),
+					Cert: newTLSConfig(TLS_PATH + "client.crt"),
 				},
 			},
 			Registrar: msp.EnrollCredentials{
 				EnrollID:     "admin",
 				EnrollSecret: "adminpw",
 			},
-			CAName: "ca.org1.example.com",
+			CAName: "ca.org1.bookstore.com",
 		},
-		"ca.org2.example.com": {
-			ID:  "ca.org2.example.com",
-			URL: "https://ca.org2.example.com:8054",
+		"ca.org2.bookstore.com": {
+			ID:  "ca.org2.bookstore.com",
+			URL: "https://ca.org2.bookstore.com:8054",
 			TLSCACerts: endpoint.MutualTLSConfig{
-				Path: pathvar.Subst("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem"),
+				Path: pathvar.Subst("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.bookstore.com/tlsca/tlsca.org2.bookstore.com-cert.pem"),
 				Client: endpoint.TLSKeyPair{
-					Key:  newTLSConfig("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.key"),
-					Cert: newTLSConfig("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.crt"),
+					Key:  newTLSConfig(TLS_PATH + "client.key"),
+					Cert: newTLSConfig(TLS_PATH + "client.crt"),
 				},
 			},
 			Registrar: msp.EnrollCredentials{
 				EnrollID:     "admin",
 				EnrollSecret: "adminpw",
 			},
-			CAName: "ca.org2.example.com",
+			CAName: "ca.org2.bookstore.com",
 		},
 	}
 
-	networkConfig = fab.NetworkConfig{
+	NetworkConfig = fab.NetworkConfig{
 		Channels:      channelsConfig,
-		Organizations: orgsConfig,
-		Orderers:      newOrderersConfig(),
-		Peers:         newPeersConfig(),
+		Organizations: OrgsConfig,
+		Orderers:      NewOrderersConfig(),
+		Peers:         NewPeersConfig(),
 		// EntityMatchers are not used in this implementation
 		//EntityMatchers: entityMatchers,
 	}
 
 	// creating instances of each interface to be referenced in the integration tests:
-	timeoutImpl          = &exampleTimeout{}
-	orderersConfigImpl   = newOrderersConfigImpl()
-	ordererConfigImpl    = &exampleOrdererConfig{}
-	peersConfigImpl      = newPeersConfigImpl()
-	peerConfigImpl       = &examplePeerConfig{}
-	networkConfigImpl    = &exampleNetworkConfig{}
-	networkPeersImpl     = &exampleNetworkPeers{}
-	channelConfigImpl    = &exampleChannelConfig{}
-	channelPeersImpl     = &exampleChannelPeers{}
-	channelOrderersImpl  = &exampleChannelOrderers{}
-	tlsCACertPoolImpl    = newTLSCACertPool(false)
-	tlsClientCertsImpl   = &exampleTLSClientCerts{}
-	cryptoConfigPathImpl = &exampleCryptoConfigPath{}
-	endpointConfigImpls  = []interface{}{
-		timeoutImpl,
-		orderersConfigImpl,
-		ordererConfigImpl,
-		peersConfigImpl,
-		peerConfigImpl,
-		networkConfigImpl,
-		networkPeersImpl,
-		channelConfigImpl,
-		channelPeersImpl,
-		channelOrderersImpl,
-		tlsCACertPoolImpl,
-		tlsClientCertsImpl,
-		cryptoConfigPathImpl,
+	TimeoutImpl          = &ExampleTimeout{}
+	OrderersConfigImpl   = NewOrderersConfigImpl()
+	OrdererConfigImpl    = &ExampleOrdererConfig{}
+	PeersConfigImpl      = NewPeersConfigImpl()
+	PeerConfigImpl       = &ExamplePeerConfig{}
+	NetworkConfigImpl    = &ExampleNetworkConfig{}
+	NetworkPeersImpl     = &ExampleNetworkPeers{}
+	ChannelConfigImpl    = &ExampleChannelConfig{}
+	ChannelPeersImpl     = &ExampleChannelPeers{}
+	ChannelOrderersImpl  = &ExampleChannelOrderers{}
+	TlsCACertPoolImpl    = NewTLSCACertPool(false)
+	TlsClientCertsImpl   = &ExampleTLSClientCerts{}
+	CryptoConfigPathImpl = &ExampleCryptoConfigPath{}
+	EndpointConfigImpls  = []interface{}{
+		TimeoutImpl,
+		OrderersConfigImpl,
+		OrdererConfigImpl,
+		PeersConfigImpl,
+		PeerConfigImpl,
+		NetworkConfigImpl,
+		NetworkPeersImpl,
+		ChannelConfigImpl,
+		ChannelPeersImpl,
+		ChannelOrderersImpl,
+		TlsCACertPoolImpl,
+		TlsClientCertsImpl,
+		CryptoConfigPathImpl,
 	}
 )
 
