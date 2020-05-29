@@ -26,9 +26,9 @@ type SDK struct {
 	Version          string
 	ChainCodeID      string
 	MspClient        *msp.Client
-	SDK              fabsdk.FabricSDK //SDK实例
-	Client           *channel.Client  //cli
-	Resmgmt          *resmgmt.Client  //admian
+	SDK              *fabsdk.FabricSDK //SDK实例
+	Client           *channel.Client   //cli
+	Resmgmt          *resmgmt.Client   //admian
 }
 
 /**
@@ -38,7 +38,7 @@ type SDK struct {
 */
 type Application struct {
 	gin *gin.Context
-	SDK *SDK
+	SDK *fabsdk.FabricSDK
 }
 
 const (
