@@ -8,7 +8,6 @@ package install
 
 import (
 	"ki-sdk/e2e"
-	"ki-sdk/install"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
 )
@@ -18,10 +17,10 @@ import (
 // configs from any source as long as they provide their own implementations.
 func InitApi() {
 	e2e.SetupAndRuning(false, nil,
-		fabsdk.WithEndpointConfig(install.EndpointConfigImpls...),
-		fabsdk.WithCryptoSuiteConfig(install.CryptoConfigImpls...),
-		fabsdk.WithIdentityConfig(install.IdentityConfigImpls...),
-		fabsdk.WithMetricsConfig(install.OperationsConfigImpls...),
+		fabsdk.WithEndpointConfig(endpointConfigImpls...),
+		fabsdk.WithCryptoSuiteConfig(cryptoConfigImpls...),
+		fabsdk.WithIdentityConfig(identityConfigImpls...),
+		fabsdk.WithMetricsConfig(operationsConfigImpls...),
 	)
 
 }
