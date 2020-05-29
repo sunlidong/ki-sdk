@@ -9,7 +9,8 @@ package install
 import (
 	"ki-sdk/e2e"
 	"ki-sdk/install"
-	"ki-sdk/vendor/github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
+
+	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
 )
 
 // this test mimics the original e2e test with the difference of injecting interface functions implementations
