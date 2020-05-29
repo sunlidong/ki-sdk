@@ -79,7 +79,7 @@ func (swp *Application) CreateMspClient() error {
 	return nil
 }
 
-func Init_one_sdk() err error{
+func Init_one_sdk() error {
 	//	02.	init
 	err := App.CreateresMgmtClient()
 	if err != nil {
