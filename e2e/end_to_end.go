@@ -92,6 +92,13 @@ func SetupAndRuning(createChannel bool, configOpt core.ConfigProvider, sdkOpts .
 	// if createChannel {
 	// 	createChannelAndCC(t, sdk)
 	// }
+	App = Application{
+		SDK: sdk,
+	}
+	// if createChannel {
+	// 	createChannelAndCC(t, sdk)
+	// }
+	Init_one_sdk()
 
 }
 
