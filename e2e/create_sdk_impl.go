@@ -10,23 +10,10 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
 )
 
-const (
-	ConfigFile  = "./config/org1_peer0_admin.yaml"
-	ChannelID   = "bookchannel"
-	OrgName     = "Org1"
-	ChainCodeID = "bookstorechain"
-	OrgAdmin    = "Admin"
-	UserName    = "Admin"
-	Version     = "1.0"
-	OrdererID   = "orderer1.bookstore.com:7050"
-)
-
-var APP fabsdk.FabricSDK
-
-func (swp *APP) CreateresMgmtClient() error {
+func (swp App) CreateresMgmtClient() error {
 	// 01. 创建资源管理客户端上下文
 	resourceManagerClientContext :=
-		swp.Context(fabsdk.WithUser(OrgAdmin),
+		swp.SDK.Context(fabsdk.WithUser(OrgAdmin),
 			fabsdk.WithOrg(OrgName))
 	// 02. 创建资源管理客户端
 	resMgmtClient, err := resmgmt.New(resourceManagerClientContext)
@@ -43,7 +30,7 @@ func (swp *APP) CreateresMgmtClient() error {
 @ 初始化 channel cli
 @
 */
-func (swp *APP) CreateChannelCli() error {
+func (swp App) CreateChannelCli() error {
 
 	// 01. 封装数据Channle cli
 	clientContext := swp.SDK.ChannelContext(
@@ -68,10 +55,10 @@ func (swp *APP) CreateChannelCli() error {
 @ 初始化 msp cli
 @
 */
-func (swp *APP) CreateMspClient() error {
+func (swp App) CreateMspClient() error {
 
 	// 01. 创建资源管理客户端上下文
-	clientCTX := swp.Context(
+	clientCTX := swp.SDK.Context(
 		fabsdk.WithUser(OrgAdmin),
 		fabsdk.WithOrg(OrgName),
 	)
@@ -94,7 +81,7 @@ func (swp *APP) CreateMspClient() error {
 
 func Init_one_sdk() {
 	//	02.	init
-	err := APP.CreateresMgmtClient()
+	err := App.CreateresMgmtClient()
 	if err != nil {
 		log.Println("2err:", err)
 		return err
@@ -102,7 +89,7 @@ func Init_one_sdk() {
 	log.Println("02 || 资源客戶端初始化成功")
 
 	//	04.	cli
-	err = APP.CreateChannelCli()
+	err = App.CreateChannelCli()
 	if err != nil {
 		log.Println("3err:", err)
 		return err
@@ -110,7 +97,7 @@ func Init_one_sdk() {
 	log.Println("03 || 通道客戶端初始化成功")
 
 	//	05.	msp
-	err = APP.CreateMspClient()
+	err = App.CreateMspClient()
 	if err != nil {
 		log.Println("4err:", err)
 		return err
