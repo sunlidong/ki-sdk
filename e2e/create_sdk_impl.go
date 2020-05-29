@@ -10,7 +10,7 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
 )
 
-func (swp App) CreateresMgmtClient() error {
+func (swp *App) CreateresMgmtClient() error {
 	// 01. 创建资源管理客户端上下文
 	resourceManagerClientContext :=
 		swp.SDK.Context(fabsdk.WithUser(OrgAdmin),
@@ -30,7 +30,7 @@ func (swp App) CreateresMgmtClient() error {
 @ 初始化 channel cli
 @
 */
-func (swp App) CreateChannelCli() error {
+func (swp *App) CreateChannelCli() error {
 
 	// 01. 封装数据Channle cli
 	clientContext := swp.SDK.ChannelContext(
@@ -55,7 +55,7 @@ func (swp App) CreateChannelCli() error {
 @ 初始化 msp cli
 @
 */
-func (swp App) CreateMspClient() error {
+func (swp *App) CreateMspClient() error {
 
 	// 01. 创建资源管理客户端上下文
 	clientCTX := swp.SDK.Context(
