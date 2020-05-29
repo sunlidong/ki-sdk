@@ -43,7 +43,7 @@ func (swp *Application) CreateChannelCli() error {
 
 	// 03. 验错
 	if err != nil {
-		return fmt.Errorf("创建通道管理客户端失败:%v", err)
+		fmt.Errorf("创建通道管理客户端失败:%v", err)
 	}
 
 	// // 04. 参数转换至结构体对象 swp
@@ -69,11 +69,11 @@ func (swp *Application) CreateMspClient() error {
 	c, err := msp.New(clientCTX)
 
 	if err != nil {
-		return fmt.Errorf("创建msp管理客户端失败:%v", err)
+		fmt.Errorf("创建msp管理客户端失败:%v", err)
 	}
 
 	if c == nil {
-		return fmt.Errorf("创建msp管理客户端为空:%v", c)
+		fmt.Errorf("创建msp管理客户端为空:%v", c)
 	}
 
 	log.Println("创建msp管理客户端", c)
