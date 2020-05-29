@@ -136,7 +136,7 @@ var (
 			},
 		},
 	}
-	OrgsConfig = map[string]fab.OrganizationConfig{
+	orgsConfig = map[string]fab.OrganizationConfig{
 		"org1": {
 			MSPID:      "Org1MSP",
 			CryptoPath: "peerOrganizations/org1.bookstore.com/users/{username}@org1.bookstore.com/msp",
@@ -159,7 +159,7 @@ var (
 		},
 	}
 
-	OrderersConfig = map[string]fab.OrdererConfig{
+	orderersConfig = map[string]fab.OrdererConfig{
 		"orderer1.bookstore.com": {
 			URL: "orderer1.bookstore.com:7050",
 			GRPCOptions: map[string]interface{}{
