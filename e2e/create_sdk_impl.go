@@ -21,9 +21,9 @@ const (
 	OrdererID   = "orderer1.bookstore.com:7050"
 )
 
-var APP *fabsdk.FabricSDK
+var APP fabsdk.FabricSDK
 
-func (swp APP) CreateresMgmtClient() error {
+func (swp *APP) CreateresMgmtClient() error {
 	// 01. 创建资源管理客户端上下文
 	resourceManagerClientContext :=
 		swp.Context(fabsdk.WithUser(OrgAdmin),
@@ -43,7 +43,7 @@ func (swp APP) CreateresMgmtClient() error {
 @ 初始化 channel cli
 @
 */
-func (swp APP) CreateChannelCli() error {
+func (swp *APP) CreateChannelCli() error {
 
 	// 01. 封装数据Channle cli
 	clientContext := swp.SDK.ChannelContext(
@@ -68,7 +68,7 @@ func (swp APP) CreateChannelCli() error {
 @ 初始化 msp cli
 @
 */
-func (swp APP) CreateMspClient() error {
+func (swp *APP) CreateMspClient() error {
 
 	// 01. 创建资源管理客户端上下文
 	clientCTX := swp.Context(
@@ -94,7 +94,7 @@ func (swp APP) CreateMspClient() error {
 
 func Init_one_sdk() {
 	//	02.	init
-	err = APP.CreateresMgmtClient()
+	err := APP.CreateresMgmtClient()
 	if err != nil {
 		log.Println("2err:", err)
 		return err
