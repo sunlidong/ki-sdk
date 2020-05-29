@@ -79,7 +79,7 @@ func SetupAndRuning(createChannel bool, configOpt core.ConfigProvider, sdkOpts .
 	if err != nil {
 		log.Printf("----------------------------Failed to create new SDK: %s", err)
 	}
-	defer sdk.Close()
+	// defer sdk.Close()
 	log.Println("init------------------------------------", sdk)
 
 	// if createChannel {
