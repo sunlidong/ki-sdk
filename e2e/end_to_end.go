@@ -62,7 +62,9 @@ func setupAndRun(createChannel bool, configOpt core.ConfigProvider, sdkOpts ...f
 	defer sdk.Close()
 	log.Println("init------------------------------------")
 
-	APP = sdk
+	App = Application{
+		SDK: &sdk,
+	}
 	// if createChannel {
 	// 	createChannelAndCC(t, sdk)
 	// }
