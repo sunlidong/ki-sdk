@@ -17,6 +17,8 @@ import (
 	"sync"
 	"time"
 
+	"ki-sdk/configless"
+
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/msp"
@@ -459,7 +461,7 @@ func verifyIsLocalCAsURLs(caConfigs map[string]caConfig) map[string]caConfig {
 	re := regexp.MustCompile(dnsMatchRegX)
 	var newCfg = make(map[string]caConfig)
 	// for local integration tests, replace all urls DNS to localhost:
-	if IsLocal() {
+	if configless.IsLocal() {
 		for k, caCfg := range caConfigs {
 			caCfg.URL = re.ReplaceAllString(caCfg.URL, localhostRep)
 			newCfg[k] = caCfg
@@ -490,7 +492,7 @@ func verifyIsLocalOrderersURLs(oConfig map[string]fab.OrdererConfig) map[string]
 	re := regexp.MustCompile(dnsMatchRegX)
 	var newConfig = make(map[string]fab.OrdererConfig)
 	// for local integration tests, replace all urls DNS to localhost:
-	if IsLocal() {
+	if configless.IsLocal() {
 		for k, orderer := range oConfig {
 			orderer.URL = re.ReplaceAllString(orderer.URL, localhostRep)
 			newConfig[k] = orderer
@@ -557,7 +559,7 @@ func verifyIsLocalPeersURLs(pConfig map[string]fab.PeerConfig) map[string]fab.Pe
 	re := regexp.MustCompile(dnsMatchRegX)
 	var newConfigs = make(map[string]fab.PeerConfig)
 	// for local integration tests, replace all urls DNS to localhost:
-	if IsLocal() {
+	if configless.IsLocal() {
 		for k, peer := range pConfig {
 			peer.URL = re.ReplaceAllString(peer.URL, localhostRep)
 			newConfigs[k] = peer
@@ -620,7 +622,7 @@ func (m *examplePeerConfig) PeerConfig(nameOrURL string) (*fab.PeerConfig, bool)
 		return &pcfg, true
 	}
 
-	if IsLocal() {
+	if configless.IsLocal() {
 		pcfg, ok := peersByLocalURL[nameOrURL]
 		if ok {
 			return &pcfg, true
