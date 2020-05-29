@@ -359,43 +359,43 @@ var (
 		},
 	}
 
-	NetworkConfig = fab.NetworkConfig{
+	networkConfig = fab.NetworkConfig{
 		Channels:      channelsConfig,
-		Organizations: OrgsConfig,
-		Orderers:      NewOrderersConfig(),
-		Peers:         NewPeersConfig(),
+		Organizations: orgsConfig,
+		Orderers:      newOrderersConfig(),
+		Peers:         newPeersConfig(),
 		// EntityMatchers are not used in this implementation
 		//EntityMatchers: entityMatchers,
 	}
 
 	// creating instances of each interface to be referenced in the integration tests:
-	TimeoutImpl          = &ExampleTimeout{}
-	OrderersConfigImpl   = NewOrderersConfigImpl()
-	OrdererConfigImpl    = &ExampleOrdererConfig{}
-	PeersConfigImpl      = NewPeersConfigImpl()
-	PeerConfigImpl       = &ExamplePeerConfig{}
-	NetworkConfigImpl    = &ExampleNetworkConfig{}
-	NetworkPeersImpl     = &ExampleNetworkPeers{}
-	ChannelConfigImpl    = &ExampleChannelConfig{}
-	ChannelPeersImpl     = &ExampleChannelPeers{}
-	ChannelOrderersImpl  = &ExampleChannelOrderers{}
-	TlsCACertPoolImpl    = NewTLSCACertPool(false)
-	TlsClientCertsImpl   = &ExampleTLSClientCerts{}
-	CryptoConfigPathImpl = &ExampleCryptoConfigPath{}
-	EndpointConfigImpls  = []interface{}{
-		TimeoutImpl,
-		OrderersConfigImpl,
-		OrdererConfigImpl,
-		PeersConfigImpl,
-		PeerConfigImpl,
-		NetworkConfigImpl,
-		NetworkPeersImpl,
-		ChannelConfigImpl,
-		ChannelPeersImpl,
-		ChannelOrderersImpl,
-		TlsCACertPoolImpl,
-		TlsClientCertsImpl,
-		CryptoConfigPathImpl,
+	timeoutImpl          = &exampleTimeout{}
+	orderersConfigImpl   = newOrderersConfigImpl()
+	ordererConfigImpl    = &exampleOrdererConfig{}
+	peersConfigImpl      = newPeersConfigImpl()
+	peerConfigImpl       = &examplePeerConfig{}
+	networkConfigImpl    = &exampleNetworkConfig{}
+	networkPeersImpl     = &exampleNetworkPeers{}
+	channelConfigImpl    = &exampleChannelConfig{}
+	channelPeersImpl     = &exampleChannelPeers{}
+	channelOrderersImpl  = &exampleChannelOrderers{}
+	tlsCACertPoolImpl    = newTLSCACertPool(false)
+	tlsClientCertsImpl   = &exampleTLSClientCerts{}
+	cryptoConfigPathImpl = &exampleCryptoConfigPath{}
+	endpointConfigImpls  = []interface{}{
+		timeoutImpl,
+		orderersConfigImpl,
+		ordererConfigImpl,
+		peersConfigImpl,
+		peerConfigImpl,
+		networkConfigImpl,
+		networkPeersImpl,
+		channelConfigImpl,
+		channelPeersImpl,
+		channelOrderersImpl,
+		tlsCACertPoolImpl,
+		tlsClientCertsImpl,
+		cryptoConfigPathImpl,
 	}
 )
 
