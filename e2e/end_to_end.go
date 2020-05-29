@@ -62,11 +62,16 @@ func setupAndRun(createChannel bool, configOpt core.ConfigProvider, sdkOpts ...f
 	defer sdk.Close()
 	log.Println("init------------------------------------")
 
+	APP = sdk
 	// if createChannel {
 	// 	createChannelAndCC(t, sdk)
 	// }
+	Init_one_sdk()
 
 }
+
+//  peer
+
 func SetupAndRuning(createChannel bool, configOpt core.ConfigProvider, sdkOpts ...fabsdk.Option) {
 
 	// if configless.IsLocal() {
