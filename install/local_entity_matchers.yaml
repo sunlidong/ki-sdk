@@ -19,61 +19,49 @@
  # SubstitutionExp for the fields gprcOptions.ssl-target-name-override respectively
 # In any case mappedHost's config will be used, so mapped host cannot be empty, if entityMatchers are used
 entityMatchers:
-  peer:
-    - pattern: peer0.org1.bookstore.(\w+)
-      urlSubstitutionExp: localhost:7051
-      sslTargetOverrideUrlSubstitutionExp: peer0.org1.bookstore.com
-      mappedHost: peer0.org1.bookstore.com
+ peer:
+   - pattern: peer0.org1.bookstore.com
+     urlSubstitutionExp: grpcs://127.0.0.1:7051
+     sslTargetOverrideUrlSubstitutionExp: peer0.org1.bookstore.com
+     mappedHost: peer0.org1.bookstore.com
 
-    - pattern: peer1.org1.bookstore.(\w+)
-      urlSubstitutionExp: localhost:8051
-      sslTargetOverrideUrlSubstitutionExp: peer1.org1.bookstore.com
-      mappedHost: peer1.org1.bookstore.com
+   - pattern: peer1.org1.bookstore.com
+     urlSubstitutionExp: grpcs://127.0.0.1:8051
+     sslTargetOverrideUrlSubstitutionExp: peer1.org1.bookstore.com
+     mappedHost: peer1.org1.bookstore.com
 
-    - pattern: peer0.org2.bookstore.(\w+)
-      urlSubstitutionExp: localhost:9051
-      sslTargetOverrideUrlSubstitutionExp: peer0.org2.bookstore.com
-      mappedHost: peer0.org2.bookstore.com
+   - pattern: peer0.org2.bookstore.com
+     urlSubstitutionExp: grpcs://127.0.0.1:9051
+     sslTargetOverrideUrlSubstitutionExp: peer0.org2.bookstore.com
+     mappedHost: peer0.org2.bookstore.com
 
-    - pattern: peer1.org2.bookstore.(\w+)
-      urlSubstitutionExp: localhost:10051
-      sslTargetOverrideUrlSubstitutionExp: peer1.org2.bookstore.com
-      mappedHost: peer1.org2.bookstore.com
+   - pattern: peer1.org2.bookstore.com
+     urlSubstitutionExp: grpcs://127.0.0.1:10051
+     sslTargetOverrideUrlSubstitutionExp: peer1.org2.bookstore.com
+     mappedHost: peer1.org2.bookstore.com
 
+ orderer:
+   - pattern: orderer1.bookstore.com
+     urlSubstitutionExp: grpcs://127.0.0.1:7050
+     sslTargetOverrideUrlSubstitutionExp: orderer1.bookstore.com
+     mappedHost: orderer1.bookstore.com
 
-  orderer:
-    - pattern: (\w+).bookstore.(\w+)
-      urlSubstitutionExp: localhost:7050
-      sslTargetOverrideUrlSubstitutionExp: orderer1.bookstore.com
-      mappedHost: orderer1.bookstore.com
+   - pattern: orderer2.bookstore.com
+     urlSubstitutionExp: grpcs://127.0.0.1:8050
+     sslTargetOverrideUrlSubstitutionExp: orderer2.bookstore.com
+     mappedHost: orderer2.bookstore.com
 
-    - pattern: (\w+).bookstore.(\w+):(\d+)
-      urlSubstitutionExp: localhost:8050
-      sslTargetOverrideUrlSubstitutionExp: orderer2.bookstore.com
-      mappedHost: orderer2.bookstore.com
+   - pattern: orderer3.bookstore.com
+     urlSubstitutionExp: grpcs://127.0.0.1:9050
+     sslTargetOverrideUrlSubstitutionExp: orderer3.bookstore.com
+     mappedHost: orderer3.bookstore.com
 
-    - pattern: (\w+).bookstore.(\w+):(\d+)
-      urlSubstitutionExp: localhost:9050
-      sslTargetOverrideUrlSubstitutionExp: orderer3.bookstore.com
-      mappedHost: orderer3.bookstore.com
+   - pattern: orderer4.bookstore.com
+     urlSubstitutionExp: grpcs://127.0.0.1:10050
+     sslTargetOverrideUrlSubstitutionExp: orderer4.bookstore.com
+     mappedHost: orderer4.bookstore.com
 
-    - pattern: (\w+).bookstore.(\w+):(\d+)
-      urlSubstitutionExp: localhost:10050
-      sslTargetOverrideUrlSubstitutionExp: orderer4.bookstore.com
-      mappedHost: orderer4.bookstore.com
-      
-    - pattern: (\w+).bookstore.(\w+):(\d+)
-      urlSubstitutionExp: localhost:11050
-      sslTargetOverrideUrlSubstitutionExp: orderer5.bookstore.com
-      mappedHost: orderer5.bookstore.com
-
-  certificateAuthority:
-    - pattern: (\w+).org1.bookstore.(\w+)
-      urlSubstitutionExp: https://localhost:7054
-      sslTargetOverrideUrlSubstitutionExp: ca.org1.bookstore.com
-      mappedHost: ca.org1.bookstore.com
-
-    - pattern: (\w+).org2.bookstore.(\w+)
-      urlSubstitutionExp: https://localhost:8054
-      sslTargetOverrideUrlSubstitutionExp: ca.org2.bookstore.com
-      mappedHost: ca.org2.bookstore.com
+   - pattern: orderer5.bookstore.com
+     urlSubstitutionExp: grpcs://127.0.0.1:11050
+     sslTargetOverrideUrlSubstitutionExp: orderer5.bookstore.com
+     mappedHost: orderer5.bookstore.com
