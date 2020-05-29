@@ -17,7 +17,7 @@ import (
 const (
 	configPath = "${FABRIC_SDK_GO_PROJECT_PATH}/test/fixtures/config/config_test.yaml"
 	//entityMatcherLocal config file containing entity matchers for local test
-	entityMatcherLocal = "./local_entity_matchers.yaml"
+	entityMatcherLocal = "/mnt/d/gopath/src/ki-sdk/install/local_entity_matchers.yaml"
 	//ConfigPathSingleOrg single org version of 'configPath' for testing discovery
 	ConfigPathSingleOrg = "${FABRIC_SDK_GO_PROJECT_PATH}/test/fixtures/config/config_e2e_single_org.yaml"
 )
