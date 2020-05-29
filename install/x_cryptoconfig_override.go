@@ -4,7 +4,7 @@ Copyright SecureKey Technologies Inc. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 
-package instll
+package install
 
 // cryptoconfig_override_test.go is an example of programmatically configuring the client by injecting instances that implement CryptoSuiteConfig's functions (representing the client's crypto configs).
 // For the sake of overriding CryptoSuiteConfig in the integration tests, the implementations below return similar values to what is found in /test/fixtures/config/config_e2e.yaml

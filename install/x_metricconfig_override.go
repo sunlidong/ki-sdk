@@ -4,7 +4,7 @@ Copyright SecureKey Technologies Inc. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 
-package instll
+package install
 
 import "github.com/hyperledger/fabric-sdk-go/pkg/fabsdk/metrics/cfg"
 

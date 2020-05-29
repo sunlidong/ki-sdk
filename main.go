@@ -1,14 +1,14 @@
 package main
 
 import (
-	"ki-sdk/instll"
+	"ki-sdk/install"
 )
 
 func main() {
 
 	// App
 	// m.InitSDK()
-	instll.InitApi()
+	install.InitApi()
 }
 
 // // 初始化路由
