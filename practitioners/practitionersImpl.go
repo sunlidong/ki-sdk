@@ -36,47 +36,74 @@ var P Practitioners
 
 // init
 
-func NewPractitioners(Name sring, Version int64, Open bool) {
+func NewPractitioners(Name string, Version int64, Open bool) *Practitioners {
 
 	return &Practitioners{
 		Name:    Name,
 		Version: Version,
 		Open:    Open,
-		ShiLi: NewEndpointConfig(),
+		ShiLi:   NewEndpointConfig(),
 	}
 }
 
-func NewEndpointConfig(){
+func NewEndpointConfig() *EndpointConfig {
+
 	return &EndpointConfig{
-		localHostRep:"",
-		dnsMatchRegX:"", 
-		tlsPath:"",
-		ordererPath:"", 
-		client: func()clientConfig{clientBy1:=clientConfig{};return clientBy1}(), 
-		channelsConfig:func()map[string]fab.ChannelEndpointConfig{channelsConfigBy1:=map[string]fab.ChannelEndpointConfig{};return channelsConfigBy1}(),
-		orgsConfig:func()map[string]fab.OrganizationConfig{orgsConfigBy1:=map[string]fab.OrganizationConfig{};return orgsConfigBy1}(),
-		orderersConfig:func()map[string]fab.OrdererConfig{
-			orderersConfigBy1:=map[string]fab.OrdererConfig{"1":fab.OrdererConfig{
-				
-			}}
-			return  orderersConfigBy1
-		},
-		peersConfig:func()map[string]fab.PeerConfig{
-			peersConfigBy1:=map[string]fab.PeerConfig{}
+		localHostRep: func() string {
+			return "localHostRep"
+		}(),
+		dnsMatchRegX: func() string {
+			return "dnsMatchRegX"
+		}(),
+		tlsPath: func() string {
+			return "tlsPath"
+		}(),
+		ordererPath: func() string {
+			return "ordererPath"
+		}(),
+		client: func() clientConfig {
+			clientBy1 := clientConfig{}
+			return clientBy1
+		}(),
+		channelsConfig: func() map[string]fab.ChannelEndpointConfig {
+			channelsConfigBy1 := map[string]fab.ChannelEndpointConfig{}
+			return channelsConfigBy1
+		}(),
+		orgsConfig: func() map[string]fab.OrganizationConfig {
+			orgsConfigBy1 := map[string]fab.OrganizationConfig{}
+			return orgsConfigBy1
+		}(),
+		orderersConfig: func() map[string]fab.OrdererConfig {
+			orderersConfigBy1 := map[string]fab.OrdererConfig{}
+			return orderersConfigBy1
+		}(),
+		peersConfig: func() map[string]fab.PeerConfig {
+			peersConfigBy1 := map[string]fab.PeerConfig{}
 			return peersConfigBy1
-		},
-		peersByLocalURL:func()map[string]fab.PeerConfig{peersByLocalURLBy1:=map[string]fab.PeerConfig{};return peersByLocalURLBy1},
-		caConfigObj:func()map[string]caConfig{caConfigObjBy1:=map[string]caConfig{}; return caConfigObjBy1},
-		networkConfig:func()fab.NetworkConfig{ return &fab.NetworkConfig{}},
-		endpointConfigImpls:func()[]interface{}{endpointConfigImplsBy1:=[]interface{};return endpointConfigImplsBy1}(),
+		}(),
+		peersByLocalURL: func() map[string]fab.PeerConfig {
+			peersByLocalURLBy1 := map[string]fab.PeerConfig{}
+			return peersByLocalURLBy1
+		}(),
+		caConfigObj: func() map[string]caConfig {
+			caConfigObjBy1 := map[string]caConfig{}
+			return caConfigObjBy1
+		}(),
+		networkConfig: func() fab.NetworkConfig {
+			NetworkConfigBy1 := fab.NetworkConfig{}
+			return NetworkConfigBy1
+		}(),
+		endpointConfigImpls: func() []interface{} {
+			return []interface{}{}
+		}(),
 	}
-
 }
+
 type Practitioners struct {
-	Name   string         `json:"name"`
-	Verson int64          `json:"version"`
-	Open   bool           `json:"open"`
-	ShiLi  EndpointConfig `json:"ShiLi"`
+	Name    string          `json:"name"`
+	Version int64           `json:"version"`
+	Open    bool            `json:"open"`
+	ShiLi   *EndpointConfig `json:"ShiLi"`
 }
 
 type EndpointConfig struct {

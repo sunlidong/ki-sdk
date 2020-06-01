@@ -27,14 +27,6 @@ func PeerMSPID(name string) (string, bool) {
 			if strings.EqualFold(org.Peers[i], name) {
 				// peer belongs to this org add org msp
 				return org.MSPID, true
-				// EntityMatchers are not used in this implementation, below is an  of how to use them if needed
-				//} else {
-				//
-				//	peer, err := m.findMatchingPeer(org.Peers[i])
-				//	if err == nil && strings.EqualFold(peer, name) {
-				//		mspID = org.MSPID
-				//		break
-				//	}
 			}
 		}
 	}
