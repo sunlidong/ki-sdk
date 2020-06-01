@@ -4,6 +4,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
+
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/msp"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config/endpoint"
@@ -100,10 +102,16 @@ func NewEndpointConfig() *EndpointConfig {
 }
 
 type Practitioners struct {
-	Name    string          `json:"name"`
-	Version int64           `json:"version"`
-	Open    bool            `json:"open"`
-	ShiLi   *EndpointConfig `json:"ShiLi"`
+	Name     string          `json:"name"`
+	Version  int64           `json:"version"`
+	Open     bool            `json:"open"`
+	ShiLi    *EndpointConfig `json:"ShiLi"`
+	PeerName []string        `json:"peerName"`
+	OrdererName []string     `json:"ordererName"`
+	ChannelName []string     `json:"channelName"`
+	OrgName []string     `json:"orgName"`
+	Ca   []string    `json:"ca"`
+
 }
 
 type EndpointConfig struct {
@@ -131,6 +139,7 @@ type clientConfig struct {
 	TLSCert         []byte
 	CredentialStore msp.CredentialStoreType
 }
+
 type caConfig struct {
 	ID         string
 	URL        string
@@ -144,6 +153,7 @@ type Timeout struct{}
 type OrderersConfig struct {
 	isSystemCertPool bool
 }
+
 type OrdererConfig struct{}
 
 type PeersConfig struct {
@@ -177,7 +187,7 @@ type CryptoConfigPath struct{}
 
 //  new  endpointConfigImpls
 
-func (p *EndpointConfig) setEndpointConfigImpls() {
+func (p *Practitioners) setEndpointConfigImpls() {
 
 	//  new
 	timeoutImpl := &Timeout{}
@@ -212,5 +222,233 @@ func (p *EndpointConfig) setEndpointConfigImpls() {
 
 	//
 	p.endpointConfigImpls = endpointConfigImpls
+
+}
+
+func (p *Practitioners) InitApi() {
+	p.initApi()
+
+}
+func (p *Practitioners) initApi() {
+	SetupAndRuning(false, nil,
+		fabsdk.WithEndpointConfig(endpointConfigImpls...),
+		fabsdk.WithCryptoSuiteConfig(cryptoConfigImpls...),
+		fabsdk.WithIdentityConfig(identityConfigImpls...),
+		fabsdk.WithMetricsConfig(operationsConfigImpls...),
+	)
+
+}
+
+//  new
+func (p *Practitioners) setPeerName(peerlist []string) {
+
+	// 校验参数
+func (p *Practitioners) setPeerName(peerlist []string) err error{
+	if len(peerlist)<=0{
+		return  errors.New("err: peerlist len  is 0 ")
+	}
+
+	for k,v:=range peerlist{
+		if k!=""{
+			p.PeerName=append(p.PeerName,v)
+		}else{
+			log.Printf("peerlist %s is nil",k)
+		}
+	}
+}
+
+func (p *Practitioners) setOrdererName(ordererlist []string) err error{
+	if len(ordererlist)<=0{
+		return  errors.New("err: ordererlist len  is 0 ")
+	}
+
+	for k,v:=range ordererlist{
+		if k!=""{
+			p.=append(p.OrdererName,v)
+		}else{
+			log.Printf("OrdererName %s is nil",k)
+		}
+	}
+}
+
+func (p *Practitioners) getOrdererName() []string{
+
+		if  len(p.OrdererName)>0{
+			return  p.OrdererName
+		}
+		return nil
+}
+
+
+//  set channel name 
+func (p *Practitioners) setChannelName(channellist []string) err error{
+	if len(channellist)<=0{
+		return  errors.New("err: channellist len  is 0 ")
+	}
+
+	for k,v:=range channellist{
+		if k!=""{
+			p.=append(p.ChannelName,v)
+		}else{
+			log.Printf("channellist %s is nil",k)
+		}
+	}
+}
+
+//  new 
+func (p *Practitioners) setChannelsConfig(EndorsingPeer bool,ChaincodeQuery bool,LedgerQuery bool,EventSource bool) {
+
+	// 校验参数
+	p.Shili.channelsConfig = func()map[string]fab.ChannelEndpointConfig{
+		
+		return & map[string]fab.ChannelEndpointConfig{
+			p.Channel[0]: {
+				Orderers: func()[]string{
+					return p.getOrdererName()
+				}(),
+				Peers: func()resmap map[string]fab.PeerChannelConfig{
+					if len(p.PeerName)>0{
+						for k,v:=range p.PeerName{
+							resmap[v]=fab.PeerChannelConfig{
+								EndorsingPeer:  true,
+								ChaincodeQuery: true,
+								LedgerQuery:    true,
+								EventSource:    true,
+							}
+						}
+
+					}
+					return resmap
+				}(),
+				Policies: func ()fab.ChannelPolicies {
+					return &fab.ChannelPolicies{
+						QueryChannelConfig: fab.QueryChannelConfigPolicy{
+							MinResponses: 1,
+							MaxTargets:   1,
+							RetryOpts: retry.Opts{
+								Attempts:       5,
+								InitialBackoff: 500 * time.Millisecond,
+								MaxBackoff:     5 * time.Second,
+								BackoffFactor:  2.0,
+							},
+						},
+						EventService: fab.EventServicePolicy{
+							ResolverStrategy:                 fab.MinBlockHeightStrategy,
+							MinBlockHeightResolverMode:       fab.ResolveByThreshold,
+							BlockHeightLagThreshold:          5,
+							ReconnectBlockHeightLagThreshold: 10,
+							PeerMonitorPeriod:                5 * time.Second,
+						},
+					},
+				}(),
+			},
+		}
+	}()
+}
+
+
+
+//  set setorgsConfig
+func (p *Practitioners) setOrgsConfig() {
+
+	// set
+	p.Shili.orgsConfig  = func() res map[string]fab.OrganizationConfig{
+	
+	if  len(p.OrgName)>0{
+		for k,v:=range p.OrgName{
+			res[v]=fab.OrganizationConfig{
+				MSPID:                  "Org1MSP",
+				CryptoPath:             "peerOrganizations/org1.example.com/users/{username}@org1.example.com/msp",
+				Peers:                  []string{"peer0.org1.example.com"},
+				CertificateAuthorities: []string{"ca.org1.example.com"},
+			}
+		}
+	}
+	}()
+}
+
+	 
+
+//  set setOrderersConfig
+func (p *Practitioners) setOrderersConfig() {
+
+	p.Shili.orderersConfig = func() res map[string]fab.OrdererConfig{
+		if len(p.OrdererName) >0{
+			for k,v:=range  p.OrdererName {
+				res[v] =fab.OrdererConfig{
+					URL: "orderer.example.com:7050",
+					GRPCOptions: map[string]interface{}{
+						"ssl-target-name-override": "orderer.example.com",
+						"keep-alive-time":          0 * time.Second,
+						"keep-alive-timeout":       20 * time.Second,
+						"keep-alive-permit":        false,
+						"fail-fast":                false,
+						"allow-insecure":           false,
+					},
+					TLSCACert: tlsCertByBytes("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem"),
+				}
+			}
+		}
+	}()
+}
+
+
+
+//  peer  config  set  
+func (p *Practitioners)setPeersConfig(){
+
+	p.Shili.peersConfig = func() res map[string]fab.PeerConfig{
+		if len(p.PeerName)>0{
+			for k,v:=range p.PeerName{
+				res[v]= fab.PeerConfig{
+					URL: "peer0.org1.example.com:7051",
+					GRPCOptions: map[string]interface{}{
+						"ssl-target-name-override": "peer0.org1.example.com",
+						"keep-alive-time":          0 * time.Second,
+						"keep-alive-timeout":       20 * time.Second,
+						"keep-alive-permit":        false,
+						"fail-fast":                false,
+						"allow-insecure":           false,
+					}
+				}
+			}
+		}
+	}()
+}
+ 
+
+
+// set setPeersByLocalURL 
+func (p *Practitioners)setPeersByLocalURL(){
+
+	p.Shili.peersByLocalURL = func() res map[string]fab.PeerConfig{
+		if len(p.PeerName)>0{
+			for k,v:=range p.PeerName{
+				res[v]= fab.PeerConfig{
+					URL: "peer0.org1.example.com:7051",
+					GRPCOptions: map[string]interface{}{
+						"ssl-target-name-override": "peer0.org1.example.com",
+						"keep-alive-time":          0 * time.Second,
+						"keep-alive-timeout":       20 * time.Second,
+						"keep-alive-permit":        false,
+						"fail-fast":                false,
+						"allow-insecure":           false,
+					}
+				}
+			}
+		}
+	}()
+}
+
+
+
+func(p *Practitioners)caConfigObj(){
+
+	p.Shili.caConfigObj =  func() res map[string]caConfig {
+		if p.CA
+
+
+	}
+	// caConfigObj         map[string]caConfig
 
 }
