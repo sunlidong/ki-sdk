@@ -101,18 +101,49 @@ func NewEndpointConfig() *EndpointConfig {
 	}
 }
 
+ 
+// DB 
 type Practitioners struct {
-	Name     string          `json:"name"`
-	Version  int64           `json:"version"`
-	Open     bool            `json:"open"`
-	ShiLi    *EndpointConfig `json:"ShiLi"`
-	PeerName []string        `json:"peerName"`
-	OrdererName []string     `json:"ordererName"`
-	ChannelName []string     `json:"channelName"`
-	OrgName []string     `json:"orgName"`
-	Ca   []string    `json:"ca"`
-
+	Name     	string          	`json:"name"`
+	Version  	int64           	`json:"version"`
+	Open     	bool            	`json:"open"`
+	ShiLi    	*EndpointConfig 	`json:"ShiLi"`
+	CretPath  	string  		 	`json:"CretPath"`
+	ChannelName []string     		`json:"channelName"`
+	Peer 		[]Peer       		`json:"peer"`
+	Orderer 	[]Orderer     		`json:"orderer"`
+	Ca   		[]CA    			`json:"ca"`
 }
+
+
+// peer info
+type  Peer struct {
+	Name   		string           `json:"name"`
+	Domain  	string           `json:"domain"`
+	Template  	string           `json:"template"`
+	Users  		string           `json:"users"`
+	MspID  		string           `json:"mspid"`
+}
+
+// Orderer info
+type  Orderer struct {
+	Name   		string           `json:"name"`
+	Domain  	string           `json:"domain"`
+	Template  	string           `json:"template"`
+	Users  		string           `json:"users"`
+	MspID  		string           `json:"mspid"`
+}
+
+
+// CA 
+type  CA struct {
+	Name   			string           `json:"name"`
+	Domain  		string           `json:"domain"`
+	EnrollID 		string           `json:"enrollid"`
+	EnrollSecret 	string           `json:"enrollSecret"`
+}
+
+
 
 type EndpointConfig struct {
 	localHostRep        string       `json:"localhost"`
