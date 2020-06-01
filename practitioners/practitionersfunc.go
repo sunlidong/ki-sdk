@@ -22,7 +22,7 @@ import (
 //PeerMSPID  returns the mspID for the given org name in the arg
 func PeerMSPID(name string) (string, bool) {
 	// Find organisation/msp that peer belongs to
-	for _, org := range orgsConfig {
+	for _, org := range P.ShiLi.orgsConfig {
 		for i := 0; i < len(org.Peers); i++ {
 			if strings.EqualFold(org.Peers[i], name) {
 				// peer belongs to this org add org msp
@@ -35,12 +35,12 @@ func PeerMSPID(name string) (string, bool) {
 }
 
 func verifyIsLocalCAsURLs(caConfigs map[string]caConfig) map[string]caConfig {
-	re := regexp.MustCompile(dnsMatchRegX)
+	re := regexp.MustCompile(P.ShiLi.dnsMatchRegX)
 	var newCfg = make(map[string]caConfig)
 	// for local integration tests, replace all urls DNS to localhost:
 	if configless.IsLocal() {
 		for k, caCfg := range caConfigs {
-			caCfg.URL = re.ReplaceAllString(caCfg.URL, localhostRep)
+			caCfg.URL = re.ReplaceAllString(caCfg.URL, P.ShiLi.localHostRep)
 			newCfg[k] = caCfg
 		}
 	}
@@ -48,30 +48,30 @@ func verifyIsLocalCAsURLs(caConfigs map[string]caConfig) map[string]caConfig {
 }
 
 func newCAsConfig() map[string]caConfig {
-	c := verifyIsLocalCAsURLs(caConfigObj)
+	c := verifyIsLocalCAsURLs(P.ShiLi.caConfigObj)
 	caConfigObj = c
 	return c
 }
 
 func newPeersConfig() map[string]fab.PeerConfig {
-	p := verifyIsLocalPeersURLs(peersConfig)
-	peersConfig = p
+	p := verifyIsLocalPeersURLs(P.ShiLi.peersConfig)
+	P.ShiLi.peersConfig = p
 	return p
 }
 
 func newOrderersConfig() map[string]fab.OrdererConfig {
-	o := verifyIsLocalOrderersURLs(orderersConfig)
-	orderersConfig = o
+	o := verifyIsLocalOrderersURLs(P.ShiLi.orderersConfig)
+	P.ShiLi.orderersConfig = o
 	return o
 }
 
 func verifyIsLocalOrderersURLs(oConfig map[string]fab.OrdererConfig) map[string]fab.OrdererConfig {
-	re := regexp.MustCompile(dnsMatchRegX)
+	re := regexp.MustCompile(P.ShiLi.dnsMatchRegX)
 	var newConfig = make(map[string]fab.OrdererConfig)
 	// for local integration tests, replace all urls DNS to localhost:
 	if configless.IsLocal() {
 		for k, orderer := range oConfig {
-			orderer.URL = re.ReplaceAllString(orderer.URL, localhostRep)
+			orderer.URL = re.ReplaceAllString(orderer.URL, P.ShiLi.localhostRep)
 			newConfig[k] = orderer
 		}
 	}
@@ -96,19 +96,19 @@ func newTLSCACertPool(useSystemCertPool bool) *TLSCACertPool {
 //newOrderersConfigImpl will create a new OrderersConfig instance with proper ordrerer URLs (local vs normal) tests
 // local tests use localhost urls, while the remaining tests use default values as set in orderersConfig var
 func newOrderersConfigImpl() *OrderersConfig {
-	oConfig := verifyIsLocalOrderersURLs(orderersConfig)
-	orderersConfig = oConfig
+	oConfig := verifyIsLocalOrderersURLs(P.ShiLi.orderersConfig)
+	P.ShiLi.orderersConfig = oConfig
 	o := &OrderersConfig{}
 	return o
 }
 
 func verifyIsLocalPeersURLs(pConfig map[string]fab.PeerConfig) map[string]fab.PeerConfig {
-	re := regexp.MustCompile(dnsMatchRegX)
+	re := regexp.MustCompile(P.ShiLi.dnsMatchRegX)
 	var newConfigs = make(map[string]fab.PeerConfig)
 	// for local integration tests, replace all urls DNS to localhost:
 	if configless.IsLocal() {
 		for k, peer := range pConfig {
-			peer.URL = re.ReplaceAllString(peer.URL, localhostRep)
+			peer.URL = re.ReplaceAllString(peer.URL, P.ShiLi.localHostRep)
 			newConfigs[k] = peer
 		}
 	}
@@ -122,8 +122,8 @@ func verifyIsLocalPeersURLs(pConfig map[string]fab.PeerConfig) map[string]fab.Pe
 //newPeersConfigImpl will create a new PeersConfig instance with proper peers URLs (local vs normal) tests
 // local tests use localhost urls, while the remaining tests use default values as set in peersConfig var
 func newPeersConfigImpl() *PeersConfig {
-	pConfig := verifyIsLocalPeersURLs(peersConfig)
-	peersConfig = pConfig
+	pConfig := verifyIsLocalPeersURLs(P.ShiLi.peersConfig)
+	P.ShiLi.peersConfig = pConfig
 	p := &PeersConfig{}
 	return p
 }
@@ -182,7 +182,7 @@ func (m *Timeout) Timeout(tType fab.TimeoutType) time.Duration {
 func (m *OrderersConfig) OrderersConfig() []fab.OrdererConfig {
 	orderers := []fab.OrdererConfig{}
 
-	for _, orderer := range orderersConfig {
+	for _, orderer := range P.ShiLi.orderersConfig {
 
 		if orderer.TLSCACert == nil && !m.isSystemCertPool {
 			return nil
@@ -195,7 +195,7 @@ func (m *OrderersConfig) OrderersConfig() []fab.OrdererConfig {
 
 //OrdererConfig overrides EndpointConfig's OrdererConfig function which returns the ordererConfig instance for the name/URL arg
 func (m *OrdererConfig) OrdererConfig(ordererNameOrURL string) (*fab.OrdererConfig, bool, bool) {
-	orderer, ok := networkConfig.Orderers[strings.ToLower(ordererNameOrURL)]
+	orderer, ok := P.ShiLi.networkConfig.Orderers[strings.ToLower(ordererNameOrURL)]
 	if !ok {
 		// EntityMatchers are not used in this implementation, below is an  of how to use them if needed, see default implementation for live
 		//matchingOrdererConfig := m.tryMatchingOrdererConfig(networkConfig, strings.ToLower(ordererNameOrURL))
@@ -211,11 +211,11 @@ func (m *OrdererConfig) OrdererConfig(ordererNameOrURL string) (*fab.OrdererConf
 
 //PeersConfig overrides EndpointConfig's PeersConfig function which returns the peersConfig list
 func (m *PeersConfig) PeersConfig(org string) ([]fab.PeerConfig, bool) {
-	orgPeers := orgsConfig[strings.ToLower(org)].Peers
+	orgPeers := P.ShiLi.orgsConfig[strings.ToLower(org)].Peers
 	peers := []fab.PeerConfig{}
 
 	for _, peerName := range orgPeers {
-		p := networkConfig.Peers[strings.ToLower(peerName)]
+		p := P.ShiLi.networkConfig.Peers[strings.ToLower(peerName)]
 		if err := m.verifyPeerConfig(p, peerName, endpoint.IsTLSEnabled(p.URL)); err != nil {
 			// EntityMatchers are not used in this implementation, below is an  of how to use them if needed
 			//matchingPeerConfig := m.tryMatchingPeerConfig(networkConfig, peerName)
@@ -243,13 +243,13 @@ func (m *PeersConfig) verifyPeerConfig(p fab.PeerConfig, peerName string, tlsEna
 
 // PeerConfig overrides EndpointConfig's PeerConfig function which returns the peerConfig instance for the name/URL arg
 func (m *PeerConfig) PeerConfig(nameOrURL string) (*fab.PeerConfig, bool) {
-	pcfg, ok := peersConfig[nameOrURL]
+	pcfg, ok := P.ShiLi.peersConfig[nameOrURL]
 	if ok {
 		return &pcfg, true
 	}
 
 	if configless.IsLocal() {
-		pcfg, ok := peersByLocalURL[nameOrURL]
+		pcfg, ok := P.ShiLi.peersByLocalURL[nameOrURL]
 		if ok {
 			return &pcfg, true
 		}
@@ -265,7 +265,7 @@ func (m *PeerConfig) PeerConfig(nameOrURL string) (*fab.PeerConfig, bool) {
 
 // NetworkConfig overrides EndpointConfig's NetworkConfig function which returns the full network Config instance
 func (m *NetworkConfig) NetworkConfig() *fab.NetworkConfig {
-	return &networkConfig
+	return &P.ShiLi.networkConfig
 }
 
 //NetworkPeers overrides EndpointConfig's NetworkPeers function which returns the networkPeers list
@@ -273,7 +273,7 @@ func (m *NetworkPeers) NetworkPeers() []fab.NetworkPeer {
 	netPeers := []fab.NetworkPeer{}
 	// referencing another interface to call PeerMSPID to match config yaml content
 
-	for name, p := range networkConfig.Peers {
+	for name, p := range P.ShiLi.networkConfig.Peers {
 
 		if err := m.verifyPeerConfig(p, name, endpoint.IsTLSEnabled(p.URL)); err != nil {
 			return nil
@@ -303,7 +303,7 @@ func (m *NetworkPeers) verifyPeerConfig(p fab.PeerConfig, peerName string, tlsEn
 
 // ChannelConfig overrides EndpointConfig's ChannelConfig function which returns the channelConfig instance for the channel name arg
 func (m *ChannelConfig) ChannelConfig(channelName string) *fab.ChannelEndpointConfig {
-	ch, ok := channelsConfig[strings.ToLower(channelName)]
+	ch, ok := P.ShiLi.channelsConfig[strings.ToLower(channelName)]
 	if !ok {
 		// EntityMatchers are not used in this implementation, below is an  of how to use them if needed
 		//matchingChannel, _, matchErr := m.tryMatchingChannelConfig(channelName)
@@ -321,7 +321,7 @@ func (m *ChannelConfig) ChannelConfig(channelName string) *fab.ChannelEndpointCo
 func (m *ChannelPeers) ChannelPeers(channelName string) []fab.ChannelPeer {
 	peers := []fab.ChannelPeer{}
 
-	chConfig, ok := channelsConfig[strings.ToLower(channelName)]
+	chConfig, ok := P.ShiLi.channelsConfig[strings.ToLower(channelName)]
 	if !ok {
 		// EntityMatchers are not used in this implementation, below is an  of how to use them if needed
 		//matchingChannel, _, matchErr := m.tryMatchingChannelConfig(channelName)
@@ -337,7 +337,7 @@ func (m *ChannelPeers) ChannelPeers(channelName string) []fab.ChannelPeer {
 	for peerName, chPeerConfig := range chConfig.Peers {
 
 		// Get generic peer configuration
-		p, ok := peersConfig[strings.ToLower(peerName)]
+		p, ok := P.ShiLi.peersConfig[strings.ToLower(peerName)]
 		if !ok {
 			// EntityMatchers are not used in this implementation, below is an  of how to use them if needed
 			//matchingPeerConfig := m.tryMatchingPeerConfig(networkConfig, strings.ToLower(peerName))
@@ -406,7 +406,7 @@ func (m *TLSCACertPool) TLSCACertPool() commtls.CertPool {
 // TLSClientCerts overrides EndpointConfig's TLSClientCerts function which will return the list of configured client certs
 func (m *TLSClientCerts) TLSClientCerts() []tls.Certificate {
 	var clientCerts tls.Certificate
-	cb := client.TLSCerts.Client.Cert.Bytes()
+	cb := P.ShiLi.client.TLSCerts.Client.Cert.Bytes()
 
 	if len(cb) == 0 {
 		// if no cert found in the config, return empty cert chain
@@ -421,7 +421,7 @@ func (m *TLSClientCerts) TLSClientCerts() []tls.Certificate {
 	if err != nil || pk == nil {
 		m.RWLock.Lock()
 		defer m.RWLock.Unlock()
-		ccs, err := m.loadPrivateKeyFromConfig(&client, clientCerts, cb)
+		ccs, err := m.loadPrivateKeyFromConfig(&P.ShiLi.client, clientCerts, cb)
 		if err != nil {
 			return nil
 		}
@@ -450,5 +450,5 @@ func (m *TLSClientCerts) loadPrivateKeyFromConfig(clientConfig *clientConfig, cl
 }
 
 func (m *CryptoConfigPath) CryptoConfigPath() string {
-	return client.CryptoConfig.Path
+	return P.ShiLi.client.CryptoConfig.Path
 }
