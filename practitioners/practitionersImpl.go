@@ -288,7 +288,7 @@ func (p *Practitioners) setChannelName(channellist []string) err error{
 
 	for k,v:=range channellist{
 		if k!=""{
-			p.=append(p.ChannelName,v)
+			p.ChannelName=append(p.ChannelName,v)
 		}else{
 			log.Printf("channellist %s is nil",k)
 		}
@@ -316,11 +316,10 @@ func (p *Practitioners) setChannelsConfig(EndorsingPeer bool,ChaincodeQuery bool
 								EventSource:    true,
 							}
 						}
-
 					}
-					return resmap
+					return 
 				}(),
-				Policies: func ()fab.ChannelPolicies {
+				Policies: func ()(fab.ChannelPolicies) {
 					return &fab.ChannelPolicies{
 						QueryChannelConfig: fab.QueryChannelConfigPolicy{
 							MinResponses: 1,
@@ -340,12 +339,12 @@ func (p *Practitioners) setChannelsConfig(EndorsingPeer bool,ChaincodeQuery bool
 							PeerMonitorPeriod:                5 * time.Second,
 						},
 					},
+					return
 				}(),
 			},
 		}
 	}()
 }
-
 
 
 //  set setorgsConfig
@@ -361,9 +360,10 @@ func (p *Practitioners) setOrgsConfig() {
 				CryptoPath:             "peerOrganizations/org1.example.com/users/{username}@org1.example.com/msp",
 				Peers:                  []string{"peer0.org1.example.com"},
 				CertificateAuthorities: []string{"ca.org1.example.com"},
+				}
 			}
 		}
-	}
+	return 
 	}()
 }
 
@@ -389,6 +389,7 @@ func (p *Practitioners) setOrderersConfig() {
 				}
 			}
 		}
+		return 
 	}()
 }
 
@@ -413,7 +414,9 @@ func (p *Practitioners)setPeersConfig(){
 				}
 			}
 		}
+		return 
 	}()
+
 }
  
 
@@ -437,18 +440,86 @@ func (p *Practitioners)setPeersByLocalURL(){
 				}
 			}
 		}
+		return 
 	}()
 }
 
 
 
-func(p *Practitioners)caConfigObj(){
+func(p *Practitioners)setCaConfigObj(){
 
 	p.Shili.caConfigObj =  func() res map[string]caConfig {
-		if p.CA
 
+		if  len(p.CA) >0{
+			for k,v:=range p.CA {
+				res[v] = caConfig{
+					ID:  "ca.org1.example.com",
+					URL: "https://ca.org1.example.com:7054",
+					TLSCACerts: endpoint.MutualTLSConfig{
+						Path: pathvar.Subst("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem"),
+						Client: endpoint.TLSKeyPair{
+							Key:  newTLSConfig("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.key"),
+							Cert: newTLSConfig("${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.crt"),
+						},
+					},
+					Registrar: msp.EnrollCredentials{
+						EnrollID:     "admin",
+						EnrollSecret: "adminpw",
+					},
+					CAName: "ca.org1.example.com",	
 
-	}
+				}
+			}
+		}
+		return  
+	}()
 	// caConfigObj         map[string]caConfig
+}
 
+ 
+//  set  setNetworkConfig
+func(p *Practitioners)setNetworkConfig(){
+
+	p.Shili.networkConfig = func()(res fab.NetworkConfig){
+		return fab.NetworkConfig{
+			Channels:      channelsConfig,
+			Organizations: orgsConfig,
+			Orderers:      newOrderersConfig(),
+			Peers:         newPeersConfig(),
+		}
+	}
+}
+
+func(p *Practitioners)setEndpointConfigImpls(){
+
+	timeoutImpl          = &exampleTimeout{}
+	orderersConfigImpl   = newOrderersConfigImpl()
+	ordererConfigImpl    = &exampleOrdererConfig{}
+	peersConfigImpl      = newPeersConfigImpl()
+	peerConfigImpl       = &examplePeerConfig{}
+	networkConfigImpl    = &exampleNetworkConfig{}
+	networkPeersImpl     = &exampleNetworkPeers{}
+	channelConfigImpl    = &exampleChannelConfig{}
+	channelPeersImpl     = &exampleChannelPeers{}
+	channelOrderersImpl  = &exampleChannelOrderers{}
+	tlsCACertPoolImpl    = newTLSCACertPool(false)
+	tlsClientCertsImpl   = &exampleTLSClientCerts{}
+	cryptoConfigPathImpl = &exampleCryptoConfigPath{}
+
+
+	p.Shili.endpointConfigImpls =  []interface{}{
+		timeoutImpl,
+		orderersConfigImpl,
+		ordererConfigImpl,
+		peersConfigImpl,
+		peerConfigImpl,
+		networkConfigImpl,
+		networkPeersImpl,
+		channelConfigImpl,
+		channelPeersImpl,
+		channelOrderersImpl,
+		tlsCACertPoolImpl,
+		tlsClientCertsImpl,
+		cryptoConfigPathImpl,
+	}
 }
