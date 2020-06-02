@@ -427,7 +427,7 @@ type PeersConfig struct {
 	TLSCaCert        string `json:"tlsCaCert"`
 }
 
-type peersByLocalURL struct {
+type PeersByLocalURL struct {
 	PeerURL          string `json:"peerUrl"`
 	URL              string `json:"url"`
 	Ssl              string `json:"ssl"`
