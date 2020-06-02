@@ -112,7 +112,7 @@
         "tlsCaCert":"peerOrganizations/org1.bookstore.com/tlsca/tlsca.org1.bookstore.com-cert.pem"
         }
     ],
-    "caConfigObj":[
+    "caConfigObjs":[
         {
             "caOrgName":"ca.org1.bookstore.com",
             "id":"ca.org1.bookstore.com",
