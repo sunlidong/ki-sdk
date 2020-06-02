@@ -39,8 +39,8 @@ type Client struct {
 }
 
 type TLSCerts struct {
-	Key  string `json:"Key"`
-	Cert string `json:"Cert"`
+	Key  string `json:"key"`
+	Cert string `json:"cert"`
 }
 
 type ChannelsConfigList struct {
