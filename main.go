@@ -2,6 +2,8 @@ package main
 
 import (
 	"ki-sdk/install"
+	m "ki-sdk/model"
+	r "ki-sdk/router"
 	"log"
 )
 
