@@ -118,18 +118,21 @@ type Practitioners struct {
 
 // peer info
 type  Peer struct {
+	Com   		string 			 `json:"com"`
 	Name   		string           `json:"name"`
 	Domain  	string           `json:"domain"`
-	Template  	string           `json:"template"`
+	Template  	int64            `json:"template"`
 	Users  		string           `json:"users"`
 	MspID  		string           `json:"mspid"`
+	PeerName 	string			`json:"peerName"`
 }
 
 // Orderer info
 type  Orderer struct {
 	Name   		string           `json:"name"`
 	Domain  	string           `json:"domain"`
-	Template  	string           `json:"template"`
+	Com   		string 			 `json:"com"`
+	Template  	[]string         `json:"template"`
 	Users  		string           `json:"users"`
 	MspID  		string           `json:"mspid"`
 }
@@ -302,12 +305,76 @@ func (p *Practitioners) setOrdererName(ordererlist []string) err error{
 	}
 }
 
-func (p *Practitioners) getOrdererName() []string{
 
-		if  len(p.OrdererName)>0{
-			return  p.OrdererName
+//  获取 通道 排序节点
+func (p *Practitioners) getOrdererNameBychannel() []string{
+
+		if  len(p.Orderer)>0{
+		return func()(res []string){
+				if len(p.Orderer.Template)>0{
+					for k,v:=range  p.Orderer.Template{
+						res= append(res,func()(string){
+							return p.Orderer.Domain+"."+v+"."+p.Orderer.Domain+"."+p.Orderer.Com
+						}())
+					}
+				}
+				return res
+			}()
 		}
 		return nil
+}
+
+//  channel peer   
+func (p *Practitioners) getPeerNameBychannel() (map[string]fab.PeerChannelConfig){
+
+	if len(p.Peer) >0 {
+
+		return func()(res map[string]fab.PeerChannelConfig){
+
+				for k,v:=range p.Peer{
+
+					for i:=0;i<p.Peer[k].Template{
+						
+						res[p.Peer[k].PeerName+i+"."+p.Peer[k].Name+"."+p.Peer[k].Domain+"."+p.Peer[k].Com]=fab.PeerChannelConfig{
+							EndorsingPeer:  true,
+							ChaincodeQuery: true,
+							LedgerQuery:    true,
+							EventSource:    true,
+						}	
+					}
+				}
+				return  res 
+		}()
+	}
+	log.Pritln("getPeerNameBychannel len  is nil ")
+	return nil 
+
+ 
+}
+
+//  new
+func (p *Practitioners) getPoliciesBychannel() (fab.ChannelPolicies){
+	return fab.ChannelPolicies{
+		QueryChannelConfig: fab.QueryChannelConfigPolicy{
+			MinResponses: 1,
+			MaxTargets:   1,
+			RetryOpts: retry.Opts{
+				Attempts:       5,
+				InitialBackoff: 500 * time.Millisecond,
+				MaxBackoff:     5 * time.Second,
+				BackoffFactor:  2.0,
+			},
+		},
+		EventService: fab.EventServicePolicy{
+			ResolverStrategy:                 fab.MinBlockHeightStrategy,
+			MinBlockHeightResolverMode:       fab.ResolveByThreshold,
+			BlockHeightLagThreshold:          5,
+			ReconnectBlockHeightLagThreshold: 10,
+			PeerMonitorPeriod:                5 * time.Second,
+		},
+	}
+ 
+
 }
 
 
@@ -326,52 +393,27 @@ func (p *Practitioners) setChannelName(channellist []string) err error{
 	}
 }
 
+
+
+
+
+
+
+//-----------------------------------------------------------------------------
+
+
+
 //  new 
-func (p *Practitioners) setChannelsConfig(EndorsingPeer bool,ChaincodeQuery bool,LedgerQuery bool,EventSource bool) {
+func (p *Practitioners) setChannelsConfig() {
 
 	// 校验参数
-	p.Shili.channelsConfig = func()map[string]fab.ChannelEndpointConfig{
+	p.Shili.channelsConfig = func()(map[string]fab.ChannelEndpointConfig){
 		
-		return & map[string]fab.ChannelEndpointConfig{
+		return &map[string]fab.ChannelEndpointConfig{
 			p.Channel[0]: {
-				Orderers: func()[]string{
-					return p.getOrdererName()
-				}(),
-				Peers: func()resmap map[string]fab.PeerChannelConfig{
-					if len(p.PeerName)>0{
-						for k,v:=range p.PeerName{
-							resmap[v]=fab.PeerChannelConfig{
-								EndorsingPeer:  true,
-								ChaincodeQuery: true,
-								LedgerQuery:    true,
-								EventSource:    true,
-							}
-						}
-					}
-					return 
-				}(),
-				Policies: func ()(fab.ChannelPolicies) {
-					return &fab.ChannelPolicies{
-						QueryChannelConfig: fab.QueryChannelConfigPolicy{
-							MinResponses: 1,
-							MaxTargets:   1,
-							RetryOpts: retry.Opts{
-								Attempts:       5,
-								InitialBackoff: 500 * time.Millisecond,
-								MaxBackoff:     5 * time.Second,
-								BackoffFactor:  2.0,
-							},
-						},
-						EventService: fab.EventServicePolicy{
-							ResolverStrategy:                 fab.MinBlockHeightStrategy,
-							MinBlockHeightResolverMode:       fab.ResolveByThreshold,
-							BlockHeightLagThreshold:          5,
-							ReconnectBlockHeightLagThreshold: 10,
-							PeerMonitorPeriod:                5 * time.Second,
-						},
-					},
-					return
-				}(),
+				Orderers: p.getOrdererNameBychannel(),
+				Peers: p.getPeerNameBychannel(),
+				Policies: p.getPoliciesBychannel(),
 			},
 		}
 	}()
@@ -381,21 +423,40 @@ func (p *Practitioners) setChannelsConfig(EndorsingPeer bool,ChaincodeQuery bool
 //  set setorgsConfig
 func (p *Practitioners) setOrgsConfig() {
 
-	// set
-	p.Shili.orgsConfig  = func() res map[string]fab.OrganizationConfig{
-	
-	if  len(p.OrgName)>0{
-		for k,v:=range p.OrgName{
-			res[v]=fab.OrganizationConfig{
-				MSPID:                  "Org1MSP",
-				CryptoPath:             "peerOrganizations/org1.example.com/users/{username}@org1.example.com/msp",
-				Peers:                  []string{"peer0.org1.example.com"},
-				CertificateAuthorities: []string{"ca.org1.example.com"},
-				}
+	if  len(p.Peer)>0{
+		func()(res map[string]fab.OrganizationConfig){
+			
+		// 循环 
+// peer info
+// type  Peer struct {
+// 	Com   		string 			 `json:"com"`
+// 	Name   		string           `json:"name"`
+// 	Domain  	string           `json:"domain"`
+// 	Template  	int64            `json:"template"`
+// 	Users  		string           `json:"users"`
+// 	MspID  		string           `json:"mspid"`
+// 	PeerName 	string			`json:"peerName"`
+// }
+
+			for k,v :=range  p.Peer {
+				
+			res[p.Peer[k].Name]=fab.OrganizationConfig{
+				MSPID:      p.Peer[k].MspID,
+				CryptoPath: "peerOrganizations/"+p.Peer[k].Name+"."+p.Peer[k].Domain+"."+p.Peer[k].Com+"/"+"users/{username}"+"@"+p.Peer[k].Name+"."+p.Peer[k].Domain+"."+p.Peer[k].Com+"/msp",
+				Peers: []string{
+					"peer0.org1.bookstore.com",
+					"peer1.org1.bookstore.com",
+
 			}
-		}
-	return 
-	}()
+
+
+			}
+		}()
+
+
+	}
+
+
 }
 
 	 
