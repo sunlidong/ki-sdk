@@ -14,6 +14,7 @@ func setDb(c *g.Context) {
 	//
 
 	log.Println("db=============>", data)
+	log.Println("err===>", err)
 
 }
 
