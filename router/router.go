@@ -37,6 +37,8 @@ func InitRouter() *g.Engine {
 
 			//  查询
 			wei.POST("/query", c.Load)
+
+			wei.POST("/setDB",c.SetDB)
 		}
 
 		// channel -----------------------------  列表

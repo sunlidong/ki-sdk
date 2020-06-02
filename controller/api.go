@@ -35,3 +35,9 @@ func QueryInstantiatedChaincode(c *gin.Context) {
 	GinBack(c, res, s)
 	return
 }
+
+// 序列化参数
+
+func SetDB(c *gin.Context) {
+	setDb(c)
+}
