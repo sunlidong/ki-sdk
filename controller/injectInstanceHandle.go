@@ -48,15 +48,17 @@ func channelPropertyAccess(p *SystemByJoinChannelDb) error {
 // 查询 某个 节点 已经 实例化 的 链码
 func xnEnumerateExistingNodes(p *SystemByXnNodeInfoListFreeDb) (list []string, err error) {
 
-	resmgmt_client, err := func() (*resmgmt.Client, error) {
+	resmgmtClient, err := func() (*resmgmt.Client, error) {
+
 		resmgmt, err := m.GetResmgmtClient(
 			p.ConfigFile,
 			p.Org,
 		)
+
 		if err != nil {
 			log.Println("实例化 resmgmt_Client 失败： ", err)
-
 		}
+
 		return resmgmt, nil
 	}()
 	//
@@ -66,12 +68,15 @@ func xnEnumerateExistingNodes(p *SystemByXnNodeInfoListFreeDb) (list []string, e
 	}
 
 	resmgmtDB := m.ResmgmtClient{
-		Client: resmgmt_client,
+		Client: resmgmtClient,
 	}
+
 	arr, err1 := resmgmtDB.GetInstalledCC(p.PeerHost)
+
 	if err1 != nil {
 		return nil, err1
 	}
+
 	return arr, nil
 
 }

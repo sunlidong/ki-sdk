@@ -53,7 +53,7 @@ func InitRouter() *g.Engine {
 
 			system.POST("/joinChannel", c.SystemByJoinChannel)
 
-			//  chaincode
+			//  chaincode   查看某个peer节点已经安装的链码
 			system.POST("/installedCC", c.SystemByXnNodeInfoListFree)
 
 		}

@@ -32,7 +32,16 @@ func SystemByJoinChannel(c *g.Context) {
 	return
 }
 
-// cha xun yi jing an zhuang de lian ma
+/*
+ cha xun yi jing an zhuang de lian ma
+
+ {
+	"configFile":"/mnt/d/gopath/src/ki-sdk/config/org1_peer0_admin.yaml",
+	"org":"Org2",
+	"peerHost":"peer1.org2.bookstore.com"
+
+}
+*/
 func SystemByXnNodeInfoListFree(c *g.Context) {
 
 	arr, err := systemByXnNodeInfoListFree(c)
