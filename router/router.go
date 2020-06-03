@@ -50,6 +50,7 @@ func InitRouter() *g.Engine {
 
 		{
 			system.POST("/createChannel", c.SystemByCreateChannel)
+
 			system.POST("/joinChannel", c.SystemByJoinChannel)
 
 			//  chaincode
