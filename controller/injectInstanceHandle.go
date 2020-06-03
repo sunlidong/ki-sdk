@@ -136,7 +136,7 @@ func xnEnumerateExistingNodesByInstallCCDepend(p *SystemByInstallCCDependDb) (er
 	//
 	if err != nil {
 		log.Println("err:", err)
-		return nil, err
+		return err
 	}
 
 	resmgmtDB := m.ResmgmtClient{
