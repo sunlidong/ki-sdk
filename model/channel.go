@@ -2,6 +2,7 @@ package model
 
 import (
 	"fmt"
+	"log"
 
 	mspclient "github.com/hyperledger/fabric-sdk-go/pkg/client/msp"
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt"
@@ -14,7 +15,7 @@ import (
 // Model
 
 func CreateChannel(path string, channelName string, org string, user string, orderers []string) error {
-
+	log.Println("model =>开始创建通道 ")
 	// 创建SDK
 	sdk, err := fabsdk.New(sdkConfig.FromFile(path))
 	if err != nil {
