@@ -57,7 +57,7 @@ func xnEnumerateExistingNodes(p *SystemByXnNodeInfoListFreeDb) (list []string, e
 			log.Println("实例化 resmgmt_Client 失败： ", err)
 
 		}
-		return resmgmt_Client
+		return resmgmt_Client, nil
 	}()
 	//
 	if err != nil {

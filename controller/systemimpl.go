@@ -72,10 +72,10 @@ func systemByXnNodeInfoListFree(c *g.Context) (list []string, err error) {
 	}
 
 	// 查询 某个节点 已经安装 的链码
-	arr, err = xnEnumerateExistingNodes(data)
-	if err != nil {
-		log.Pritln("查询节点已经安装的链码 err:", err)
-		return nil, err
+	arr, err1 := xnEnumerateExistingNodes(data)
+	if err1 != nil {
+		log.Println("查询节点已经安装的链码 err:", err1)
+		return nil, err1
 	}
 
 	return arr, nil
