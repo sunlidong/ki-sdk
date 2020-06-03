@@ -84,3 +84,17 @@ func SystemByInstallCCDepend(c *g.Context) {
 	}
 	return
 }
+
+// 往某个节点安装链
+func SystemByInstallCCDepend(c *g.Context) {
+
+	err := systemByInstallCCDepend(c)
+
+	//  err
+	if err != nil {
+		GinBack(c, err, "fail")
+	} else {
+		GinBack(c, err, "success")
+	}
+	return
+}
