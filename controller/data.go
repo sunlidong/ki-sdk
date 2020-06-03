@@ -156,9 +156,11 @@ type SystemByInstantiatedccDb struct {
 }
 
 type SystemByInstallCCDependDb struct {
-	PeerHost  string `json:"peerHost"`
-	CcName    string `json:"ccName"`
-	CcVersion string `json:"ccVersion"`
-	CcPath    string `json:"ccPath"`
-	CcGoPath  string `json:"ccGoPath"`
+	PeerHost   string `json:"peerHost"`
+	CcName     string `json:"ccName"`
+	CcVersion  string `json:"ccVersion"`
+	CcPath     string `json:"ccPath"`
+	CcGoPath   string `json:"ccGoPath"`
+	ConfigFile string `json:"configFile"`
+	Org        string `json:"org"`
 }

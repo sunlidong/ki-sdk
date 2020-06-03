@@ -118,7 +118,7 @@ func xnEnumerateExistingNodesByInsite(p *SystemByInstantiatedccDb) (list []strin
 }
 
 // 向某个节点安装链码
-func xnEnumerateExistingNodesByInstallCCDepend(p *SystemByInstallCCDependDb) (list []string, err error) {
+func xnEnumerateExistingNodesByInstallCCDepend(p *SystemByInstallCCDependDb) (err error) {
 
 	resmgmtClient, err := func() (*resmgmt.Client, error) {
 
