@@ -152,4 +152,5 @@ type SystemByInstantiatedccDb struct {
 	PeerHost   string `json:"peerHost"`
 	ConfigFile string `json:"configFile"`
 	Org        string `json:"org"`
+	ChannelName        string `json:"channelName"`
 }

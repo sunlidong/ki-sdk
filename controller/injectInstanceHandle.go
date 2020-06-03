@@ -107,7 +107,7 @@ func xnEnumerateExistingNodesByInsite(p *SystemByInstantiatedccDb) (list []strin
 		Client: resmgmtClient,
 	}
 
-	arr, err1 := resmgmtDB.GetInstantiatedCC(p.PeerHost)
+	arr, err1 := resmgmtDB.GetInstantiatedCC(p.ChannelName, p.PeerHost)
 
 	if err1 != nil {
 		return nil, err1
