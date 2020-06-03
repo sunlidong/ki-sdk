@@ -132,3 +132,12 @@ type SystemByCreateChannelDb struct {
 	User        string   `json:"user"`
 	Orderers    []string `json:"orderers"`
 }
+
+//  jia ru  tong dao
+type SystemByJoinChannelDb struct {
+	Path        string   `json:"path"`
+	ChannelName string   `json:"channelName"`
+	Org         string   `json:"org"`
+	User        string   `json:"user"`
+	Orderers    []string `json:"orderers"`
+}

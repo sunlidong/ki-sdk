@@ -1,9 +1,6 @@
 package controller
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
 	g "github.com/gin-gonic/gin"
 )
 
@@ -14,18 +11,23 @@ func SystemByCreateChannel(c *g.Context) {
 
 	//  err
 	if err != nil {
-		c.JSON(http.StatusOK,
-			gin.H{
-				"status": "fail",
-				"data":   err,
-			})
+		GinBack(c, err, "fail")
 	} else {
-		// OK
-		c.JSON(
-			http.StatusOK,
-			gin.H{"status": "success",
-				"data": err,
-			})
+		GinBack(c, err, "success")
+	}
+	return
+}
+
+// 加入通道
+func SystemByJoinChannel(c *g.Context) {
+
+	err := systemByCreateChannel(c)
+
+	//  err
+	if err != nil {
+		GinBack(c, err, "fail")
+	} else {
+		GinBack(c, err, "success")
 	}
 	return
 }

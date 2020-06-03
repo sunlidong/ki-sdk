@@ -2,7 +2,6 @@ package controller
 
 import (
 	m "ki-sdk/model"
-	"log"
 )
 
 /*
@@ -11,9 +10,6 @@ import (
 
 func createChannelConnection(p *SystemByCreateChannelDb) error {
 
-	//1 .调用  model 层  操作
-	// func CreateChannel(path string, channelName string, org string, user string, orderers []string) error {
-	log.Println("调用  model 层  操作")
 	err := m.CreateChannel(
 		p.Path,
 		p.ChannelName,
@@ -21,6 +17,20 @@ func createChannelConnection(p *SystemByCreateChannelDb) error {
 		p.User,
 		p.Orderers,
 	)
-	log.Println("调用  model 层  操作 err=>", err)
+
+	return err
+}
+
+// jia  ru  tong  dao
+func createChannelConnection(p *SystemByJoinChannelDb) error {
+
+	err := m.JoinChannel(
+		p.Path,
+		p.ChannelName,
+		p.Org,
+		p.User,
+		p.Orderers,
+	)
+
 	return err
 }

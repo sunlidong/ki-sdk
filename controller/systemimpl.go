@@ -31,3 +31,25 @@ func systemByCreateChannel(c *g.Context) (err error) {
 	err = createChannelConnection(data)
 	return err
 }
+
+// jia ru tong dao
+func systemByJoinChannel(c *g.Context) (err error) {
+
+	log.Println("系统操作=>systemByJoinChannel")
+
+	// 解析数据
+	data, err := serializeBySystemByJoinChannel(c)
+	if err != nil {
+		log.Println("解析数据失败：", err)
+	}
+
+	log.Println("序列化成功：", data)
+
+	if err != nil {
+		log.Println("创建通道操作", err)
+	}
+
+	// 创建通道
+	err = createChannelConnection(data)
+	return err
+}

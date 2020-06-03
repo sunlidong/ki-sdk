@@ -11,3 +11,12 @@ func serializeBySystemByCreateChannel(c *g.Context) (data *SystemByCreateChannel
 	}
 	return data, nil
 }
+
+// xuliehua jiaru tongdao
+func serializeBySystemByJoinChannel(c *g.Context) (data *SystemByJoinChannelDb, err error) {
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		return data, err
+	}
+	return data, nil
+}
