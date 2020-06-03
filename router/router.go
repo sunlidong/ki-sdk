@@ -51,6 +51,10 @@ func InitRouter() *g.Engine {
 		{
 			system.POST("/createChannel", c.SystemByCreateChannel)
 			system.POST("/joinChannel", c.SystemByJoinChannel)
+
+			//  chaincode
+			system.POST("/installedCC", c.SystemByXnNodeInfoListFree)
+
 		}
 		return router
 	}

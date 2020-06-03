@@ -53,3 +53,30 @@ func systemByJoinChannel(c *g.Context) (err error) {
 	err = channelPropertyAccess(data)
 	return err
 }
+
+//  cha xun jie dian yi jing an zhuang de lian ma
+func systemByXnNodeInfoListFree(c *g.Context) (list []string, err error) {
+
+	log.Println("系统操作: 查询节点已经安装的链码 => xnNodeInfoListFree ")
+
+	// 解析数据
+	data, err := serializeBySystemByXnNodeInfoListFree(c)
+	if err != nil {
+		log.Println("解析数据失败：", err)
+	}
+
+	log.Println("序列化成功：", data)
+
+	if err != nil {
+		log.Println("创建通道操作", err)
+	}
+
+	// 查询 某个节点 已经安装 的链码
+	arr, err = xnEnumerateExistingNodes(data)
+	if err != nil {
+		log.Pritln("查询节点已经安装的链码 err:", err)
+		return nil, err
+	}
+
+	return arr, nil
+}

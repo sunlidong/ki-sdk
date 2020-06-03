@@ -141,3 +141,9 @@ type SystemByJoinChannelDb struct {
 	User        string   `json:"user"`
 	Orderers    []string `json:"orderers"`
 }
+
+type SystemByXnNodeInfoListFreeDb struct {
+	PeerHost   string `json:"peerHost"`
+	ConfigFile string `json:"configFile"`
+	Org        string `json:"org"`
+}

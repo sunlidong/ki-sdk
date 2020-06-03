@@ -31,3 +31,17 @@ func SystemByJoinChannel(c *g.Context) {
 	}
 	return
 }
+
+// cha xun yi jing an zhuang de lian ma
+func SystemByXnNodeInfoListFree(c *g.Context) {
+
+	arr, err := systemByXnNodeInfoListFree(c)
+
+	//  err
+	if err != nil {
+		GinBack(c, arr, "fail")
+	} else {
+		GinBack(c, arr, "success")
+	}
+	return
+}
