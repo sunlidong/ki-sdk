@@ -54,3 +54,19 @@ func SystemByXnNodeInfoListFree(c *g.Context) {
 	}
 	return
 }
+
+/*
+	: 查看某个peer节点已经安装实例化的链码
+*/
+func SystemByInstantiatedcc(c *g.Context) {
+
+	arr, err := systemByXnNodeInfoListFree(c)
+
+	//  err
+	if err != nil {
+		GinBack(c, arr, "fail")
+	} else {
+		GinBack(c, arr, "success")
+	}
+	return
+}

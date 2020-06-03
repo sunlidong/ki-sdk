@@ -29,3 +29,12 @@ func serializeBySystemByXnNodeInfoListFree(c *g.Context) (data *SystemByXnNodeIn
 	}
 	return data, nil
 }
+
+//	查询某个节点已经实例化的链码
+func serializeBySystemByInstantiatedcc(c *g.Context) (data *SystemByInstantiatedccDb, err error) {
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		return data, err
+	}
+	return data, nil
+}

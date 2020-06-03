@@ -147,3 +147,9 @@ type SystemByXnNodeInfoListFreeDb struct {
 	ConfigFile string `json:"configFile"`
 	Org        string `json:"org"`
 }
+
+type SystemByInstantiatedccDb struct {
+	PeerHost   string `json:"peerHost"`
+	ConfigFile string `json:"configFile"`
+	Org        string `json:"org"`
+}

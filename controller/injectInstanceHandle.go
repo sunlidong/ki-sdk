@@ -80,3 +80,39 @@ func xnEnumerateExistingNodes(p *SystemByXnNodeInfoListFreeDb) (list []string, e
 	return arr, nil
 
 }
+
+// 查询 某个 节点 已经 实例化 的 链码
+func xnEnumerateExistingNodesByInsite(p *SystemByInstantiatedccDb) (list []string, err error) {
+
+	resmgmtClient, err := func() (*resmgmt.Client, error) {
+
+		resmgmt, err := m.GetResmgmtClient(
+			p.ConfigFile,
+			p.Org,
+		)
+
+		if err != nil {
+			log.Println("实例化 resmgmt_Client 失败： ", err)
+		}
+
+		return resmgmt, nil
+	}()
+	//
+	if err != nil {
+		log.Println("err:", err)
+		return nil, err
+	}
+
+	resmgmtDB := m.ResmgmtClient{
+		Client: resmgmtClient,
+	}
+
+	arr, err1 := resmgmtDB.GetInstantiatedCC(p.PeerHost)
+
+	if err1 != nil {
+		return nil, err1
+	}
+
+	return arr, nil
+
+}

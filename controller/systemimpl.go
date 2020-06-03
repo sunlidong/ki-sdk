@@ -80,3 +80,26 @@ func systemByXnNodeInfoListFree(c *g.Context) (list []string, err error) {
 
 	return arr, nil
 }
+
+//  查看某个peer节点已经安装实例化的链码
+func systemByInstantiatedcc(c *g.Context) (list []string, err error) {
+
+	log.Println("系统操作: 查看某个peer节点已经安装实例化的链码 => SystemByInstantiatedcc ")
+
+	// 解析数据
+	data, err := serializeBySystemByInstantiatedcc(c)
+	if err != nil {
+		log.Println("解析数据失败：", err)
+	}
+
+	log.Println("序列化成功：", data)
+
+	// 查看某个peer节点已经安装实例化的链码
+	arr, err1 := xnEnumerateExistingNodesByInsite(data)
+	if err1 != nil {
+		log.Println("查询节点已经安装的链码 err:", err1)
+		return nil, err1
+	}
+
+	return arr, nil
+}
