@@ -8,6 +8,7 @@ import (
 	------------- 调用  model 层 操作
 */
 
+// chuang jian tong dao
 func createChannelConnection(p *SystemByCreateChannelDb) error {
 
 	err := m.CreateChannel(
@@ -22,7 +23,7 @@ func createChannelConnection(p *SystemByCreateChannelDb) error {
 }
 
 // jia  ru  tong  dao
-func createChannelConnection(p *SystemByJoinChannelDb) error {
+func channelPropertyAccess(p *SystemByJoinChannelDb) error {
 
 	err := m.JoinChannel(
 		p.Path,

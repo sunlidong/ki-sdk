@@ -50,6 +50,6 @@ func systemByJoinChannel(c *g.Context) (err error) {
 	}
 
 	// 创建通道
-	err = createChannelConnection(data)
+	err = channelPropertyAccess(data)
 	return err
 }
