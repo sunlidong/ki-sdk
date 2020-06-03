@@ -29,6 +29,7 @@ func InitRouter() *g.Engine {
 
 		wei := v1.Group("/wei")
 		cha := v1.Group("/channel")
+		system := v1.Group("/system")
 
 		// 数据上链
 		{
@@ -38,7 +39,7 @@ func InitRouter() *g.Engine {
 			//  查询
 			wei.POST("/query", c.Load)
 
-			wei.POST("/setDB",c.SetDB)
+			wei.POST("/setDB", c.SetDB)
 		}
 
 		// channel -----------------------------  列表
@@ -47,6 +48,9 @@ func InitRouter() *g.Engine {
 			cha.POST("/queryInstantiatedChaincode", c.QueryInstantiatedChaincode)
 		}
 
+		{
+			system.POST("/createChannel", c.SystemByCreateChannel)
+		}
 		return router
 	}
 }

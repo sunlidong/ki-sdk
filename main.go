@@ -1,7 +1,6 @@
 package main
 
 import (
-	"ki-sdk/install"
 	m "ki-sdk/model"
 	r "ki-sdk/router"
 	"log"
@@ -11,7 +10,7 @@ func main() {
 
 	// App
 	m.InitSDK()
-	install.InitApi()
+	// install.InitApi()
 
 	// App// 初始化路由
 	egg := r.InitRouter()

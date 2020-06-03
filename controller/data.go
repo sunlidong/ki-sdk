@@ -121,3 +121,14 @@ type CaConfigObj struct {
 	EnrollSecret string `json:"enrollSecret"`
 	CaName       string `json:"caName"`
 }
+
+// func CreateChannel(path string, channelName string, org string, user string, orderers []string) error {
+
+// 创建 channel
+type SystemByCreateChannelDb struct {
+	Path        string   `json:"path"`
+	ChannelName string   `json:"channelName"`
+	Org         string   `json:"org"`
+	User        string   `json:"user"`
+	Orderers    []string `json:"orderers"`
+}
