@@ -49,7 +49,7 @@ func channelPropertyAccess(p *SystemByJoinChannelDb) error {
 func xnEnumerateExistingNodes(p *SystemByXnNodeInfoListFreeDb) (list []string, err error) {
 
 	resmgmt_client, err := func() (*resmgmt.Client, error) {
-		resmgmt_Client, err := m.GetResmgmtClient(
+		resmgmt, err := m.GetResmgmtClient(
 			p.ConfigFile,
 			p.Org,
 		)
@@ -57,7 +57,7 @@ func xnEnumerateExistingNodes(p *SystemByXnNodeInfoListFreeDb) (list []string, e
 			log.Println("实例化 resmgmt_Client 失败： ", err)
 
 		}
-		return resmgmt_Client, nil
+		return resmgmt, nil
 	}()
 	//
 	if err != nil {
@@ -65,7 +65,10 @@ func xnEnumerateExistingNodes(p *SystemByXnNodeInfoListFreeDb) (list []string, e
 		return nil, err
 	}
 
-	arr, err1 := resmgmt_client.GetInstalledCC(p.PeerHost)
+	resmgmtDB := m.ResmgmtClient{
+		Client: resmgmt_client,
+	}
+	arr, err1 := resmgmtDB.GetInstalledCC(p.PeerHost)
 	if err != nil {
 		return nil, err
 	}
