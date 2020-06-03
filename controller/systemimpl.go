@@ -24,10 +24,10 @@ func systemByCreateChannel(c *g.Context) (err error) {
 	log.Println("序列化成功：", data)
 
 	if err != nil {
-		log.Println("创建通道操作", err1)
+		log.Println("创建通道操作", err)
 	}
 
 	// 创建通道
-	err = createChannelConnection(&data)
+	err = createChannelConnection(data)
 	return err
 }
