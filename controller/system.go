@@ -21,7 +21,7 @@ func SystemByCreateChannel(c *g.Context) {
 // 加入通道
 func SystemByJoinChannel(c *g.Context) {
 
-	err := systemByCreateChannel(c)
+	err := systemByJoinChannel(c)
 
 	//  err
 	if err != nil {
