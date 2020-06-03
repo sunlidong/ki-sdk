@@ -69,8 +69,8 @@ func xnEnumerateExistingNodes(p *SystemByXnNodeInfoListFreeDb) (list []string, e
 		Client: resmgmt_client,
 	}
 	arr, err1 := resmgmtDB.GetInstalledCC(p.PeerHost)
-	if err != nil {
-		return nil, err
+	if err1 != nil {
+		return nil, err1
 	}
 	return arr, nil
 
