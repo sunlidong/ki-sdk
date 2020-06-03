@@ -118,7 +118,7 @@ func xnEnumerateExistingNodesByInsite(p *SystemByInstantiatedccDb) (list []strin
 }
 
 // 向某个节点安装链码
-func xnEnumerateExistingNodesByInstallCCDepend(p *SystemByInstantiatedccDb) (list []string, err error) {
+func xnEnumerateExistingNodesByInstallCCDepend(p *SystemByInstallCCDependDb) (list []string, err error) {
 
 	resmgmtClient, err := func() (*resmgmt.Client, error) {
 
@@ -149,7 +149,7 @@ func xnEnumerateExistingNodesByInstallCCDepend(p *SystemByInstantiatedccDb) (lis
 	// 	CcPath    string `json:"ccPath"`
 	// 	CcGoPath  string `json:"ccGoPath"`
 	// }
-	arr, err1 := resmgmtDB.InstallCCDepend(
+	err1 := resmgmtDB.InstallCCDepend(
 		p.PeerHost,
 		p.CcName,
 		p.CcVersion,
@@ -157,10 +157,6 @@ func xnEnumerateExistingNodesByInstallCCDepend(p *SystemByInstantiatedccDb) (lis
 		p.CcGoPath,
 	)
 
-	if err1 != nil {
-		return nil, err1
-	}
-
-	return arr, nil
+	return err1
 
 }
