@@ -21,5 +21,6 @@ func createChannelConnection(p *SystemByCreateChannelDb) error {
 		p.User,
 		p.Orderers,
 	)
+	log.Println("调用  model 层  操作 err=>", err)
 	return err
 }
