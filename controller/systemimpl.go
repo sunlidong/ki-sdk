@@ -103,3 +103,26 @@ func systemByInstantiatedcc(c *g.Context) (list []string, err error) {
 
 	return arr, nil
 }
+
+//  向某个节点安装链码
+func systemByInstallCCDepend(c *g.Context) (list []string, err error) {
+
+	log.Println("系统操作: 向某个节点安装链码 => SystemByInstantiatedcc ")
+
+	// 解析数据
+	data, err := serializeBySystemByInstallCCDepend(c)
+	if err != nil {
+		log.Println("解析数据失败：", err)
+	}
+
+	log.Println("序列化成功：", data)
+
+	// 查看某个peer节点已经安装实例化的链码
+	arr, err1 := xnEnumerateExistingNodesByInstallCCDepend(data)
+	if err1 != nil {
+		log.Println("查询节点已经安装的链码 err:", err1)
+		return nil, err1
+	}
+
+	return arr, nil
+}

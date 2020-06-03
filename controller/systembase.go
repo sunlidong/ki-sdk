@@ -38,3 +38,12 @@ func serializeBySystemByInstantiatedcc(c *g.Context) (data *SystemByInstantiated
 	}
 	return data, nil
 }
+
+//	向某个节点安装链码
+func serializeBySystemByInstallCCDepend(c *g.Context) (data *SystemByInstallCCDependDb, err error) {
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		return data, err
+	}
+	return data, nil
+}

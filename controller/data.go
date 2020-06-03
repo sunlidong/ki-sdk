@@ -149,8 +149,16 @@ type SystemByXnNodeInfoListFreeDb struct {
 }
 
 type SystemByInstantiatedccDb struct {
-	PeerHost   string `json:"peerHost"`
-	ConfigFile string `json:"configFile"`
-	Org        string `json:"org"`
-	ChannelName        string `json:"channelName"`
+	PeerHost    string `json:"peerHost"`
+	ConfigFile  string `json:"configFile"`
+	Org         string `json:"org"`
+	ChannelName string `json:"channelName"`
+}
+
+type SystemByInstallCCDependDb struct {
+	PeerHost  string `json:"peerHost"`
+	CcName    string `json:"ccName"`
+	CcVersion string `json:"ccVersion"`
+	CcPath    string `json:"ccPath"`
+	CcGoPath  string `json:"ccGoPath"`
 }

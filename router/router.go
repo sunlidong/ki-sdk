@@ -59,6 +59,8 @@ func InitRouter() *g.Engine {
 			//  chaincode   查看某个peer节点已经安装实例化的链码
 			system.POST("/instiatedCC", c.SystemByInstantiatedcc)
 
+			//  chaincode   向指定peer上安装chaincode
+			system.POST("/installCCDepend", c.SystemByInstallCCDepend)
 		}
 		return router
 	}
