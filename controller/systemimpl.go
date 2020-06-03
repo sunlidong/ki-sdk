@@ -119,6 +119,6 @@ func systemByInstallCCDepend(c *g.Context) (err error) {
 
 	// 向某个节点安装链码
 	err1 := xnEnumerateExistingNodesByInstallCCDepend(data)
-
+	log.Println("err1", err1)
 	return err1
 }
