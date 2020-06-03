@@ -2,8 +2,9 @@ package controller
 
 import (
 	m "ki-sdk/model"
-	"ki-sdk/vendor/github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt"
 	"log"
+
+	"github.com/hyperledger/fabric-sdk-go/pkg/client/resmgmt"
 )
 
 /*
